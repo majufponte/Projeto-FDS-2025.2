@@ -69,7 +69,7 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 
   <br>
   
-  Imagem do Quadro da Sprint (jira):  
+  Imagem do Quadro da Sprint (JIRA):  
 ![Quadro da Sprint](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Board.jpg?raw=true)
 
 <br>
