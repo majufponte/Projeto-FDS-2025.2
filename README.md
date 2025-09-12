@@ -62,7 +62,7 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 ![Quadro da Sprint](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Board.jpg?raw=true)
 
 Imagem do Backlog  
-![Backlog]([images/backlog.png](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true))
+![Backlog](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
 
 
 
