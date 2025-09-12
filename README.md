@@ -74,6 +74,12 @@ Imagem do Backlog (JIRA):
 ![Backlog](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
 
 <p>
+
+ Print da tela do Figma:  
+![Tela do Figma]()
+
+<br>
+
   Segue link para o Figma:<br>
   <a href="https://www.figma.com/design/YBrHB9mzK732YyBM0SMN27/Untitled?node-id=2001-4197&t=VWeXCNtlry4v4ugQ-0" target="_blank" style="text-decoration: none; color: inherit;">
     FIGMA
