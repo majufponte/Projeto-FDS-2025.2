@@ -90,7 +90,7 @@ Imagem do Backlog (JIRA):
 <br>
 <p>
   Segue link para o Screencast no Youtube:<br>
-  <a href="Link do screencast" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://youtu.be/W2k6X2Y8gcw" target="_blank" style="text-decoration: none; color: inherit;">
     SCREENCAST
   </a>
 </p>
