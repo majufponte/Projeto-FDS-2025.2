@@ -77,8 +77,8 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 Imagem do Backlog (JIRA):  
 ![Backlog](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
 
-<p>
 <br>
+
  Print da tela do Figma:  
 ![Print da Tela do Figma](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/PrintFigma.jpg?raw=true)
 
