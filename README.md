@@ -51,23 +51,7 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 <details>
 <summary>📝 1ª ENTREGA</summary>
 
-O objetivo deste sprint é estabelecer a infraestrutura inicial do sistema, com foco em funcionalidades essenciais para o gerenciamento de usuários. 
 
-Será implementada a análise do ranking de jogos mais jogados, pesquisa específica do jogo desejado para saber mais sobre o mesmo, a comparação do meu hardware com os requisitos mínimos do jogo em questão. 
-
-Também será possível analisar melhores descontos dos jogos, analisar as notas/avaliações dos jogos, analisar detalhes do jogo desejado, analisar lançamentos populares, analisar jogos mais e menos vendidos.
-
-Juntamente com a entrega do layout das histórias criadas pelo Figma e atualização do backlog no Jira. Também criamos um Screencast, para apresentar o nosso protótipo de baixa fidelidade feito pelo figma, acesse  e um criamos um docs com as histórias para registrar as mesmas, acesse 
-
-Juntamente com a entrega do layout das histórias criadas no Figma e a atualização do backlog no Jira, também produzimos um Screencast para apresentar nosso protótipo de baixa fidelidade desenvolvido no Figma. Você pode acessá-lo [clicando aqui](https://www.youtube.com/watch?v=4X-COxfohOs). Além disso, criamos um documento para registrar todas as histórias. Para acessá-lo, [clique aqui](https://docs.google.com/document/d/1S2g1G4RuujxoqrS3X8qtjB-jPXst8eDhbwKny189anE/edit?tab=t.0").
-
-Nosso figma contem 8 telas que se resumem a login, cadastro, menu de pesquisa, rankings, promoções, avaliações, mais vendidos e sobre o jogo:
-![figma](img/Figma.png)
-
-O jira ficou com a criação do backlog com atualização da primeira sprint, juntamente com o quadro com as infomações que serão atualizadas no futuro do projeto:
-![Backlog](img/Backlog.png)
-
-![Quadro](img/Quadro.png)
 
 
 </details>
