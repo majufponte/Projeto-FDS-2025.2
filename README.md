@@ -53,19 +53,32 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
   <p>
     Segue link para o Doc com as histórias:<br>
     <a href="https://www.canva.com/design/DAGx9S8lF68/mOA3cmGpV-vzQiZq-znOsg/edit" target="_blank" style="text-decoration: none; color: inherit;">
-      Histórias
+      HSTÓRIAS
     </a>
    
   </p>
   
-  Imagem do Quadro da Sprint  
+  Imagem do Quadro da Sprint (jira):  
 ![Quadro da Sprint](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Board.jpg?raw=true)
 
-Imagem do Backlog  
+Imagem do Backlog (JIRA):  
 ![Backlog](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
 
+<p>
+  Segue link para o Figma:<br>
+  <a href="https://www.figma.com/design/YBrHB9mzK732YyBM0SMN27/Untitled?node-id=2001-4197&t=VWeXCNtlry4v4ugQ-0" target="_blank" style="text-decoration: none; color: inherit;">
+    FIGMA
+  </a>
+</p>
 
+<p>
+  Segue link para o Screencast no Youtube:<br>
+  <a href="Link do screencast" target="_blank" style="text-decoration: none; color: inherit;">
+    SCREENCAST
+  </a>
+</p>
 
+  
 
 </details>
 
