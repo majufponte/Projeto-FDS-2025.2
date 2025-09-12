@@ -35,11 +35,9 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
     <a href="https://steamviewfds.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiMjZiNDgyNDQxMGM4NGYzZGE2OWVmM2YyM2EyYjUwODYiLCJwIjoiaiJ9">
         <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" alt="Jira">
     </a>
-    <a href="https://www.canva.com/design/DAGx9S8lF68/mOA3cmGpV-vzQiZq-znOsg/edit">
-        <a href="https://www.canva.com" target="_blank">
-  <img src="https://img.shields.io/badge/Canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white" alt="Canva">
+    
 </a>
-    <a href="https://www.figma.com/design/3nPg7kwxtVKxKwypslPQtB/SteamView?node-id=58-582&t=77d8WioUx6bMMnMa-1">
+    <a href="https://www.figma.com/design/YBrHB9mzK732YyBM0SMN27/Untitled?node-id=2001-3809&t=ild2bgRAblnZjMFb-0">
         <img src="https://img.shields.io/badge/Figma-4B0082?style=for-the-badge&logo=Figma&logoColor=white" alt="Figma">
     </a>
 </div>
@@ -50,6 +48,14 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 
 <details>
 <summary>📝 1ª ENTREGA</summary>
+
+
+  <p>
+    Segue link para o Doc com as histórias:<br>
+    <a href="https://www.canva.com/design/DAGx9S8lF68/mOA3cmGpV-vzQiZq-znOsg/edit" target="_blank" style="text-decoration: none; color: inherit;">
+      Histórias
+    </a>
+  </p>
 
 
 
