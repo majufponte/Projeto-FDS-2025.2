@@ -32,7 +32,7 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 <summary>🔗 LINKS IMPORTANTES</summary>
 
 <div align="center">
-    <a href="https://steamviewfds.atlassian.net/jira/software/projects/SCRUM/boards/1?atlOrigin=eyJpIjoiMjZiNDgyNDQxMGM4NGYzZGE2OWVmM2YyM2EyYjUwODYiLCJwIjoiaiJ9">
+    <a href="https://cesar-team-g5o84hjj.atlassian.net/jira/software/projects/ECS/boards/34">
         <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=Jira&logoColor=white" alt="Jira">
     </a>
     
