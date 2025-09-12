@@ -8,7 +8,7 @@ Ferramenta de assistência para complementar os requisitos eletrônicos do jogo 
 
 ---
 
-## 🧑‍💻 Tecnologias e Ferramentas
+## 💻🔨Tecnologias e Ferramentas
 - framework Django: Django é um framework web em Python que permite o desenvolvimento rápido e seguro de aplicações, seguindo o padrão MVT. Ele inclui uma ORM poderosa, autenticação integrada e painel administrativo automático.
 - Figma: Figma é uma ferramenta de design colaborativo baseada na web, usada para criar interfaces, protótipos e designs. Permite trabalho em tempo real, facilitando a colaboração entre equipes.
 - Jira: O Jira é uma ferramenta para gerenciar tarefas e projetos, especialmente em equipes de software, usando metodologias ágeis.
@@ -49,13 +49,22 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
 <details>
 <summary>📝 1ª ENTREGA</summary>
 
+<br>
+
+<p>O objetivo desta sprint foi dar continuidade ao desenvolvimento dos requisitos eletrônicos do jogo <strong>"Ecos do Fim"</strong>, com foco na implementação de funcionalidades como a detecção de decibéis, que contribuem para uma experiência mais imersiva e acessível.</p>
+
+<p>Foram entregues o layout das histórias desenvolvidas no Figma, além da atualização do backlog no Jira.</p>
+
+<p>Também foi produzido um Screencast demonstrando o protótipo de baixa fidelidade criado no Figma, <strong>garantindo o cumprimento de todos os requisitos propostos para esta entrega</strong>.</p>
+
+<p>Por fim, elaboramos um documento para registrar todas as histórias do projeto de forma organizada.</p>
+
 
   <p>
     Segue link para o Doc com as histórias:<br>
     <a href="https://www.canva.com/design/DAGx9S8lF68/mOA3cmGpV-vzQiZq-znOsg/edit" target="_blank" style="text-decoration: none; color: inherit;">
       HSTÓRIAS
-    </a>
-   
+    </a> 
   </p>
   
   Imagem do Quadro da Sprint (jira):  
