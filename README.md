@@ -55,7 +55,14 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
     <a href="https://www.canva.com/design/DAGx9S8lF68/mOA3cmGpV-vzQiZq-znOsg/edit" target="_blank" style="text-decoration: none; color: inherit;">
       Histórias
     </a>
+   
   </p>
+  
+  Quadro da Sprint  
+![Sprint](images/sprint.png)
+
+Backlog  
+![Backlog](images/backlog.png)
 
 
 
