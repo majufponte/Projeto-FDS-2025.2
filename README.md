@@ -101,3 +101,8 @@ Imagem do Backlog (JIRA):
 
 ---
 
+<details>
+<summary>📝 2ª ENTREGA</summary>
+
+<br>
+
