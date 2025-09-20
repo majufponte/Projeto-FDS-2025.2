@@ -104,5 +104,15 @@ Imagem do Backlog (JIRA):
 <details>
 <summary>📝 2ª ENTREGA</summary>
 
-<br>
+<br> Histórias Implementadas:
+
+Sprint no JIRA:
+
+Deployment das Histórias em produção:
+
+Screencast:
+
+Programação em Par Experimentada:
+
+Quadro da Segunda Sprint:
 
