@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Escolher Dificuldade</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .botao {
+      display: inline-block;
+      padding: 20px 40px;
+      margin: 15px;
+      font-size: 24px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .botao:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Escolha a dificuldade</h1>
+
+    {% for n in niveis %}
+    <form method="post" style="display:inline;">
+      {% csrf_token %}
+      <!-- valor escondido com o nível -->
+      <input type="hidden" name="dificuldade" value="{{ n }}">
+      <!-- botão que envia o form -->
+      <button type="submit" class="botao">Nível {{ n }}</button>
+    </form>
+    {% endfor %}
+
+  </div>
+</body>
+</html>
