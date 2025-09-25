@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste de Áudio</title>
+</head>
+<body>
+    <h1>Teste de Áudio</h1>
+    <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+
+    <p>Status: <span id="status">Aguardando som...</span></p>
+
+    <script>
+        const limiar = parseFloat(document.getElementById("limiar").innerText);
+        const statusEl = document.getElementById("status");
+
+        async function iniciarCaptura() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioCtx.createMediaStreamSource(stream);
+                const analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 512;
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                source.connect(analyser);
+
+                function calcularDBFS() {
+                    analyser.getByteTimeDomainData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        let sample = (dataArray[i] - 128) / 128; 
+                        sum += sample * sample;
+                    }
+                    let rms = Math.sqrt(sum / dataArray.length);
+                    let dbfs = 20 * Math.log10(rms);
+
+                    if (dbfs > limiar) {
+                        statusEl.innerText = "⚠️ Você foi pego!";
+                        statusEl.style.color = "red";
+                    } else {
+                        statusEl.innerText = "✅ Seguro...";
+                        statusEl.style.color = "green";
+                    }
+
+                    requestAnimationFrame(calcularDBFS);
+                }
+
+                calcularDBFS();
+
+            } catch (err) {
+                statusEl.innerText = "Erro ao acessar microfone!";
+                console.error(err);
+            }
+        }
+
+        iniciarCaptura();
+    </script>
+
+</body>
+</html>

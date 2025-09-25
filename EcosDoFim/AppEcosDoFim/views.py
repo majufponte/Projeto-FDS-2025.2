@@ -26,7 +26,14 @@ def escolher_dificuldade(request):
  #considerações pra maju: aqui esse def ele funciona pra gente seleciona a dificuldade do jogo
  #o objetivo aqui é que la na frente quandoa a gente for trabalhar com o Dcbs ja tenha a dificuldade do jogo estabelecida
 
-def detector_audio(limiar):
+
+def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
+    limiar = request.session.get("limiar_dificuldade")
+    return render(request, "testar_dificuldade.html", {"limiar": limiar})
+
+
+
+"""def detector_audio(limiar):
     print(sd.query_devices())
 
     DURATION = 0.01 # aqui tbm ta sujeito a alteraçoes \ isso ai é o tempo que eleme da valor de audio 
@@ -37,7 +44,6 @@ def detector_audio(limiar):
         rms = np.sqrt(np.mean(audio_data.flatten()**2))
         return -np.inf if rms == 0 else 20 * np.log10(rms)
 
-    print("Capturando som... Pressione Ctrl+C para parar.")
     try:
         while True:
             audio = sd.rec(int(DURATION * FS), samplerate=FS, channels=1, dtype='float64')
@@ -52,4 +58,4 @@ def detector_audio(limiar):
         print("\nPrograma finalizado.")
 
         #falta um html pra esse def mas ele ta aqui pq vai servir de base pra gente começar a trabalhar com o audio
-        #sujeito a alteraçoes 
+        #sujeito a alteraçoes """
