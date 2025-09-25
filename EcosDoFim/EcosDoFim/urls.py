@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from AppEcosDoFim import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('EcosDofim/dificuldade', views.escolher_dificuldade),
+    path('EcosDofim/audio', views.detector_audio),
 ]
