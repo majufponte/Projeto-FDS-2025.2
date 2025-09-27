@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import sounddevice as sd
 import numpy as np
+from .models import DetecaoAudio
+
 
 LIMIARES = {
     "1": -50,
@@ -29,6 +31,16 @@ def escolher_dificuldade(request):
 
 def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     limiar = request.session.get("limiar_dificuldade")
+    usuario = request.user if request.user.is_authenticated else None
+
+    if request.method == "POST":
+        detectado = request.POST.get("audio_detectado", "0")
+        detectado_bool = bool(int(detectado))
+
+        DetecaoAudio.objects.create(
+            usuario=usuario,
+            detectado=detectado_bool
+        )
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
 
@@ -36,7 +48,7 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
 """def detector_audio(limiar):
     print(sd.query_devices())
 
-    DURATION = 0.01 # aqui tbm ta sujeito a alteraçoes \ isso ai é o tempo que eleme da valor de audio 
+    DURATION = 0.01 # aqui tbm ta sujeito a alteraçoes isso ai é o tempo que eleme da valor de audio 
     FS = 44100 # ao meu entedimento isso faz parte da captção de audio tipo frequencia (coisa de maluco)
     sd.default.device = 0
 

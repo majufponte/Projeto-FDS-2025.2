@@ -14,6 +14,24 @@
         const limiar = parseFloat(document.getElementById("limiar").innerText);
         const statusEl = document.getElementById("status");
 
+        // Função para pegar o CSRF do cookie (se você estiver usando)
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        let ultimaDeteccao = 0; // para evitar spam de requisições
+
         async function iniciarCaptura() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -38,6 +56,22 @@
                     if (dbfs > limiar) {
                         statusEl.innerText = "⚠️ Você foi pego!";
                         statusEl.style.color = "red";
+
+                        // Só envia se já passou 2 segundos desde o último envio
+                        const agora = Date.now();
+                        if (agora - ultimaDeteccao > 2000) {
+                            ultimaDeteccao = agora;
+
+                            fetch("/audio-detectado/", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": getCookie("csrftoken") // se CSRF estiver ativado
+                                },
+                                body: JSON.stringify({ audio_detectado: true })
+                            }).catch(err => console.error("Erro ao enviar:", err));
+                        }
+
                     } else {
                         statusEl.innerText = "✅ Seguro...";
                         statusEl.style.color = "green";
