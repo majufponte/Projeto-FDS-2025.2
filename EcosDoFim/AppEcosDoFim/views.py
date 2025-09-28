@@ -43,6 +43,9 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
         )
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
+def mapa(request):
+    return render(request,"mapa.html")
+
 
 
 """def detector_audio(limiar):
