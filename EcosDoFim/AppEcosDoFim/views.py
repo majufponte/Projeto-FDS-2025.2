@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.http import HttpResponseRedirect
 import sounddevice as sd
 import numpy as np
-from .models import DetecaoAudio
+from .models import DetecaoAudio,locais_explorado
 
 
 LIMIARES = {
@@ -44,7 +45,16 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
 def mapa(request):
-    return render(request,"mapa.html")
+    explorados=list(locais_explorado.objects.filter(usuario=request.user).values_list("id_do_local",flat=True))
+    if request.method=="POST":
+        id_do_local=int(request.POST.get("id_do_local"))
+        locais_explorado.objects.get_or_create(usuario=request.user,id_do_local=id_do_local)
+        return HttpResponseRedirect(request.path_info)
+        
+
+    return render(request, "mapa.html", {"explorados": explorados})
+
+
 
 
 
