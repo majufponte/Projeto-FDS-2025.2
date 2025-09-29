@@ -28,7 +28,14 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+
+      - name: Cleaning testing files
+        run: |
+          cd EcosDoFim/
+          rm -f db.sqlite3 || true
+          rm -f .env || true
+          cd ..
+          
       - name: Install dependencies
         run: pip install -r EcosDoFim/requirements.txt
         
@@ -59,3 +66,4 @@ jobs:
           app-name: 'ecosdofim'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D906ED66FFD0405388B3021D77B71842 }}
+
