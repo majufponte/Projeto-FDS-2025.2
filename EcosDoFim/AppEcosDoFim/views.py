@@ -1,7 +1,5 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-import sounddevice as sd
-import numpy as np
 from .models import DetecaoAudio,locais_explorado
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
