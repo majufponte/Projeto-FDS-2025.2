@@ -133,7 +133,8 @@ Deployment das Histórias em produção:
 
 Screencast:
 
-Programação em Par Experimentada:
+Programação em Par Experimentada: Segue link com o relatório:
+
 <div align="center">
     <a href="https://docs.google.com/document/d/1vuLVAkLyvJm9vDMFXJLZY0u_QItAgq2f51laFVbfH8Y/edit?usp=sharing">
         <img src="https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=Google-Docs&logoColor=white" alt="Google Docs">
