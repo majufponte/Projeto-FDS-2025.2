@@ -1,7 +1,5 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-import sounddevice as sd
-import numpy as np
 from .models import DetecaoAudio,locais_explorado
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -58,7 +56,7 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     if request.user.is_authenticated:
         usuario = request.user
     else:
-        return redirect('/login')
+        usuario=None
 
 
     if request.method == "POST":
@@ -75,7 +73,7 @@ def mapa(request):
     if request.user.is_authenticated:
         usuario = request.user
     else:
-        return redirect('/login')
+        usuario=None
     explorados=list(locais_explorado.objects.filter(
         usuario=usuario
         ).values_list("id_do_local",flat=True))
