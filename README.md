@@ -104,7 +104,14 @@ Imagem do Backlog (JIRA):
 <details>
 <summary>📝 2ª ENTREGA</summary>
 
-<br> Histórias Implementadas:
+<br> Histórias Implementadas: 
+História 1 - Como jogador, eu gostaria de ter um mapa para me dar uma representação visual de onde estou e por onde já passei.
+
+História 2 - Como usuário, gostaria da opção de regular a dificuldade do jogo com a sensibilidade de decibéis, para ter uma experiência mais casual ou mais imersiva.
+
+História 3 - Como jogador, gostaria de que no mapa ficasse marcado os locais onde já passei e quantos suprimentos eu peguei naquele local.
+
+Quadro da Segunda Sprint:
 
 Sprint no JIRA:
 
@@ -114,5 +121,4 @@ Screencast:
 
 Programação em Par Experimentada:
 
-Quadro da Segunda Sprint:
 
