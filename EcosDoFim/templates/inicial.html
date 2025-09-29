@@ -39,9 +39,11 @@
     <p>Escolha uma das opções abaixo:</p>
 
     <div class="container">
-        <a class="btn" href="/EcosDofim/dificuldade">Escolher Dificuldade</a>
-        <a class="btn" href="/EcosDofim/audio">Testar Dificuldade (Áudio)</a>
-        <a class="btn" href="/mapa">Mapa</a>
+        <a class="btn" href="{% url 'escolher_dificuldade' %}">Escolher Dificuldade</a>
+        <a class="btn" href="{% url 'testar_dificuldade' %}">Testar Dificuldade (Áudio)</a>
+        <a class="btn" href="{% url 'mapa' %}">Mapa</a>
+        <a class="btn" href="{% url 'login_user' %}">Login</a>
+        <a class="btn" href="{% url 'logout_user' %}">Logout</a>
     </div>
 </body>
 </html>

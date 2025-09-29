@@ -3,7 +3,30 @@ from django.http import HttpResponseRedirect
 import sounddevice as sd
 import numpy as np
 from .models import DetecaoAudio,locais_explorado
+from django.contrib.auth import authenticate,login,logout
+from django.contrib import messages
 
+# Create your views here.
+def login_user(request):
+    return render(request, 'login.html')
+
+def logout_user(request):
+    logout(request)
+    return  redirect('/')
+
+def submit_login(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        usuario = authenticate(username=username,password=password)
+        if usuario is not None:
+            login(request,usuario)
+            return redirect('/')
+        else:
+            messages.error(request, "Usuario ou senha invalido")
+            return redirect('/')
+    else:
+        redirect('/')
 
 LIMIARES = {
     "1": -50,
@@ -32,7 +55,11 @@ def escolher_dificuldade(request):
 
 def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     limiar = request.session.get("limiar_dificuldade")
-    usuario = request.user if request.user.is_authenticated else None
+    if request.user.is_authenticated:
+        usuario = request.user
+    else:
+        return redirect('/login')
+
 
     if request.method == "POST":
         detectado = request.POST.get("audio_detectado", "0")
@@ -45,7 +72,10 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
 def mapa(request):
-    usuario = request.user if request.user.is_authenticated else None
+    if request.user.is_authenticated:
+        usuario = request.user
+    else:
+        return redirect('/login')
     explorados=list(locais_explorado.objects.filter(
         usuario=usuario
         ).values_list("id_do_local",flat=True))
