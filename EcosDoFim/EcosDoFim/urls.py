@@ -24,4 +24,5 @@ urlpatterns = [
     path('EcosDofim/audio', views.testar_dificuldade),
     path("audio-detectado/", views.testar_dificuldade, name="audio_detectado"),
     path("mapa/", views.mapa),
+    path("",views.home)
 ]

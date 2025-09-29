@@ -45,19 +45,23 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
 def mapa(request):
+    usuario = request.user if request.user.is_authenticated else None
     explorados=list(locais_explorado.objects.filter(
-        usuario=request.user
+        usuario=usuario
         ).values_list("id_do_local",flat=True))
     if request.method=="POST":
         id_do_local=int(request.POST.get("id_do_local"))
         locais_explorado.objects.create(
-            usuario=request.user,
+            usuario=usuario,
             id_do_local=id_do_local
             )
         return HttpResponseRedirect(request.path_info)
         
 
     return render(request, "mapa.html", {"explorados": explorados})
+
+def home(request):
+    return render(request,"inicial.html")
 
 
 
