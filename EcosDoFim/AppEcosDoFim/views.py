@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .models import DetecaoAudio,locais_explorado
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 # Create your views here.
 def login_user(request):
@@ -22,9 +23,20 @@ def submit_login(request):
             return redirect('/')
         else:
             messages.error(request, "Usuario ou senha invalido")
-            return redirect('/')
+            return redirect('/login')
     else:
         redirect('/')
+        
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if not User.objects.filter(username=username).exists():
+            User.objects.create_user(username=username, password=password)
+            return redirect('/login/')
+
+    return render(request, 'register.html')
 
 LIMIARES = {
     "1": -50,
