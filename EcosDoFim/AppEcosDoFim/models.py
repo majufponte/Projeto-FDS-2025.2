@@ -7,7 +7,7 @@ class DetecaoAudio(models.Model):
     detectado = models.BooleanField(default=False)
     if detectado:
         def __str__(self):
-            return f"{self.usuario} - {'detectado'}"
+            return f"{self.usuario} - detectado"
 
 class locais_explorado(models.Model):
     usuario=models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
