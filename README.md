@@ -105,11 +105,25 @@ Imagem do Backlog (JIRA):
 <summary>📝 2ª ENTREGA</summary>
 
 <br> Histórias Implementadas: 
-História 1 - Como jogador, eu gostaria de ter um mapa para me dar uma representação visual de onde estou e por onde já passei.
+
+<br>História 1 - Como jogador, gostaria de ter um mapa para me dar uma representação visual de onde estou e por onde já passei. 
+
+![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
+
 
 História 2 - Como usuário, gostaria da opção de regular a dificuldade do jogo com a sensibilidade de decibéis, para ter uma experiência mais casual ou mais imersiva.
 
-História 3 - Como jogador, gostaria de que no mapa ficasse marcado os locais onde já passei e quantos suprimentos eu peguei naquele local.
+![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.3.jpg?raw=true)
+
+![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.2.jpg?raw=true)
+
+![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.jpg?raw=true)
+
+![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.4.jpg?raw=true)
+
+História 3 - Como jogador, gostaria que no mapa ficasse marcado os locais onde já passei e quantos suprimentos eu peguei naquele local.
+
+![História 3]()
 
 Quadro da Segunda Sprint:
 
@@ -119,6 +133,12 @@ Deployment das Histórias em produção:
 
 Screencast:
 
-Programação em Par Experimentada:
+Programação em Par Experimentada: Segue link com o relatório:
+
+<div align="center">
+    <a href="https://docs.google.com/document/d/1vuLVAkLyvJm9vDMFXJLZY0u_QItAgq2f51laFVbfH8Y/edit?usp=sharing">
+        <img src="https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=Google-Docs&logoColor=white" alt="Google Docs">
+    </a>
+
 
 
