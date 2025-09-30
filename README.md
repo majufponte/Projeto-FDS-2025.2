@@ -134,9 +134,14 @@ Imagem do Quadro da Segunda Sprint:
 
 Imagem do Backlog do JIRA:
 
-![Baclog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/backlog.jpeg?raw=true)
+![Backlog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/backlog.jpeg?raw=true)
 
-Deployment das Histórias em produção:
+<p>
+  Segue link para o Deploy:<br>
+  <a href="https://ecos-fim.azurewebsites.net/" target="_blank" style="text-decoration: none; color: inherit;">
+    Ecos Do Fim
+  </a>
+</p>
 
 Screencast:
 
