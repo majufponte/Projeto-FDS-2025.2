@@ -70,17 +70,17 @@ Mais do que um jogo, Ecos do Fim é uma ferramenta de conscientização. Ele est
   <br>
   
   Imagem do Quadro da Sprint (JIRA):  
-![Quadro da Sprint](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Board.jpg?raw=true)
+![Quadro da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Board.jpg?raw=true)
 
 <br>
 
 Imagem do Backlog (JIRA):  
-![Backlog](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
+![Backlog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Backlog.jpg?raw=true)
 
 <br>
 
  Print da tela do Figma:  
-![Print da Tela do Figma](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/PrintFigma.jpg?raw=true)
+![Print da Tela do Figma](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/PrintFigma.jpg?raw=true)
 
   Segue link para o Figma:<br>
   <a href="https://www.figma.com/design/YBrHB9mzK732YyBM0SMN27/Untitled?node-id=2001-4197&t=VWeXCNtlry4v4ugQ-0" target="_blank" style="text-decoration: none; color: inherit;">
@@ -108,24 +108,24 @@ Imagem do Backlog (JIRA):
 
 <br>História 1 - Como jogador, gostaria de ter um mapa para me dar uma representação visual de onde estou e por onde já passei. 
 
-![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
+![História 1](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
 
 ![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
 
 
 História 2 - Como usuário, gostaria da opção de regular a dificuldade do jogo com a sensibilidade de decibéis, para ter uma experiência mais casual ou mais imersiva.
 
-![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.3.jpg?raw=true)
+![História 2](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia2.3.jpg?raw=true)
 
-![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.2.jpg?raw=true)
+![História 2](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia2.2.jpg?raw=true)
 
-![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.jpg?raw=true)
+![História 2](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia2.jpg?raw=true)
 
-![História 2](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia2.4.jpg?raw=true)
+![História 2](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia2.4.jpg?raw=true)
 
 História 3 - Como jogador, gostaria que no mapa ficasse marcado os locais onde já passei e quantos suprimentos eu peguei naquele local.
 
-![História 3]()
+![História 3](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia3.jpg?raw=true)
 
 Quadro da Segunda Sprint:
 
