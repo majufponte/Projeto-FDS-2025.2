@@ -110,6 +110,8 @@ Imagem do Backlog (JIRA):
 
 ![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
 
+![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
+
 
 História 2 - Como usuário, gostaria da opção de regular a dificuldade do jogo com a sensibilidade de decibéis, para ter uma experiência mais casual ou mais imersiva.
 
