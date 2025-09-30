@@ -140,7 +140,7 @@ Deployment das Histórias em produção:
 
 Screencast:
 
-Programação em Par Experimentada: Segue link com o relatório:
+Programação em Par Experimentada - Segue link com o relatório:
 
 <div align="center">
     <a href="https://docs.google.com/document/d/1vuLVAkLyvJm9vDMFXJLZY0u_QItAgq2f51laFVbfH8Y/edit?usp=sharing">
