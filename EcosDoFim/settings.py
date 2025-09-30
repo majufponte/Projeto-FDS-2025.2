@@ -29,7 +29,11 @@ if NOT_PROD:
     DEBUG = True
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = 'django-insecure-xs^e53j27a9njlg@!spv+b9ij4p2l(6qtf)-#zbsnmc3^tz+!q'
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "projeto-fds-2025-2.onrender.com",
+]
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -151,7 +155,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 #STATIC_URL = os.environ.get('DJANGO_STATIC_URL', "/static/")
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
     
 STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 # Default primary key field type
