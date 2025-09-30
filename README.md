@@ -110,8 +110,6 @@ Imagem do Backlog (JIRA):
 
 ![História 1](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
 
-![História 1](https://github.com/P0ntual/Projeto-FDS-2025.2/blob/main/assets/Historia1.jpg?raw=true)
-
 
 História 2 - Como usuário, gostaria da opção de regular a dificuldade do jogo com a sensibilidade de decibéis, para ter uma experiência mais casual ou mais imersiva.
 
@@ -125,11 +123,18 @@ História 2 - Como usuário, gostaria da opção de regular a dificuldade do jog
 
 História 3 - Como jogador, gostaria que no mapa ficasse marcado os locais onde já passei e quantos suprimentos eu peguei naquele local.
 
+![História 3](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/banco_dados_locais.jpeg?raw=true)
+
 ![História 3](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Historia3.jpg?raw=true)
 
-Quadro da Segunda Sprint:
+Imagem do Quadro da Segunda Sprint:
 
-Sprint no JIRA:
+![Quadro da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/jira.jpeg?raw=true)
+
+
+Imagem do Backlog do JIRA:
+
+![Baclog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/backlog.jpeg?raw=true)
 
 Deployment das Histórias em produção:
 
