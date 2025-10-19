@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecos do Fim - Registrar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+        }
+        .left {
+            width: 50%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            width: 70%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            text-transform: lowercase;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        input::placeholder {
+            color: #aaa;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0.5rem;
+        }
+        button {
+            background-color: #222;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #444;
+        }
+        .link-text {
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+        }
+        .right {
+            width: 50%;
+            background-color: #d9d9d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .right h2 {
+            font-size: 2rem;
+            color: #111;
+            font-weight: 700;
+        }
+        hr {
+            margin-top: 2rem;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="left">
+        <div class="form-container">
+            <h1>Ecos do Fim</h1>
+            <form method="post">
+                {% csrf_token %}
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="digite seu email" required>
+                <label for="password">senha</label>
+                <input type="password" id="password" name="password" placeholder="digite sua senha" required>
+                <label for="confirm_password">confirme sua senha*</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="digite sua senha" required>
+                <label for="username">username</label>
+                <input type="text" id="username" name="username" placeholder="digite seu username" required>
+                <p class="link-text">já tem uma conta?</p>
+                <div class="buttons">
+                    <button type="submit">Finalizar</button>
+                    <button type="button">Sign In</button>
+                </div>
+            </form>
+            <hr>
+        </div>
+    </div>
+    <div class="right">
+        <h2>IMAGEM 2</h2>
+    </div>
+</body>
+</html>
