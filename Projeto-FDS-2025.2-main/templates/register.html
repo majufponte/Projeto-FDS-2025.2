@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -64,8 +65,8 @@
             background-color: #444;
         }
         .link-text {
-            margin-top: 0.3rem;
             font-size: 0.9rem;
+            margin-bottom: 0.3rem;
         }
         .right {
             width: 50%;
@@ -74,10 +75,10 @@
             justify-content: center;
             align-items: center;
         }
-        .right h2 {
-            font-size: 2rem;
-            color: #111;
-            font-weight: 700;
+        .right img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 8px;
         }
         hr {
             margin-top: 2rem;
@@ -94,15 +95,15 @@
                 {% csrf_token %}
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="digite seu email" required>
-                <label for="password">senha</label>
+                <label for="password">Senha</label>
                 <input type="password" id="password" name="password" placeholder="digite sua senha" required>
-                <label for="confirm_password">confirme sua senha*</label>
+                <label for="confirm_password">Confirme sua senha*</label>
                 <input type="password" id="confirm_password" name="confirm_password" placeholder="digite sua senha" required>
-                <label for="username">username</label>
+                <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="digite seu username" required>
-                <p class="link-text">já tem uma conta?</p>
                 <div class="buttons">
                     <button type="submit">Finalizar</button>
+                    <p class="link-text">já tem uma conta?</p>
                     <button type="button">Sign In</button>
                 </div>
             </form>
@@ -110,7 +111,7 @@
         </div>
     </div>
     <div class="right">
-        <h2>IMAGEM 2</h2>
+        <img src="{% static 'AppEcosDoFim/nome-da-imagem.jpg' %}" alt="Imagem de destaque">
     </div>
 </body>
 </html>
