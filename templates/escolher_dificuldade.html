@@ -19,6 +19,7 @@
             min-height: 100vh;
             overflow: hidden; 
             position: relative;
+            padding-top: 80px;
         }
 
         .light {
@@ -40,54 +41,44 @@
         }
 
         .navbar {
-            width: 100%;
-            height: 60px;
-            background-color: #ffffff;
-            backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #2a3b58;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 10;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
 
         .navbar h2 {
             font-family: 'Cinzel Decorative', serif;
-            font-size: 1.8em;
-            color: #2a3b58;
-            letter-spacing: 2px;
-            text-shadow: 0 0 8px rgba(0,0,0,0.1);
-            margin: 0;
-        }
-
-        .left-controls {
-            position: fixed;
-            top: 12px;
-            left: 20px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            z-index: 20;
-        }
-
-        .left-controls a {
-            padding: 8px 14px;
-            font-size: 1.0em;
+            font-size: 2em;
             color: #ffffff;
-            background: linear-gradient(135deg, #4a6fa5, #283c63);
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.25s ease;
-            box-shadow: 0 0 8px rgba(70,90,130,0.4);
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.2);
+            margin: 0;
+            text-align: center;
         }
 
-        .left-controls a:hover {
-            background: linear-gradient(135deg, #5a83c1, #324b7a);
-            transform: translateY(-2px);
+        .nav-home {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1em;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-home:hover {
+            color: #aebac9;
         }
 
         .user-actions {
@@ -99,15 +90,32 @@
             z-index: 20;
         }
 
+        .user-actions a {
+            padding: 8px 14px;
+            font-size: 1em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #4a6fa5, #283c63);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.25s ease;
+            box-shadow: 0 0 8px rgba(70,90,130,0.4);
+        }
+
+        .user-actions a:hover {
+            background: linear-gradient(135deg, #5a83c1, #324b7a);
+            transform: translateY(-2px);
+        }
+
         .main-content {
-            padding-top: 120px;
+            padding-top: 50px; 
             text-align: center;
             z-index: 2;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; 
+            justify-content: flex-start;
             width: 100%;
         }
 
@@ -116,18 +124,22 @@
             font-size: 2.8em;
             color: #2a3b58;
             text-shadow: 0 0 10px rgba(42,59,88,0.3);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px; 
         }
-        
+
         .form-card {
             background-color: #ffffff; 
-            padding: 40px 50px; 
+            padding: 35px 50px; 
             border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            text-align: left; 
+            text-align: center;
             width: 350px; 
             z-index: 2;
             border: 1px solid #e0e0e0;
+            margin-top: 5px; 
         }
 
         label {
@@ -136,6 +148,7 @@
             font-weight: 500;
             color: #4a6fa5;
             font-size: 1.1em;
+            text-align: center;
         }
 
         .custom-select {
@@ -152,6 +165,7 @@
             -moz-appearance: none;
             appearance: none;
             cursor: pointer;
+            text-align: center;
             
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234a6fa5'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -168,7 +182,7 @@
         .btn-submit {
             display: block;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 25px; 
             padding: 14px 26px;
             font-size: 1.05em;
             color: #ffffff;
@@ -209,11 +223,14 @@
             color: #555;
             font-size: 0.9em;
             z-index: 2;
+            text-align: center;
+            width: 100%;
         }
 
         @media (max-width: 600px) {
             h1 { font-size: 2em; }
-            .form-card { width: 90%; padding: 30px 20px; }
+            .form-card { width: 90%; padding: 25px 20px; }
+            .main-content { padding-top: 40px; }
         }
     </style>
 </head>
@@ -223,11 +240,7 @@
 
     <div class="navbar">
         <h2>Ecos do Fim</h2>
-    </div>
-
-    <div class="left-controls">
-        <a href="{% url 'index' %}" title="Início">Home</a>
-        <a href="{% url 'testar_dificuldade' %}" title="Testar Som">🔊</a>
+        <a href="{% url 'index' %}" class="nav-home" title="Início">Home</a>
     </div>
 
     <div class="user-actions">
@@ -240,7 +253,6 @@
             <form method="post">
                 {% csrf_token %}
                 <label for="dificuldade">Selecione o Nível de Dificuldade:</label>
-                
                 <select name="dificuldade" id="dificuldade" class="custom-select" required>
                     <option value="" disabled selected>Escolha um Nível...</option>
                     <option value="1">Fácil</option>
@@ -248,13 +260,13 @@
                     <option value="3">Difícil</option>
                     <option value="4">Muito Difícil</option>
                 </select>
-
-                <button type="submit" class="btn-submit">Confirmar Dificuldade</button>
+                <button type="submit" class="btn-submit">Iniciar Jogo</button>
             </form>
         </div>
-    
+    </div>
+
     <footer>
-        © 2025 Ecos do Fim — Todos os direitos reservados.
+        &copy; 2024 Ecos do Fim. Todos os direitos reservados.
     </footer>
 </body>
 </html>
