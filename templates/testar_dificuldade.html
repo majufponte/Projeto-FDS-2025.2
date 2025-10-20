@@ -3,65 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Teste de Áudio</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #d9d9d9;
-            font-family: 'Inter', sans-serif;
-        }
-        .container {
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 2rem;
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-        }
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        p {
-            font-size: 1rem;
-            margin: 0.5rem 0;
-        }
-        strong {
-            font-weight: 700;
-        }
-        #status {
-            font-weight: 600;
-            color: #333;
-            margin-top: 1rem;
-        }
-        button {
-            background-color: #222;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            transition: 0.2s;
-        }
-        button:hover {
-            background-color: #444;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Teste de Áudio</h1>
-        <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
-        <p>Status: <span id="status">Aguardando som...</span></p>
-        <button onclick="window.location.href='/'">Voltar ao Menu</button>
-    </div>
+    <h1>Teste de Áudio</h1>
+    <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+    <p>Status: <span id="status">Aguardando som...</span></p>
 
     <script>
         const limiar = parseFloat(document.getElementById("limiar").innerText);
@@ -100,7 +46,7 @@
                     analyser.getByteTimeDomainData(dataArray);
                     let sum = 0;
                     for (let i = 0; i < dataArray.length; i++) {
-                        let sample = (dataArray[i] - 128) / 128; 
+                        let sample = (dataArray[i] - 128) / 128;
                         sum += sample * sample;
                     }
                     let rms = Math.sqrt(sum / dataArray.length);
