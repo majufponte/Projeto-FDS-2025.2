@@ -2,49 +2,218 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Página Inicial - EcosDoFim</title>
+    <title>Ecos do Fim - Início</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            background-color: #f4f4f4;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
-        h1 {
-            color: #333;
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0,123,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
         }
-        .container {
-            margin-top: 30px;
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(255,100,100,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
         }
-        .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 15px 25px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #0078d7;
-            border: none;
+
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: #ffffff;
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #2a3b58;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        .sound-control {
+            position: fixed;
+            top: 12px;
+            left: 20px;
+            z-index: 20;
+        }
+
+        .sound-control a {
+            padding: 8px 14px;
+            font-size: 1.1em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #4a6fa5, #283c63);
             border-radius: 6px;
             text-decoration: none;
-            cursor: pointer;
-            transition: 0.3s;
+            font-weight: 500;
+            transition: 0.25s ease;
+            box-shadow: 0 0 8px rgba(70,90,130,0.4);
         }
+
+        .sound-control a:hover {
+            background: linear-gradient(135deg, #5a83c1, #324b7a);
+            transform: translateY(-2px);
+        }
+
+        .user-actions {
+            position: fixed;
+            top: 12px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .user-actions a {
+            padding: 8px 16px;
+            font-size: 0.9em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #4a6fa5, #283c63);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.25s ease;
+            box-shadow: 0 0 8px rgba(70,90,130,0.4);
+        }
+
+        .user-actions a:hover {
+            background: linear-gradient(135deg, #5a83c1, #324b7a);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            padding-top: 120px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.8em;
+            color: #2a3b58;
+            text-shadow: 0 0 10px rgba(42,59,88,0.3);
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 700px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 26px;
+            font-size: 1.05em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #4a6fa5, #283c63);
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(70,90,130,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75px;
+            width: 50px;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before { left: 130%; }
         .btn:hover {
-            background-color: #005a9e;
+            background: linear-gradient(135deg, #5a83c1, #324b7a);
+            box-shadow: 0 0 15px rgba(70,90,130,0.6);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
-    <h1>Ecos DoFim</h1>
-    <p>Escolha uma das opções abaixo:</p>
+    <div class="light"></div>
+    <div class="light"></div>
 
-    <div class="container">
-        <a class="btn" href="{% url 'escolher_dificuldade' %}">Escolher Dificuldade</a>
-        <a class="btn" href="{% url 'testar_dificuldade' %}">Testar Dificuldade (Áudio)</a>
-        <a class="btn" href="{% url 'mapa' %}">Mapa</a>
-        <a class="btn" href="{% url 'login_user' %}">Login</a>
-        <a class="btn" href="{% url 'logout_user' %}">Logout</a>
-        <a class="btn" href="{% url 'register_user' %}">Registrar Usuário</a>
+    <div class="navbar">
+        <h2>Ecos do Fim</h2>
     </div>
+
+    <div class="sound-control">
+        <a href="{% url 'testar_dificuldade' %}">🔊</a>
+    </div>
+
+    <div class="user-actions">
+        <a href="{% url 'login_user' %}">Login</a>
+        <a href="{% url 'logout_user' %}">Logout</a>
+        <a href="{% url 'register_user' %}">Registrar</a>
+    </div>
+
+    <div class="main-content">
+        <h1>Bem-vindo(a) ao Ecos do Fim</h1>
+        <p>Escolha uma das opções abaixo e prepare-se para o desafio.</p>
+
+        <div class="container">
+            <a class="btn" href="{% url 'escolher_dificuldade' %}">Escolher Dificuldade</a>
+            <a class="btn" href="{% url 'mapa' %}">Mapa</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Ecos do Fim — Todos os direitos reservados.
+    </footer>
 </body>
 </html>
