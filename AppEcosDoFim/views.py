@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponseRedirect
-from .models import DetecaoAudio,locais_explorado
+from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def login_user(request):
@@ -102,7 +103,15 @@ def mapa(request):
 
 def home(request):
     return render(request,"inicial.html")
+'''
+@login_required
+def criar_personagem(request):
+    if request.method== "POST":
+        usuario=request.user
+    
 
+
+'''
 
 
 
