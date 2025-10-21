@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Item - JCPE</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/logo_jcpe.png' %}">
+    <style>
+        body { font-family: Arial, Helvetica, sans-serif; background:#f7f7f7; color:#222; }
+        .container { max-width:700px; margin:40px auto; padding:24px; background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+        h1 { margin-top:0; font-size:1.6rem; }
+        label { display:block; margin:12px 0 6px; font-weight:600; }
+        input[type="text"], textarea, select { width:100%; padding:10px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
+        textarea { min-height:120px; resize:vertical; }
+        .actions { margin-top:16px; display:flex; gap:8px; align-items:center; }
+        .button { display:inline-block; padding:10px 14px; border-radius:6px; text-decoration:none; border:1px solid #ccc; background:#f5f5f5; cursor:pointer; }
+        .button.primary { background:#2d89ef; color:#fff; border-color:#2d89ef; }
+        .note { margin-top:12px; color:#555; font-size:0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'pagina_inicial' %}"><img src="{% static 'img/logo_jcpe.png' %}" alt="Logo" style="height:48px;"></a>
+        <h1>Criar item</h1>
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <label for="nome">Nome do item</label>
+            <input id="nome" name="nome" type="text" maxlength="50" placeholder="Ex.: Espada de Bronze" required>
+
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo" required>
+                <option value="" disabled selected>Selecione o tipo</option>
+                <option value="1">Arma (1)</option>
+                <option value="2">Armadura (2)</option>
+                <option value="3">Poção (3)</option>
+                <option value="4">Consumível (4)</option>
+                <option value="5">Outro (5)</option>
+            </select>
+
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao" placeholder="Descreva o item..." required></textarea>
+
+            <div class="actions">
+                <button type="submit" class="button primary">Criar item</button>
+                <a href="{% url 'pagina_inicial' %}" class="button">Cancelar</a>
+            </div>
+
+            <p class="note">Os campos acima serão enviados ao servidor para criar um novo item.</p>
+        </form>
+
+        {% if messages %}
+            <div style="margin-top:16px;">
+                {% for message in messages %}
+                    <div style="padding:10px;border-radius:6px;background:#eef;margin-bottom:8px;">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

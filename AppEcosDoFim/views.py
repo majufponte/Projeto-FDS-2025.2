@@ -112,6 +112,14 @@ def criar_personagem(request):
         Jogador.objects.get_or_create(usuario=usuario,nome=nome)
     return render(request,"criar_personagem.html")
     
+def criar_itens(request):
+    if request.method== "POST":
+        nome=request.POST.get("nome")
+        tipo=request.POST.get("tipo")
+        descricao=request.POST.get("descricao")
+        Itens.objects.get_or_create(nome=nome,tipo=tipo,descricao=descricao)
+    return render(request,"criar_itens.html")
+    
 
 
 
