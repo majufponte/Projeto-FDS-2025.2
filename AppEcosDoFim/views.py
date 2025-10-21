@@ -103,15 +103,16 @@ def mapa(request):
 
 def home(request):
     return render(request,"inicial.html")
-'''
+
 @login_required
 def criar_personagem(request):
     if request.method== "POST":
         usuario=request.user
+        nome=request.POST.get("nome")
+        Jogador.objects.get_or_create(usuario=usuario,nome=nome)
+    return render(request,"criar_personagem.html")
     
 
-
-'''
 
 
 
