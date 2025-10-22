@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import random
 
 # Create your views here.
 def login_user(request):
@@ -135,6 +136,24 @@ def escolher_personagem(request):
         return redirect("testar_dificuldade")
     return render(request, "escolher_personagem.html", {"personagens": bonecos})
 
+def pegar_item(request):
+    id_personagem = request.session.get('id_personagem')
+    if not id_personagem:
+        return redirect("escolher_personagem")
+    jogador=get_object_or_404(Jogador,id=id_personagem,usuario=request.user)
+    itens=list(Itens.objects.all())
+    item_ganho=random.choice(itens)
+    Inventario.objects.create(jogador=jogador, item=item_ganho)
+
+    return render(request,"sala.html",{"item":item_ganho})
+
+
+def ver_inventario(request):
+    id_personagem=request.session.get('id_personagem')
+    jogador =get_object_or_404(Jogador,id=id_personagem,usuario=request.user)
+    inventario= Inventario.objects.filter(jogador=jogador)
+
+    return render(request, "inventario.html", {"jogador": jogador, "inventario": inventario})
 
 
 """def detector_audio(limiar):

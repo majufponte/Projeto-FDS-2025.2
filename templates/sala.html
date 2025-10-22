@@ -1,0 +1,9 @@
+<h2>{{ mensagem }}</h2>
+
+{% if item %}
+  <p><strong>Nome:</strong> {{ item.nome }}</p>
+  <p><strong>Tipo:</strong> {{ item.tipo }}</p>
+  <p><strong>Descrição:</strong> {{ item.descricao }}</p>
+{% endif %}
+
+<a href="{% url 'pagina_inicial' %}">Voltar</a>
