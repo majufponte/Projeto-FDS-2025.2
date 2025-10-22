@@ -82,6 +82,29 @@
             background: linear-gradient(135deg, #c1a383, #7a6a52);
             transform: translateY(-2px);
         }
+        .mapa-btn {
+            position: fixed;
+            top: 12px;
+            left: 20px;
+            z-index: 20;
+            padding: 8px 16px;
+            font-size: 0.95em;
+            color: #fff;
+            background: linear-gradient(135deg, #8b5e3c, #735028);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Cinzel Decorative', serif;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 8px rgba(130,110,90,0.4);
+            transition: 0.25s ease;
+        }
+        
+        .mapa-btn:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
+        }
+        
 
         .main-content {
             padding-top: 120px;
@@ -130,6 +153,7 @@
             text-align: center;
             z-index: 2;
         }
+        
     </style>
 </head>
 <body>
@@ -140,7 +164,9 @@
         <h2>Ecos do Fim</h2>
     </div>
 
-    <a href="inventario.html" class="inventario-btn">Inventário</a>
+    <a href="{% url 'sala' %}" class="nav-btn mapa-btn">Avançar</a>
+    <a href="{% url 'inventario' %}" class="nav-btn inventario-btn">Inventário</a>
+
 
     <div class="main-content">
         <div class="audio-card">

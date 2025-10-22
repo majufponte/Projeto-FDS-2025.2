@@ -83,6 +83,7 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
         )
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
+@login_required(login_url='login_user')
 def mapa(request):
     if request.user.is_authenticated:
         usuario = request.user
@@ -97,7 +98,7 @@ def mapa(request):
             usuario=usuario,
             id_do_local=id_do_local
             )
-        return HttpResponseRedirect(request.path_info)
+        return redirect("testar_dificuldade")
         
 
     return render(request, "mapa.html", {"explorados": explorados})
@@ -120,7 +121,8 @@ def criar_itens(request):
         descricao=request.POST.get("descricao")
         Itens.objects.get_or_create(nome=nome,tipo=tipo,descricao=descricao)
     return render(request,"criar_itens.html")
-    
+
+@login_required(login_url='login_user')
 def escolher_personagem(request):
     usuario=request.user
     #bonecos é equivalente a personagens, coloquei assim para ficar mais legivel
@@ -145,7 +147,7 @@ def pegar_item(request):
     item_ganho=random.choice(itens)
     Inventario.objects.create(jogador=jogador, item=item_ganho)
 
-    return redirect('testar_dificuldade')
+    return redirect('mapa')
 
 
 def ver_inventario(request):
