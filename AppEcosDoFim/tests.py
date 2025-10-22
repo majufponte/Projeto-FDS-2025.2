@@ -5,15 +5,17 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from .models import DetecaoAudio, locais_explorado, Jogador, Itens
 
+
+
 @pytest.fixture 
-def create_user(db):
+def test_user(db):
     user = User.objects.create_user(
         username='testuser',
         password='testpassword' 
     )
     return user
 
-@pytest.mark_django_db
+@pytest.mark.django_db
 def test_user_success(client):
     url= reverse('register')
     response = client.post(url, {
@@ -31,12 +33,12 @@ def test_register_user_fails_if_exist(client, test_user):
     user_count_before = User.objects.count()
     response=client.post(url,{
         "username": "testuser",
-        "password1": "anotherpassword"
+        "password": "anotherpassword"
     })
 
     assert User.objects.count() == user_count_before
     assert response.status_code == 200
-    assert response.template_name == 'registration/register.html'
+    assert b"Criar Conta" in response.content
 
 @pytest.mark.django_db
 def test_login_user_success(client, test_user):
@@ -48,7 +50,7 @@ def test_login_user_success(client, test_user):
 
     assert response.status_code == 302 
     assert response.url == '/'
-    assert  '_aut_user_id' in client.session
+    assert  '_auth_user_id' in client.session
     assert client.session['_auth_user_id'] == str(test_user.id)
 
 @pytest.mark.django_db
@@ -62,12 +64,12 @@ def test_login_fail_wrong_password(client, test_user):
     assert 'auth_user_id' not in client.session
     assert response.redirect_chain[0][0] == '/login'
     assert response.redirect_chain[0][1] == 302
-    assert b"Usuario ou senha incorretos." in response.content
+    assert b"Usuario ou senha invalido" in response.content
 
 @pytest.mark.django_db
 def test_logout(client, test_user):
     client.login(username='testuser', password='testpassword')
-    assert 'auth_user_id' in client.session
+    assert '_auth_user_id' in client.session
     url= reverse('logout')
     response = client.get(url)
 
@@ -75,7 +77,7 @@ def test_logout(client, test_user):
     assert response.status_code == 302
     assert response.url == '/'
 
-
+@pytest.mark.django_db
 def test_escolher_dificuldade_sets_session(client):
     url = reverse('escolher_dificuldade')
     client.post(url, {'dificuldade': '3'})
@@ -98,12 +100,12 @@ def test_testar_dificuldade_get_view(client):
 def test_testar_dificuldade_post_authenticated(client, test_user):
     client.login(username='testuser', password='testpassword')
     url=reverse ('testar_dificuldade')
-    client.post(url, {"audio detectado": "1"})
+    client.post(url, {"audio_detectado": "1"})
     
     assert DetecaoAudio.objects.count() == 1
     detecao = DetecaoAudio.objects.first()
     assert detecao.usuario == test_user
-    assert detecao.audio_detectado is True
+    assert detecao.detectado is True
 
 @pytest.mark.django_db
 def test_testar_dificuldade_post_anonymous(client):
@@ -171,14 +173,14 @@ def test_criar_itens_post_creates_item(client):
     assert Itens.objects.count() == 0
     client.post(url, {
         "nome": "Espada",
-        "tipo": "Arma",
+        "tipo": "1",
         "descricao": "Uma espada afiada."
     })
 
     assert Itens.objects.count() == 1
     item = Itens.objects.first()
     assert item.nome == "Espada"
-    assert item.tipo == "Arma"
+    assert item.tipo == 1
     assert item.descricao == "Uma espada afiada."
 
 
