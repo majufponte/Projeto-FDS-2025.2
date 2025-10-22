@@ -1,201 +1,273 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Escolher Dificuldade</title>
+    <title>Ecos do Fim - Escolher Dificuldade</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif;
-            background-color: #f0f2f5; 
-            color: #333333; 
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow: hidden; 
             position: relative;
+            padding-top: 80px;
+        }
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(165,123,100,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(165,140,120,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
         }
 
         .navbar {
-            width: 100%;
-            height: 60px;
-            background-color: #ffffff; 
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 0 30px; 
             position: fixed;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #58432a;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 10;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
         }
 
         .navbar h2 {
-            font-size: 1.2em; 
-            color: #333333;
-            text-transform: none; 
-            letter-spacing: normal;
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2em;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.2);
             margin: 0;
-            font-weight: 500; 
+            text-align: center;
         }
-        
-        .navbar .home-link {
-            font-size: 1em;
-            color: #666666;
+
+        .nav-home {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1em;
+            color: #ffffff;
             text-decoration: none;
-            margin-right: 20px;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background-color 0.2s ease;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
         }
-        .navbar .home-link:hover {
-            background-color: #e0e0e0;
+
+        .nav-home:hover {
+            color: #c9b8ae;
+        }
+
+        .user-actions {
+            position: fixed;
+            top: 12px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .user-actions a {
+            padding: 8px 14px;
+            font-size: 1em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #a58a6f, #635028);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.25s ease;
+            box-shadow: 0 0 8px rgba(130,110,90,0.4);
+        }
+
+        .user-actions a:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
         }
 
         .main-content {
-            padding-top: 100px;
-            padding-bottom: 50px;
+            padding-top: 50px; 
+            text-align: center;
+            z-index: 2;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; 
+            justify-content: flex-start;
             width: 100%;
-            flex-grow: 1; 
-        }
-
-        .light, .particle {
-            display: none; 
         }
 
         h1 {
-            font-size: 2em; 
-            color: #333333;
-            text-shadow: none;
-            text-transform: none; 
-            letter-spacing: normal;
-            margin-bottom: 30px;
-            z-index: 2;
-            font-weight: 500; 
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.8em;
+            color: #58432a;
+            text-shadow: 0 0 10px rgba(88,67,42,0.3);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px; 
         }
 
-        form {
+        .form-card {
             background-color: #ffffff; 
-            padding: 30px 40px; 
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: left; 
-            width: 300px; 
+            padding: 35px 50px; 
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 350px; 
             z-index: 2;
             border: 1px solid #e0e0e0;
-            position: relative;
-        }
-
-        form::before {
-            display: none; 
+            margin-top: 5px; 
         }
 
         label {
             display: block;
-            margin-bottom: 8px; 
+            margin-bottom: 12px; 
             font-weight: 500;
-            text-transform: none;
-            color: #666666; 
-            font-size: 0.95em;
+            color: #a58a6f;
+            font-size: 1.1em;
+            text-align: center;
         }
 
-        select {
+        .custom-select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #cccccc; 
-            border-radius: 5px; 
-            background-color: #ffffff;
-            color: #333333;
-            font-size: 1em;
+            padding: 12px 15px;
+            border: 2px solid #c9b8ae; 
+            border-radius: 8px; 
+            background-color: #fcf9f7;
+            color: #58432a;
+            font-size: 1.0em;
             outline: none;
             transition: all 0.2s ease;
             -webkit-appearance: none; 
             -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23666666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); /* Ícone de seta */
+            cursor: pointer;
+            text-align: center;
+            
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a58a6f'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 10px center;
+            background-position: right 15px center;
             background-size: 16px;
         }
 
-        select:hover, select:focus {
-            background-color: #f9f9f9;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); 
-            border-color: #888888;
-        }
-
-        button {
-            margin-top: 25px;
-            padding: 10px 25px; 
-            background-color: #007bff; 
-            border: none;
-            border-radius: 5px;
-            color: #ffffff;
-            font-weight: 500;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background-color 0.2s ease, box-shadow 0.2s ease;
-            text-transform: none; 
-        }
-
-        button:hover {
-            background-color: #0056b3;
-            transform: none; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        p {
-            margin-top: 25px;
+        .custom-select:hover, .custom-select:focus {
             background-color: #ffffff;
-            padding: 12px 20px;
+            border-color: #635028;
+            box-shadow: 0 0 10px rgba(165,138,111,0.3);
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            margin-top: 25px; 
+            padding: 14px 26px;
+            font-size: 1.05em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #a58a6f, #635028);
+            border: none;
             border-radius: 8px;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(130,110,90,0.4);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .btn-submit::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75px;
+            width: 50px;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .btn-submit:hover::before { left: 130%; }
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            box-shadow: 0 0 15px rgba(130,110,90,0.6);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
             z-index: 2;
-            color: #666666; 
-            font-size: 0.95em;
+            text-align: center;
+            width: 100%;
         }
 
-        strong {
-            color: #333333;
-            font-weight: 700;
+        @media (max-width: 600px) {
+            h1 { font-size: 2em; }
+            .form-card { width: 90%; padding: 25px 20px; }
+            .main-content { padding-top: 40px; }
         }
-
     </style>
 </head>
-
 <body>
+    <div class="light"></div>
+    <div class="light"></div>
+
     <div class="navbar">
-        <a href="/" class="home-link">Home</a> <h2>Ecos do Fim</h2>
+        <h2>Ecos do Fim</h2>
+        <a href="{% url 'pagina_inicial' %}" class="nav-home" title="Início">Home</a>
+    </div>
+
+    <div class="user-actions">
     </div>
 
     <div class="main-content">
         <h1>Configuração da Dificuldade</h1>
 
-        <form method="post">
-            <label for="dificuldade">Nível de Dificuldade:</label>
-            <select name="dificuldade" id="dificuldade" required>
-                <option value="" disabled selected>Níveis</option>
-                <option value="{{ nivel }}">Fácil</option>
-                <option value="{{ nivel }}">Médio</option>
-                <option value="{{ nivel }}">Difícil</option>
-            </select>
-            <button type="submit" id="btnConfirmar">Confirmar</button>
-        </form>
-        
-        <p>
-            Último nível salvo:
-            <strong>Ultimo</strong> </p>
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                <label for="dificuldade">Selecione o Nível de Dificuldade:</label>
+                <select name="dificuldade" id="dificuldade" class="custom-select" required>
+                    <option value="" disabled selected>Escolha um Nível...</option>
+                    <option value="1">Fácil</option>
+                    <option value="2">Médio</option>
+                    <option value="3">Difícil</option>
+                    <option value="4">Muito Difícil</option>
+                </select>
+                <button type="submit" class="btn-submit">Iniciar Jogo</button>
+            </form>
+        </div>
     </div>
-    
+
+    <footer>
+        © 2025 Ecos do Fim — Todos os direitos reservados.
+    </footer>
+
 </body>
 </html>

@@ -14,3 +14,23 @@ class locais_explorado(models.Model):
     id_do_local=models.IntegerField()
     def __str__(self):
         return f"{self.usuario} explorou o local: {self.id_do_local}"
+
+class Jogador(models.Model):
+    usuario=models.ForeignKey(User, on_delete=models.CASCADE)
+    nome=models.CharField(max_length=50)
+    def __str__(self):
+        return self.nome
+
+class Itens(models.Model):
+    nome=models.CharField(max_length=50)
+    tipo=models.IntegerField()
+    descricao=models.TextField()
+    def __str__(self):
+        return self.nome
+
+class Inventario(models.Model):
+    jogador=models.ForeignKey(Jogador, on_delete=models.CASCADE)
+    item=models.ForeignKey(Itens, on_delete=models.CASCADE,null=True)
+
+    def __str__(self):
+        return f"{self.jogador.nome} pegou {self.item.nome}"

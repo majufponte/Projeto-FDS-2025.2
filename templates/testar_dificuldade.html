@@ -7,7 +7,6 @@
 <body>
     <h1>Teste de Áudio</h1>
     <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
-
     <p>Status: <span id="status">Aguardando som...</span></p>
 
     <script>
@@ -47,7 +46,7 @@
                     analyser.getByteTimeDomainData(dataArray);
                     let sum = 0;
                     for (let i = 0; i < dataArray.length; i++) {
-                        let sample = (dataArray[i] - 128) / 128; 
+                        let sample = (dataArray[i] - 128) / 128;
                         sum += sample * sample;
                     }
                     let rms = Math.sqrt(sum / dataArray.length);
@@ -90,6 +89,5 @@
 
         iniciarCaptura();
     </script>
-
 </body>
 </html>

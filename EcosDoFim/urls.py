@@ -21,12 +21,20 @@ from AppEcosDoFim import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('EcosDofim/dificuldade', views.escolher_dificuldade, name='escolher_dificuldade'),
-    path('EcosDofim/audio', views.testar_dificuldade, name='testar_dificuldade'),
+    path('EcosDofim/pimpolho', views.testar_dificuldade, name='testar_dificuldade'),
     path("audio-detectado/", views.testar_dificuldade, name="audio_detectado"),
     path("mapa/", views.mapa,name='mapa'),
-    path("",views.home),
+    path("",views.home,name="pagina_inicial"),
     path('login/', views.login_user, name='login_user'),
     path('login/submit/', views.submit_login, name='submit_login'),
     path('logout/', views.logout_user, name='logout_user'),
-    path('register/',views.register_user,name='register_user')
+    path('register/',views.register_user,name='register_user'),
+    path('criar_personagem/',views.criar_personagem,name='criar_personagem'),
+    path('criar_itens/',views.criar_itens,name='criar_itens'),
+    path('register/', views.register_user, name='register'),
+    path('escolher_personagem/',views.escolher_personagem,name='escolher_personagem'),
+    path('sala/',views.pegar_item,name='sala'),
+    path('inventario/',views.ver_inventario,name='inventario'),
+    
+    
 ]
