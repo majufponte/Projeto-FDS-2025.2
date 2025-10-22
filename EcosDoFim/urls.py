@@ -21,7 +21,7 @@ from AppEcosDoFim import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('EcosDofim/dificuldade', views.escolher_dificuldade, name='escolher_dificuldade'),
-    path('EcosDofim/audio', views.testar_dificuldade, name='testar_dificuldade'),
+    path('EcosDofim/pimpolho', views.testar_dificuldade, name='testar_dificuldade'),
     path("audio-detectado/", views.testar_dificuldade, name="audio_detectado"),
     path("mapa/", views.mapa,name='mapa'),
     path("",views.home,name="pagina_inicial"),

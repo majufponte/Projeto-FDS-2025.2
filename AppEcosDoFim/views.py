@@ -105,7 +105,7 @@ def mapa(request):
 def home(request):
     return render(request,"inicial.html")
 
-@login_required
+@login_required(login_url='login_user')
 def criar_personagem(request):
     if request.method== "POST":
         usuario=request.user
@@ -145,7 +145,7 @@ def pegar_item(request):
     item_ganho=random.choice(itens)
     Inventario.objects.create(jogador=jogador, item=item_ganho)
 
-    return render(request,"sala.html",{"item":item_ganho})
+    return redirect('testar_dificuldade')
 
 
 def ver_inventario(request):

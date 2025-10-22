@@ -26,14 +26,14 @@
   </style>
 </head>
 <body>
-  <form method="POST" style="position:absolute; top:15%; left:30%;">
+  <form method="POST" style="position:absolute; top:12%; left:50%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="1">
     <button type="submit" class="ponto {% if 1 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
   </form>
 
 
-  <form method="POST" style="position:absolute; top:25%; left:60%;">
+  <form method="POST" style="position:absolute; top:20%; left:90%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="2">
     <button type="submit" class="ponto {% if 2 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
@@ -47,7 +47,7 @@
   </form>
 
 
-  <form method="POST" style="position:absolute; top:50%; left:75%;">
+  <form method="POST" style="position:absolute; top:50%; left:87%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="4">
     <button type="submit" class="ponto {% if 4 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
@@ -68,7 +68,7 @@
   </form>
 
 
-  <form method="POST" style="position:absolute; top:80%; left:55%;">
+  <form method="POST" style="position:absolute; top:80%; left:30%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="7">
     <button type="submit" class="ponto {% if 7 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
@@ -82,13 +82,13 @@
   </form>
 
 
-  <form method="POST" style="position:absolute; top:55%; left:10%;">
+  <form method="POST" style="position:absolute; top:30%; left:60%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="9">
     <button type="submit" class="ponto {% if 9 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
   </form>
 
-  <form method="POST" style="position:absolute; top:90%; left:70%;">
+  <form method="POST" style="position:absolute; top:80%; left:87%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="10">
     <button type="submit" class="ponto {% if 10 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
