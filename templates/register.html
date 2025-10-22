@@ -1,6 +1,336 @@
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="username" placeholder="Usuário" required>
-    <input type="password" name="password" placeholder="Senha" required>
-    <button type="submit">Registrar</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecos do Fim - Registrar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #a58a6f;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8a725c;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #a58a6f #f8f9fa;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(165,123,100,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(165,140,120,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #58432a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2em;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.2);
+            margin: 0;
+            text-align: center;
+        }
+
+        .nav-home {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.1em;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-home:hover {
+            color: #c9b8ae;
+        }
+
+        .main-content {
+            padding-top: 50px;
+            text-align: center;
+            z-index: 2;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.8em;
+            color: #58432a;
+            text-shadow: 0 0 10px rgba(88,67,42,0.3);
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .form-card {
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 400px;
+            z-index: 2;
+            border: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #a58a6f;
+            font-size: 1.1em;
+            text-align: left;
+            margin-bottom: -10px;
+        }
+
+        input[type="email"], input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #c9b8ae;
+            border-radius: 8px;
+            background-color: #fcf9f7;
+            color: #58432a;
+            font-size: 1.0em;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="email"]:focus, input[type="text"]:focus, input[type="password"]:focus {
+            background-color: #ffffff;
+            border-color: #635028;
+            box-shadow: 0 0 10px rgba(165,138,111,0.3);
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 14px 26px;
+            font-size: 1.05em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #a58a6f, #635028);
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(130,110,90,0.4);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn-submit::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75px;
+            width: 50px;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .btn-submit:hover::before { left: 130%; }
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            box-shadow: 0 0 15px rgba(130,110,90,0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 12px 26px;
+            font-size: 1em;
+            color: #58432a;
+            background: transparent;
+            border: 2px solid #a58a6f;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .btn-secondary:hover {
+            background: #a58a6f;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .link-text {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            color: #58432a;
+            text-align: center;
+        }
+
+        hr {
+            margin-top: 2rem;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+
+        .message-error {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            font-weight: 500;
+            text-align: center;
+            z-index: 3;
+            width: 400px;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 600px) {
+            .form-card { width: 90%; padding: 30px 20px; }
+            .message-error { width: 90%; }
+            h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="light"></div>
+    <div class="light"></div>
+
+    <div class="navbar">
+        <a href="{% url 'pagina_inicial' %}" class="nav-home">Home</a>
+        <h2>Ecos do Fim</h2>
+    </div>
+
+    <div class="main-content">
+        <h1>Criar Conta</h1>
+
+        <div class="form-card">
+            <form method="post" action="{% url 'register_user' %}">
+                {% csrf_token %}
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Digite seu email" required>
+                
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Digite seu username" required>
+                
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                
+                <label for="confirm_password">Confirme sua senha</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Digite sua senha novamente" required>
+                
+                <div class="buttons">
+                    <button type="submit" class="btn-submit">Finalizar</button>
+                    <p class="link-text">Já tem uma conta?</p>
+                    <a href="{% url 'login_user' %}" class="btn-secondary">Fazer Login</a>
+                </div>
+            </form>
+        </div>
+
+        {% for message in messages %}
+            <div class="message-error">
+                <strong>Erro: </strong> {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <footer>
+        © 2025 Ecos do Fim — Todos os direitos reservados.
+    </footer>
+</body>
+</html>

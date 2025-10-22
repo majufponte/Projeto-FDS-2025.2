@@ -1,9 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponseRedirect
-from .models import DetecaoAudio,locais_explorado
+from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+import random
 
 # Create your views here.
 def login_user(request):
@@ -81,6 +83,7 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
         )
     return render(request, "testar_dificuldade.html", {"limiar": limiar})
 
+@login_required(login_url='login_user')
 def mapa(request):
     if request.user.is_authenticated:
         usuario = request.user
@@ -95,7 +98,7 @@ def mapa(request):
             usuario=usuario,
             id_do_local=id_do_local
             )
-        return HttpResponseRedirect(request.path_info)
+        return redirect("testar_dificuldade")
         
 
     return render(request, "mapa.html", {"explorados": explorados})
@@ -103,8 +106,56 @@ def mapa(request):
 def home(request):
     return render(request,"inicial.html")
 
+@login_required(login_url='login_user')
+def criar_personagem(request):
+    if request.method== "POST":
+        usuario=request.user
+        nome=request.POST.get("nome")
+        Jogador.objects.get_or_create(usuario=usuario,nome=nome)
+    return render(request,"criar_personagem.html")
+    
+def criar_itens(request):
+    if request.method== "POST":
+        nome=request.POST.get("nome")
+        tipo=request.POST.get("tipo")
+        descricao=request.POST.get("descricao")
+        Itens.objects.get_or_create(nome=nome,tipo=tipo,descricao=descricao)
+    return render(request,"criar_itens.html")
+
+@login_required(login_url='login_user')
+def escolher_personagem(request):
+    usuario=request.user
+    #bonecos é equivalente a personagens, coloquei assim para ficar mais legivel
+    bonecos=Jogador.objects.filter(usuario=usuario)
+    if not bonecos.exists():
+        return redirect("criar_personagem")
+
+    if request.method=="POST":
+        id_personagem=request.POST.get("id_personagem")
+        personagem=get_object_or_404(Jogador,id=id_personagem,usuario=usuario)
+        request.session['id_personagem']=personagem.id
+
+        return redirect("testar_dificuldade")
+    return render(request, "escolher_personagem.html", {"personagens": bonecos})
+
+def pegar_item(request):
+    id_personagem = request.session.get('id_personagem')
+    if not id_personagem:
+        return redirect("escolher_personagem")
+    jogador=get_object_or_404(Jogador,id=id_personagem,usuario=request.user)
+    itens=list(Itens.objects.all())
+    item_ganho=random.choice(itens)
+    Inventario.objects.create(jogador=jogador, item=item_ganho)
+
+    return redirect('mapa')
 
 
+def ver_inventario(request):
+    id_personagem=request.session.get('id_personagem')
+    jogador =get_object_or_404(Jogador,id=id_personagem,usuario=request.user)
+    inventario= Inventario.objects.filter(jogador=jogador)
+
+    return render(request, "inventario.html", {"jogador": jogador, "inventario": inventario})
 
 
 """def detector_audio(limiar):

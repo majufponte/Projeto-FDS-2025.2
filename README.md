@@ -134,11 +134,26 @@ Imagem do Quadro da Segunda Sprint:
 
 Imagem do Backlog do JIRA:
 
-![Baclog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/backlog.jpeg?raw=true)
+![Backlog](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/backlog.jpeg?raw=true)
 
-Deployment das Histórias em produção:
+<p>
+  Segue link para o Deploy:<br>
+  <a href="https://ecos-fim.azurewebsites.net/" target="_blank" style="text-decoration: none; color: inherit;">
+    Ecos Do Fim
+  </a>
+</p>
 
-Screencast:
+<p>
+ <br>Segue o link para o screencast do deploy com três histórias implementadas:
+
+ <br>Ajuste da dificuldade – de acordo com o nível escolhido, a sensibilidade do microfone que capta o áudio se adapta: em níveis mais fáceis, ele é menos sensível; já em   níveis mais difíceis, torna-se mais sensível.
+ <br>Visualização do mapa – o jogador pode acessar o mapa para acompanhar sua progressão.
+ <br>Interação com o mapa – é possível marcar os locais já visitados e visualizar quantos itens foram recuperados em cada um deles.
+
+  <a href="https://youtu.be/R4ITlKYI4bw" target="_blank" style="text-decoration: none; color: inherit;">
+    Screencast no youtube
+  </a>
+</p>
 
 Programação em Par Experimentada - Segue link com o relatório:
 
@@ -147,5 +162,16 @@ Programação em Par Experimentada - Segue link com o relatório:
         <img src="https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=Google-Docs&logoColor=white" alt="Google Docs">
     </a>
 
+   </details>
+
+---
+<details>
+<summary>📝 3ª ENTREGA</summary>
+
+<br>
+
+<p>
+
+</details>
 
 

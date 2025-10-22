@@ -2,13 +2,183 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Teste de Áudio</title>
+    <title>Ecos do Fim - Teste de Áudio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(165,123,100,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(165,140,120,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
+        }
+
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgb(88, 67, 42);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #eaecf0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        .inventario-btn {
+            position: fixed;
+            top: 12px;
+            right: 20px;
+            z-index: 20;
+            padding: 8px 16px;
+            font-size: 0.95em;
+            color: #fff;
+            background: linear-gradient(135deg, #8b5e3c, #735028);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Cinzel Decorative', serif;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 8px rgba(130,110,90,0.4);
+            transition: 0.25s ease;
+        }
+
+        .inventario-btn:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
+        }
+        .mapa-btn {
+            position: fixed;
+            top: 12px;
+            left: 20px;
+            z-index: 20;
+            padding: 8px 16px;
+            font-size: 0.95em;
+            color: #fff;
+            background: linear-gradient(135deg, #8b5e3c, #735028);
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-family: 'Cinzel Decorative', serif;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 8px rgba(130,110,90,0.4);
+            transition: 0.25s ease;
+        }
+        
+        .mapa-btn:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
+        }
+        
+
+        .main-content {
+            padding-top: 120px;
+            padding-left: 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            gap: 30px;
+            z-index: 2;
+        }
+
+        .audio-card {
+            background-color: #ffffff;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            width: 200px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .audio-card h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #58432a;
+            margin-bottom: 20px;
+        }
+
+        #status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin-top: 10px;
+            background-color: #ddd;
+            color: #333;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+            text-align: center;
+            z-index: 2;
+        }
+        
+    </style>
 </head>
 <body>
-    <h1>Teste de Áudio</h1>
-    <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+    <div class="light"></div>
+    <div class="light"></div>
 
-    <p>Status: <span id="status">Aguardando som...</span></p>
+    <div class="navbar">
+        <h2>Ecos do Fim</h2>
+    </div>
+
+    <a href="{% url 'sala' %}" class="nav-btn mapa-btn">Avançar</a>
+    <a href="{% url 'inventario' %}" class="nav-btn inventario-btn">Inventário</a>
+
+
+    <div class="main-content">
+        <div class="audio-card">
+            <h1>Teste de Áudio</h1>
+            <p>Limiar configurado: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+            <p>Status: <span id="status">Aguardando som...</span></p>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Ecos do Fim — Todos os direitos reservados.
+    </footer>
 
     <script>
         const limiar = parseFloat(document.getElementById("limiar").innerText);
@@ -47,7 +217,7 @@
                     analyser.getByteTimeDomainData(dataArray);
                     let sum = 0;
                     for (let i = 0; i < dataArray.length; i++) {
-                        let sample = (dataArray[i] - 128) / 128; 
+                        let sample = (dataArray[i] - 128) / 128;
                         sum += sample * sample;
                     }
                     let rms = Math.sqrt(sum / dataArray.length);
@@ -57,7 +227,6 @@
                         statusEl.innerText = "⚠️ Você foi pego!";
                         statusEl.style.color = "red";
 
-                        // Só envia se já passou 2 segundos desde o último envio
                         const agora = Date.now();
                         if (agora - ultimaDeteccao > 2000) {
                             ultimaDeteccao = agora;
@@ -66,7 +235,7 @@
                                 method: "POST",
                                 headers: {
                                     "Content-Type": "application/json",
-                                    "X-CSRFToken": getCookie("csrftoken") // se CSRF estiver ativado
+                                    "X-CSRFToken": getCookie("csrftoken")
                                 },
                                 body: JSON.stringify({ audio_detectado: true })
                             }).catch(err => console.error("Erro ao enviar:", err));
@@ -90,6 +259,5 @@
 
         iniciarCaptura();
     </script>
-
 </body>
 </html>
