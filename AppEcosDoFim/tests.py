@@ -63,3 +63,53 @@ def test_login_fail_wrong_password(client, test_user):
     assert response.redirect_chain[0][0] == '/login'
     assert response.redirect_chain[0][1] == 302
     assert b"Usuario ou senha incorretos." in response.content
+
+@pytest.mark.django_db
+def test_logout(client, test_user):
+    client.login(username='testuser', password='testpassword')
+    assert 'auth_user_id' in client.session
+    url= reverse('logout')
+    response = client.get(url)
+
+    assert 'auth_user_id' not in client.session
+    assert response.status_code == 302
+    assert response.url == '/'
+
+def test_escolher_dificuldade_sets_session(client):
+    url = reverse('escolher_dificuldade')
+    client.post(url, {'dificuldade': '3'})
+    assert "limiar_dificuldade" in client.session
+    assert client.session["limiar_dificuldade"] == -35
+
+@pytest.mark.django_db
+def test_testar_dificuldade_get_view(client):
+    url = reverse('escolher_dificuldade')
+    session= client.session 
+    session ['limiar_dificuldade'] = -40
+    session.save()
+    url= reverse('testar_dificuldade')                       
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert response.context['limiar'] == -40
+
+@pytest.mark.django_db
+def test_testar_dificuldade_post_authenticated(client, test_user):
+    client.login(username='testuser', password='testpassword')
+    url=reverse ('testar_dificuldade')
+    client.post(url, {"audio detectado": "1"})
+    
+    assert DetecaoAudio.objects.count() == 1
+    detecao = DetecaoAudio.objects.first()
+    assert detecao.usuario == test_user
+    assert detecao.audio_detectado is True
+
+@pytest.mark.django_db
+def test_testar_dificuldade_post_anonymous(client):
+    url=reverse ('testar_dificuldade')
+    client.post(url, {"audio detectado": "0"})
+    
+    assert DetecaoAudio.objects.count() == 1
+    detecao = DetecaoAudio.objects.first()
+    assert detecao.usuario is None
+    assert detecao.detectado is False
