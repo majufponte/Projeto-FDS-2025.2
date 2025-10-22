@@ -144,5 +144,41 @@ def test_mapa_get_loads_explored_locations(client, test_user):
     assert 8 in explorados_list     
     assert 10 not in explorados_list
 
+@pytest.mark.django_db  
+def test_criar_personagem_redirects_unauthenticated(client):
+    url=reverse('criar_personagem')
+    response = client.get(url)
+    
+    assert response.status_code == 302
+    assert 'login' in response.url
+
+@pytest.mark.django_db
+def test_criar_personagem_post_creates_jogador(client, test_user):
+    client.login(username='testuser', password='testpassword')
+    url=reverse('criar_personagem')
+
+    assert Jogador.objects.filter(usuario=test_user).count() == 0
+    client.post(url, {"nome": "PersonagemX"})
+
+    assert Jogador.objects.filter(usuario=test_user).count() == 1
+    jogador = Jogador.objects.get(usuario=test_user)
+    assert jogador.nome == "PersonagemX"
+
+@pytest.mark.django_db
+def test_criar_itens_post_creates_item(client):
+    url=reverse('criar_itens')
+
+    assert Itens.objects.count() == 0
+    client.post(url, {
+        "nome": "Espada",
+        "tipo": "Arma",
+        "descricao": "Uma espada afiada."
+    })
+
+    assert Itens.objects.count() == 1
+    item = Itens.objects.first()
+    assert item.nome == "Espada"
+    assert item.tipo == "Arma"
+    assert item.descricao == "Uma espada afiada."
 
 
