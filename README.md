@@ -162,23 +162,16 @@ Programação em Par Experimentada - Segue link com o relatório:
         <img src="https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=Google-Docs&logoColor=white" alt="Google Docs">
     </a>
 
----
+   </details>
 
+---
 <details>
 <summary>📝 3ª ENTREGA</summary>
 
+<br>
 
-
-
-
-
-  
+<p>
 
 </details>
-
----
-
-
-
 
 
