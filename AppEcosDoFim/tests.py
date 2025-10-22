@@ -75,6 +75,7 @@ def test_logout(client, test_user):
     assert response.status_code == 302
     assert response.url == '/'
 
+
 def test_escolher_dificuldade_sets_session(client):
     url = reverse('escolher_dificuldade')
     client.post(url, {'dificuldade': '3'})
@@ -113,3 +114,35 @@ def test_testar_dificuldade_post_anonymous(client):
     detecao = DetecaoAudio.objects.first()
     assert detecao.usuario is None
     assert detecao.detectado is False
+
+@pytest.mark.django_db
+def test_mapa_post_saves_location(client, test_user):
+    client.login(username='testuser', password='testpassword')
+    url=reverse('mapa')
+    
+    assert locais_explorado.objects.count() == 0
+    client.post( url, {"id_do_local": "10"})
+
+    assert locais_explorado.objects.count() == 1
+    explorado = locais_explorado.objects.first()
+    assert explorado.usuario == test_user
+    assert explorado.id_do_local == 10  
+
+@pytest.mark.django_db
+def test_mapa_get_loads_explored_locations(client, test_user):
+    client.login(username='testuser', password='testpassword')
+    url=reverse('mapa') 
+
+    locais_explorado.objects.create(usuario=test_user, id_do_local=5)
+    locais_explorado.objects.create(usuario=test_user, id_do_local=8)
+    response = client.get(url)
+
+    assert response.status_code == 200
+    assert "explorados" in response.context
+    explorados_list = response.context["explorados"]
+    assert 5 in explorados_list
+    assert 8 in explorados_list     
+    assert 10 not in explorados_list
+
+
+
