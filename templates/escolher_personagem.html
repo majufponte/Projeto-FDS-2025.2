@@ -1,0 +1,10 @@
+<h2>Escolha seu personagem</h2>
+<form method="post">
+    {% csrf_token %}
+    <select name="id_personagem" required>
+        {% for p in personagens %}
+            <option value="{{ p.id }}">{{ p.nome }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Selecionar</button>
+</form>

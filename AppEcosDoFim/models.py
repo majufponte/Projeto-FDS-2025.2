@@ -30,7 +30,7 @@ class Itens(models.Model):
 
 class Inventario(models.Model):
     jogador=models.ForeignKey(Jogador, on_delete=models.CASCADE)
-    item=models.ForeignKey(Itens, on_delete=models.CASCADE)
+    item=models.ForeignKey(Itens, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return f"{self.jogador.nome} pegou {self.item.nome}"

@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario
 from django.contrib.auth import authenticate,login,logout
@@ -120,8 +120,20 @@ def criar_itens(request):
         Itens.objects.get_or_create(nome=nome,tipo=tipo,descricao=descricao)
     return render(request,"criar_itens.html")
     
+def escolher_personagem(request):
+    usuario=request.user
+    #bonecos é equivalente a personagens, coloquei assim para ficar mais legivel
+    bonecos=Jogador.objects.filter(usuario=usuario)
+    if not bonecos.exists():
+        return redirect("criar_personagem")
 
+    if request.method=="POST":
+        id_personagem=request.POST.get("id_personagem")
+        personagem=get_object_or_404(Jogador,id=id_personagem,usuario=usuario)
+        request.session['id_personagem']=personagem.id
 
+        return redirect("testar_dificuldade")
+    return render(request, "escolher_personagem.html", {"personagens": bonecos})
 
 
 
