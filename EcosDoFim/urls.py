@@ -29,7 +29,7 @@ urlpatterns = [
     path('login/submit/', views.submit_login, name='submit_login'),
     path('logout/', views.logout_user, name='logout_user'),
     path('register/',views.register_user,name='register_user'),
-    path('criar_personagem/',views.criar_personagem,name='criacao'),
-    path('criar_itens/',views.criar_itens,name='criacao_item'),
+    path('criar_personagem/',views.criar_personagem,name='criar_personagem'),
+    path('criar_itens/',views.criar_itens,name='criar_itens'),
     
 ]
