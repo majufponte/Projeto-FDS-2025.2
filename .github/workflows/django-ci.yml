@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read 
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -25,9 +25,10 @@ jobs:
         with:
           python-version: '3.12'
 
+      
       - name: Criar ambiente virtual
-        run: python -m venv venv
-             source venv/bin/activate
+        run: python -m venv venv 
+        
       
       - name: Instalar dependências
         run: |
@@ -41,6 +42,7 @@ jobs:
           source venv/bin/activate
           python -m pytest
 
+      
       - name: Limpar arquivos de teste (se os testes passaram)
         run: |
           rm .env
