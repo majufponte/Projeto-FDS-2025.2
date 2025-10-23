@@ -25,13 +25,14 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Criar e iniciar ambiente virtual
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+      - name: Criar ambiente virtual
+        run: python -m venv venv
+             source venv/bin/activate
       
       - name: Instalar dependências
-        run: pip install -r requirements.txt
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt
         
       - name: Rodar testes com pytest
         env:
