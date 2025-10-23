@@ -27,6 +27,7 @@ jobs:
 
       - name: Criar ambiente virtual
         run: python -m venv venv
+             source venv/bin/activate
       
       - name: Instalar dependências
         run: |
