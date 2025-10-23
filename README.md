@@ -213,7 +213,7 @@ Imagem do BugTracker do GitHub:
 
   <br> Segue o link para o screencast do Build e Deployment do GitHub Actions:
 
-  <a href="" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://youtu.be/LXJnQQAltbg" target="_blank" style="text-decoration: none; color: inherit;">
    Build e Deployment
   </a>
 </p>
