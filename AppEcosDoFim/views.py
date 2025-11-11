@@ -85,6 +85,10 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
 
 @login_required(login_url='login_user')
 def mapa(request):
+    id_partida = request.session.get('id_partida')
+    if not id_partida:
+        return redirect("criar_partida")
+    partida=get_object_or_404(Partida, id=id_partida)
     if request.user.is_authenticated:
         usuario = request.user
     else:
@@ -96,6 +100,7 @@ def mapa(request):
         id_do_local=int(request.POST.get("id_do_local"))
         locais_explorado.objects.create(
             usuario=usuario,
+            partida=partida,
             id_do_local=id_do_local
             )
         return redirect("testar_dificuldade")
