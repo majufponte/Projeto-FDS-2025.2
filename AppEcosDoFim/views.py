@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponseRedirect
-from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario
+from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario,Partida
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -108,10 +108,15 @@ def home(request):
 
 @login_required(login_url='login_user')
 def criar_personagem(request):
+    id_partida = request.session.get('id_partida')
+    if not id_partida:
+        return redirect('escolher_partida')
+
+    partida = get_object_or_404(Partida, id=id_partida)
     if request.method== "POST":
         usuario=request.user
         nome=request.POST.get("nome")
-        Jogador.objects.get_or_create(usuario=usuario,nome=nome)
+        Jogador.objects.get_or_create(usuario=usuario,partida=partida,nome=nome)
     return render(request,"criar_personagem.html")
     
 def criar_itens(request):
@@ -140,15 +145,27 @@ def escolher_personagem(request):
 
 def pegar_item(request):
     id_personagem = request.session.get('id_personagem')
+    id_partida = request.session.get('id_partida')
+    if not id_partida:
+        return redirect("criar_partida")
     if not id_personagem:
         return redirect("escolher_personagem")
-    jogador=get_object_or_404(Jogador,id=id_personagem,usuario=request.user)
+    jogador=get_object_or_404(Jogador,id=id_personagem, partida=id_partida,usuario=request.user)
+    partida=get_object_or_404(Partida, id=id_partida)
     itens=list(Itens.objects.all())
     item_ganho=random.choice(itens)
-    Inventario.objects.create(jogador=jogador, item=item_ganho)
+    Inventario.objects.create(jogador=jogador,partida=partida, item=item_ganho)
 
     return redirect('mapa')
 
+@login_required(login_url='login_user')
+def criar_partida(request):
+    if request.method == "POST":
+        Nome_partida=request.POST.get("local")
+        partida = Partida.objects.create(nome=Nome_partida)
+        request.session['id_partida'] = partida.id
+        return redirect('escolher_personagem')
+    return render(request,'criar_partida.html')
 
 def ver_inventario(request):
     id_personagem=request.session.get('id_personagem')
@@ -157,6 +174,20 @@ def ver_inventario(request):
 
     return render(request, "inventario.html", {"jogador": jogador, "inventario": inventario})
 
+@login_required(login_url='login_user')
+def escolher_partida(request):
+    usuario=request.user
+    partidas=Partida.objects.all()
+    if not partidas.exists():
+        return redirect("criar_partida")
+
+    if request.method=="POST":
+        id_partida=request.POST.get("id_partida")
+        partida=get_object_or_404(Partida,id=id_partida)
+        request.session['id_partida']=partida.id
+
+        return redirect("escolher_personagem")
+    return render(request, "escolher_partida.html", {"partidas": partidas})
 
 """def detector_audio(limiar):
     print(sd.query_devices())

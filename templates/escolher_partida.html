@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ecos do Fim - Escolher Partida</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(165,123,100,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(165,140,120,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
+        }
+
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgb(88, 67, 42);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #eaecf0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        .main-content {
+            padding-top: 120px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.4em;
+            color: #58432a;
+            text-shadow: 0 0 10px rgba(88,67,42,0.3);
+            margin-bottom: 25px;
+        }
+
+        .partida-card {
+            background: rgba(255,255,255,0.85);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px 25px;
+            width: 280px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        .partida-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            margin-top: 15px;
+            display: inline-block;
+            padding: 10px 22px;
+            font-size: 1em;
+            color: #fff;
+            background: linear-gradient(135deg, #a58a6f, #635028);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="light"></div>
+    <div class="light"></div>
+
+    <div class="navbar">
+        <h2>Ecos do Fim</h2>
+    </div>
+
+    <div class="main-content">
+        <h1>Escolha sua Partida</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="container">
+                {% for partida in partidas %}
+                <div class="partida-card">
+                    <p><strong>{{ partida.nome }}</strong></p>
+                    <button class="btn" type="submit" name="id_partida" value="{{ partida.id }}">Entrar</button>
+                </div>
+                {% endfor %}
+            </div>
+        </form>
+        <div style="margin-top: 40px;">
+            <a class="btn" href="{% url 'criar_partida' %}">Criar Nova Partida</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Ecos do Fim — Todos os direitos reservados.
+    </footer>
+</body>
+</html>

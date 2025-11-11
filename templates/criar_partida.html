@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar Partida - Ecos do Fim</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(165,123,100,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: move 10s infinite alternate ease-in-out;
+            z-index: 0;
+        }
+        .light:nth-child(1) { top: 10%; left: 10%; }
+        .light:nth-child(2) { bottom: 20%; right: 15%; background: radial-gradient(circle, rgba(165,140,120,0.15), transparent 70%); }
+
+        @keyframes move {
+            from { transform: translateY(0px) translateX(0px); }
+            to { transform: translateY(40px) translateX(20px); }
+        }
+
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgb(88, 67, 42);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #eaecf0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px rgba(0,0,0,0.1);
+            margin: 0;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(88, 67, 42, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            z-index: 2;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2em;
+            color: #58432a;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #3a2f1f;
+            font-family: 'Cinzel Decorative', serif;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #a58a6f;
+            border-radius: 8px;
+            outline: none;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #7a6a52;
+            box-shadow: 0 0 5px rgba(165,138,111,0.5);
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1em;
+            color: #ffffff;
+            background: linear-gradient(135deg, #a58a6f, #635028);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Cinzel Decorative', serif;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px rgba(130,110,90,0.4);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #c1a383, #7a6a52);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(130,110,90,0.6);
+        }
+
+        a.voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #635028;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        a.voltar:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 10px;
+            color: #555;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="light"></div>
+    <div class="light"></div>
+
+    <div class="navbar">
+        <h2>Ecos do Fim</h2>
+    </div>
+
+    <div class="form-container">
+        <h1>Criar Nova Partida</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="local">Nome da Partida:</label>
+            <input type="text" id="local" name="local" placeholder="Digite o nome da partida..." required>
+
+            <button type="submit">Criar</button>
+        </form>
+
+        <a class="voltar" href="{% url 'pagina_inicial' %}">← Voltar ao Início</a>
+    </div>
+
+    <footer>© 2025 Ecos do Fim — Todos os direitos reservados.</footer>
+</body>
+</html>

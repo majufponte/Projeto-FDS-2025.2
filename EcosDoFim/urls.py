@@ -32,9 +32,11 @@ urlpatterns = [
     path('criar_personagem/',views.criar_personagem,name='criar_personagem'),
     path('criar_itens/',views.criar_itens,name='criar_itens'),
     path('register/', views.register_user, name='register'),
+    path('escolher_partida/',views.escolher_partida,name='escolher_partida'),
     path('escolher_personagem/',views.escolher_personagem,name='escolher_personagem'),
     path('sala/',views.pegar_item,name='sala'),
     path('inventario/',views.ver_inventario,name='inventario'),
+    path('criar_partida/',views.criar_partida,name='criar_partida'),
     
     
 ]
