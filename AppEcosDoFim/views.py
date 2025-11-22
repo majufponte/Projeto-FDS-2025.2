@@ -88,25 +88,27 @@ def mapa(request):
     id_partida = request.session.get('id_partida')
     if not id_partida:
         return redirect("criar_partida")
-    partida=get_object_or_404(Partida, id=id_partida)
-    if request.user.is_authenticated:
-        usuario = request.user
-    else:
-        usuario=None
-    explorados=list(locais_explorado.objects.filter(
+
+    partida = get_object_or_404(Partida, id=id_partida)
+
+    usuario = request.user if request.user.is_authenticated else None
+
+    explorados = list(locais_explorado.objects.filter(
         usuario=usuario
-        ).values_list("id_do_local",flat=True))
-    if request.method=="POST":
-        id_do_local=int(request.POST.get("id_do_local"))
+    ).values_list("id_do_local", flat=True))
+
+    if request.method == "POST":
+        id_do_local = int(request.POST.get("id_do_local"))
         locais_explorado.objects.create(
             usuario=usuario,
             partida=partida,
             id_do_local=id_do_local
-            )
-        return redirect("testar_dificuldade")
-        
+        )
 
-    return render(request, "mapa.html", {"explorados": explorados})
+        return redirect("jogo_audio")  
+
+    return render(request, 'mapa.html', {"explorados": explorados})
+
 
 def home(request):
     return render(request,"inicial.html")
@@ -193,6 +195,10 @@ def escolher_partida(request):
 
         return redirect("escolher_personagem")
     return render(request, "escolher_partida.html", {"partidas": partidas})
+
+def jogo_audio(request):
+    return render(request, "jogo_audio_personagem.html")
+
 
 """def detector_audio(limiar):
     print(sd.query_devices())

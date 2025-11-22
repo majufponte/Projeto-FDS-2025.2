@@ -37,6 +37,8 @@ urlpatterns = [
     path('sala/',views.pegar_item,name='sala'),
     path('inventario/',views.ver_inventario,name='inventario'),
     path('criar_partida/',views.criar_partida,name='criar_partida'),
+    path("jogo_audio/", views.jogo_audio, name="jogo_audio"),
+
     
     
 ]
