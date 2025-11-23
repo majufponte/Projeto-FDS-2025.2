@@ -137,8 +137,10 @@ def criar_itens(request):
 @login_required(login_url='login_user')
 def escolher_personagem(request):
     usuario=request.user
+    id_partida = request.session.get('id_partida')
     #bonecos é equivalente a personagens, coloquei assim para ficar mais legivel
-    bonecos=Jogador.objects.filter(usuario=usuario)
+    bonecos = Jogador.objects.filter(usuario=usuario, partida_id=id_partida)
+
     if not bonecos.exists():
         return redirect("criar_personagem")
 
