@@ -11,11 +11,11 @@
             margin: 0;
             font-family: 'Roboto', sans-serif;
             background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
-            color: #1a1a1a;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
+        /* NAVBAR */
         .navbar {
             width: 100%;
             height: 60px;
@@ -34,7 +34,6 @@
             font-family: 'Cinzel Decorative', serif;
             font-size: 1.8em;
             color: #eaecf0;
-            letter-spacing: 2px;
             margin: 0;
         }
 
@@ -43,12 +42,12 @@
             position: fixed;
             bottom: 0;
             left: 50%;
-            height: 500px;
-            transform: translate(-50%, 90%);
             width: 100%;
             max-width: 900px;
+            height: 500px;
+            transform: translate(-50%, 90%);
             background: #000000;
-            color: #ffffff;
+            color: white;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
             box-shadow: 0 -4px 14px rgba(0,0,0,0.5);
@@ -69,47 +68,68 @@
             cursor: pointer;
         }
 
-        /* CAIXA MARROM */
+        /* RETÂNGULO MARROM */
         .white-box {
-            width: 80%;
+            width: 60%;
             height: 400px;
             background: rgba(116, 88, 55, 1);
             border-radius: 12px;
-            margin: 10px auto 20px auto;
+            margin: 10px auto 0 auto;
             padding: 20px;
+            position: relative;
             box-shadow: 0 0 10px rgba(8,8,8,0.3);
         }
 
-        /* SLOTS */
+        /* RETÂNGULOS BRANCOS COLADOS NOS LADOS DO MARROM */
+        .side-box-left,
+        .side-box-right {
+            width: 200px;
+            height: 250px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+            position: absolute;
+            top: 0;
+        }
+
+        .side-box-left {
+            left: -220px; /* encosta na lateral esquerda do marrom */
+        }
+
+        .side-box-right {
+            right: -220px; /* encosta na lateral direita do marrom */
+        }
+
+        /* SLOTS – NÃO ALTERADOS */
         .super-cards-container {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: -50px;
+            margin-top: 20px;
         }
 
         .slot {
             width: 120px;
-            height: 120px;
-            background: transparent; /* ← Removemos o fundo fixo */
+            height: 200px;
+            background: transparent;
             border-radius: 12px;
             position: relative;
             cursor: pointer;
         }
 
-        .inner {
+        .slot .inner {
             position: absolute;
             width: 100%;
             height: 100%;
             background: #f5f5f5;
             border-radius: 12px;
-            box-shadow: 0 0 6px rgba(0,0,0,0.4);
             bottom: 0;
-            transition: bottom 0.35s ease;
+            transition: bottom 0.3s ease;
+            box-shadow: 0 0 6px rgba(0,0,0,0.4);
         }
 
         .slot.open .inner {
-            bottom: 120px; /* sobe exatamente seu tamanho */
+            bottom: 120px;
         }
 
         /* ABA LATERAL DIREITA */
@@ -118,7 +138,7 @@
             top: 60px;
             right: 0;
             height: 300px;
-            width: 260px;
+            width: 160px;
             background: #000000;
             color: #ffffff;
             transform: translateX(90%);
@@ -146,13 +166,14 @@
 
         .side-content {
             padding: 20px;
-            font-size: 1.1em;
         }
 
-        .side-content h3 {
-            font-family: 'Cinzel Decorative', serif;
-            color: #d5d5d5;
-            margin-top: 0;
+        .side-box {
+            width: 100%;
+            height: 180px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(255,255,255,0.3);
         }
     </style>
 </head>
@@ -167,33 +188,37 @@
     <!-- ABA LATERAL DIREITA -->
     <div class="side-sheet" id="sideSheet">
         <div class="side-handle" id="sideHandle"></div>
-
         <div class="side-content">
-            <h3>Informações</h3>
-            <p>Coloque dados úteis, descrição de habilidades, notas rápidas etc.</p>
+            <h3>Cartas</h3>
+            <div class="side-box"></div>
         </div>
     </div>
 
-    <!-- ABA INFERIOR RETRÁTIL -->
+    <!-- ABA INFERIOR -->
     <div class="bottom-sheet" id="bottomSheet">
         <div class="sheet-handle" id="sheetHandle"></div>
 
-        <div class="white-box"></div>
+        <!-- MARROM + 2 RETÂNGULOS COLADOS NAS LATERAIS -->
+        <div class="white-box">
 
-        <!-- SLOTS -->
+            <div class="side-box-left"></div>
+
+            <div class="side-box-right"></div>
+
+        </div>
+
+        <!-- SLOTS — MANTIDOS -->
         <div class="super-cards-container">
-
             <div class="slot"><div class="inner"></div></div>
             <div class="slot"><div class="inner"></div></div>
             <div class="slot"><div class="inner"></div></div>
             <div class="slot"><div class="inner"></div></div>
             <div class="slot"><div class="inner"></div></div>
-
         </div>
     </div>
 
-    <!-- JS -->
     <script>
+        /* BOTTOM */
         const bottomSheet = document.getElementById("bottomSheet");
         const bottomHandle = document.getElementById("sheetHandle");
         let bottomOpen = false;
@@ -203,6 +228,7 @@
             bottomSheet.classList.toggle("open", bottomOpen);
         });
 
+        /* LATERAL */
         const sideSheet = document.getElementById("sideSheet");
         const sideHandle = document.getElementById("sideHandle");
         let sideOpen = false;
@@ -212,7 +238,7 @@
             sideSheet.classList.toggle("open", sideOpen);
         });
 
-        /* SLOT ANIMAÇÃO */
+        /* SLOTS */
         document.querySelectorAll(".slot").forEach(slot => {
             slot.addEventListener("click", () => {
                 slot.classList.toggle("open");
