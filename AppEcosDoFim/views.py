@@ -90,12 +90,12 @@ def mapa(request):
         return redirect("criar_partida")
 
     partida = get_object_or_404(Partida, id=id_partida)
-
-    usuario = request.user if request.user.is_authenticated else None
-
+    usuario = request.user
     explorados = list(locais_explorado.objects.filter(
         usuario=usuario
     ).values_list("id_do_local", flat=True))
+    jogador = get_object_or_404(Jogador, usuario=usuario, partida=partida)
+    inventario = Inventario.objects.filter(jogador=jogador)
 
     if request.method == "POST":
         id_do_local = int(request.POST.get("id_do_local"))
@@ -104,10 +104,9 @@ def mapa(request):
             partida=partida,
             id_do_local=id_do_local
         )
-
         return redirect("jogo_audio")  
 
-    return render(request, 'mapa.html', {"explorados": explorados})
+    return render(request, 'mapa.html', {"explorados": explorados,"inventario": inventario,})
 
 
 def home(request):

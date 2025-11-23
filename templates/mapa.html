@@ -1,17 +1,69 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="pt-BR">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Mapa</title>
+
   <style>
-    html, body { height:100%; margin:0; }
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       background: url("{% static 'mapa_gibralta.jpg' %}") center/cover no-repeat;
     }
+
+    /* Botão Inventário */
+    #btnInventario {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 10px 18px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    #btnInventario:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Painel do inventário */
+    #painelInventario {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 20px;
+      transition: right 0.4s ease;
+      z-index: 30;
+      overflow-y: auto;
+    }
+
+    #painelInventario.aberto {
+      right: 0;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    /* Pontos no mapa */
     .ponto {
       position: absolute;
       width: 20px;
@@ -21,77 +73,121 @@
       transform: translate(-50%, -50%);
       cursor: pointer;
     }
+
     .nao-explorado { background: crimson; }
     .explorado { background: green; }
   </style>
 </head>
+
 <body>
+
+  <!-- Botão do inventário -->
+  <button id="btnInventario">Inventário</button>
+
+  <!-- Painel lateral -->
+  <div id="painelInventario">
+    <h2>Inventário</h2>
+
+    {% for item in inventario %}
+      <div class="item">
+        <strong>{{ item.item.nome }}</strong><br>
+        Tipo: {{ item.item.tipo }}<br>
+        <em>{{ item.item.descricao }}</em>
+      </div>
+    {% empty %}
+      <p>Seu inventário está vazio.</p>
+    {% endfor %}
+  </div>
+
+  <!-- MAPA COM OS PONTOS -->
   <form method="POST" style="position:absolute; top:12%; left:50%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="1">
-    <button type="submit" class="ponto {% if 1 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 1 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:20%; left:90%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="2">
-    <button type="submit" class="ponto {% if 2 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 2 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:40%; left:20%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="3">
-    <button type="submit" class="ponto {% if 3 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 3 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:50%; left:87%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="4">
-    <button type="submit" class="ponto {% if 4 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 4 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:65%; left:45%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="5">
-    <button type="submit" class="ponto {% if 5 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 5 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:70%; left:15%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="6">
-    <button type="submit" class="ponto {% if 6 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 6 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:80%; left:30%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="7">
-    <button type="submit" class="ponto {% if 7 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 7 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:35%; left:85%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="8">
-    <button type="submit" class="ponto {% if 8 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 8 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
-
 
   <form method="POST" style="position:absolute; top:30%; left:60%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="9">
-    <button type="submit" class="ponto {% if 9 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 9 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
 
   <form method="POST" style="position:absolute; top:80%; left:87%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="10">
-    <button type="submit" class="ponto {% if 10 in explorados %}explorado{% else %}nao-explorado{% endif %}"></button>
+    <button type="submit"
+      class="ponto {% if 10 in explorados %}explorado{% else %}nao-explorado{% endif %}">
+    </button>
   </form>
+
+  <script>
+    const botao = document.getElementById("btnInventario");
+    const painel = document.getElementById("painelInventario");
+
+    botao.addEventListener("click", () => {
+      painel.classList.toggle("aberto");
+    });
+  </script>
+
 </body>
 </html>
