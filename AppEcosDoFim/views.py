@@ -198,8 +198,18 @@ def escolher_partida(request):
         return redirect("escolher_personagem")
     return render(request, "escolher_partida.html", {"partidas": partidas})
 
+@login_required(login_url='login_user')
 def jogo_audio(request):
-    return render(request, "jogo_audio_personagem.html")
+    id_partida = request.session.get('id_partida')
+    id_personagem = request.session.get('id_personagem')
+
+    jogador = get_object_or_404(Jogador, id=id_personagem, partida=id_partida, usuario=request.user)
+    inventario = Inventario.objects.filter(jogador=jogador)
+
+    return render(request, "jogo_audio_personagem.html", {
+        "inventario": inventario
+    })
+
 
 
 def gerar_itens(request):
