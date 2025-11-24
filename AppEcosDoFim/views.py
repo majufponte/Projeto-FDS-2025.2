@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import random
+from django.http import HttpResponse
 
 # Create your views here.
 def login_user(request):
@@ -201,6 +202,10 @@ def jogo_audio(request):
     return render(request, "jogo_audio_personagem.html")
 
 
+def gerar_itens(request):
+    for i in range(1, 52):
+        Itens.objects.create(caminho=f"Carta_num-{i}.png")
+    return HttpResponse("Itens criados com sucesso!")
 """def detector_audio(limiar):
     print(sd.query_devices())
 
