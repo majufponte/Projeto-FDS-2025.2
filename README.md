@@ -236,4 +236,78 @@ Programação em Par Experimentada - Segue link com o relatório atualizado:
 
 </details>
 
+---
+<details>
+<summary>📝 4ª ENTREGA</summary>
+
+<br> Histórias Escolhidas para Implementação: 
+
+<br>História 4 - Como jogador gostaria de ter uma noção de quantos suprimentos eu estou usando por dia e quanto eu trouxe pro estoque afim de ter uma melhor gestão e de pesquisa rápida.
+
+História 7 - Como jogador eu gostaria de ter um feedback em tempo real do áudio ao meu arredor pra assim ter uma noção de como agir e de como me portar durante a sessão e quantas vezes eu superei o limite de áudio.
+
+
+
+
+
+Imagem do Quadro da Quarta Sprint:
+
+![Quadro da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/Board_entrega3.jpg?raw=true)
+
+Imagem do Quadro da Quarta Sprint:
+
+![Backlog da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/Backlog_entrega3.jpg?raw=true)
+
+
+Imagem do BugTracker do GitHub:
+
+![BugTracker](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/BugTracker.png?raw=true)
+
+
+![Problema no Aúdio](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/ProblemaNoA%C3%BAdio.png?raw=true)
+
+
+![Erro no Deploy](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/ErroNoDeploy.png?raw=true)
+
+<p>
+  Segue link para o Deploy:<br>
+  <a href="https://projeto-fds-2025-2.onrender.com//" target="_blank" style="text-decoration: none; color: inherit;">
+    Ecos Do Fim
+  </a>
+</p>
+
+<p>
+ <br>Segue o link para o screencast do Ecos Do Fim:
+
+  <a href="https://youtu.be/CuuONG0gC5A" target="_blank" style="text-decoration: none; color: inherit;">
+   Deploy
+  </a>
+
+  <br> Segue o link para o screencast do Build e Deployment do GitHub Actions:
+
+  <a href="https://youtu.be/LXJnQQAltbg" target="_blank" style="text-decoration: none; color: inherit;">
+   Build e Deployment
+  </a>
+</p>
+
+
+   <br> Segue o link para o screencast dos Testes Automatizados:
+
+  <a href="https://youtu.be/OCJenI0715o" target="_blank" style="text-decoration: none; color: inherit;">
+   Testes Automatizados
+  </a>
+</p>
+
+Programação em Par Experimentada - Segue link com o relatório atualizado:
+
+<div align="center">
+    <a href="https://docs.google.com/document/d/1vuLVAkLyvJm9vDMFXJLZY0u_QItAgq2f51laFVbfH8Y/edit?usp=sharing">
+        <img src="https://img.shields.io/badge/Google%20Docs-4285F4?style=for-the-badge&logo=Google-Docs&logoColor=white" alt="Google Docs">
+    </a>
+ 
+
+</details>
+
+
+
 
