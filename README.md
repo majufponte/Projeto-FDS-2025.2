@@ -279,13 +279,13 @@ Imagem do BugTracker do GitHub:
 <p>
  <br>Segue o link para o screencast do Ecos Do Fim:
 
-  <a href="https://youtu.be/CuuONG0gC5A" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="" target="_blank" style="text-decoration: none; color: inherit;">
    Deploy
   </a>
 
   <br> Segue o link para o screencast do Build e Deployment do GitHub Actions:
 
-  <a href="https://youtu.be/LXJnQQAltbg" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://youtu.be/aeBueJUQgNw" target="_blank" style="text-decoration: none; color: inherit;">
    Build e Deployment
   </a>
 </p>
@@ -293,7 +293,7 @@ Imagem do BugTracker do GitHub:
 
    <br> Segue o link para o screencast dos Testes Automatizados:
 
-  <a href="https://youtu.be/OCJenI0715o" target="_blank" style="text-decoration: none; color: inherit;">
+  <a " target="_blank" style="text-decoration: none; color: inherit;">
    Testes Automatizados
   </a>
 </p>
