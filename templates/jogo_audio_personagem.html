@@ -1,285 +1,361 @@
 {% load static %}
-
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <title>Ecos do Fim - Abas Retráteis</title>
 
-```
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
-    body {
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-        background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
-        min-height: 100vh;
-        overflow-x: hidden;
-    }
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-    /* NAVBAR */
-    .navbar {
-        width: 100%;
-        height: 60px;
-        background-color: rgb(88, 67, 42);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 10;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background-color: rgb(88, 67, 42);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
 
-    .navbar h2 {
-        font-family: 'Cinzel Decorative', serif;
-        font-size: 1.8em;
-        color: #eaecf0;
-        margin: 0;
-    }
+        .navbar h2 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.8em;
+            color: #eaecf0;
+            margin: 0;
+        }
 
-    /* TOP SLOTS */
-    .top-slots {
-        margin-top: 20px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
+        /* SLOTS */
+        .top-slots {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
 
-    .slot {
-        width: 130px;
-        height: 200px;
-        background: transparent;
-        border-radius: 12px;
-        position: relative;
-        cursor: pointer;
-    }
+        .slot {
+            width: 130px;
+            height: 200px;
+            background: transparent;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+        }
 
-    .slot .inner {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: #ffffffff;
-        border-radius: 12px;
-        bottom: 0;
-        transition: bottom 0.3s ease;
-        box-shadow: 0 0 6px rgba(0,0,0,0.4);
-    }
+        .slot .inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ffffffff;
+            border-radius: 12px;
+            bottom: 0;
+            transition: bottom 0.3s ease;
+            box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        }
 
-    .slot.open .inner {
-        bottom: 120px;
-    }
+        .slot.open .inner {
+            bottom: 120px;
+        }
 
-    /* ABA INFERIOR RETRÁTIL */
-    .bottom-sheet {
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        width: 100%;
-        max-width: 900px;
-        height: 500px;
-        transform: translate(-50%, 90%);
-        background: #000000;
-        color: white;
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
-        box-shadow: 0 -4px 14px rgba(0,0,0,0.5);
-        transition: transform 0.35s ease;
-        z-index: 20;
-    }
+        /* BOTTOM-SHEET */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            transform: translate(-50%, 90%);
+            background: #000000;
+            color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            box-shadow: 0 -4px 14px rgba(0,0,0,0.5);
+            transition: transform 0.35s ease;
+            z-index: 20;
+        }
 
-    .bottom-sheet.open {
-        transform: translate(-50%, 0%);
-    }
+        .bottom-sheet.open {
+            transform: translate(-50%, 0%);
+        }
 
-    .sheet-handle {
-        width: 70px;
-        height: 8px;
-        background: #888;
-        border-radius: 10px;
-        margin: 10px auto;
-        cursor: pointer;
-    }
+        .sheet-handle {
+            width: 70px;
+            height: 8px;
+            background: #888;
+            border-radius: 10px;
+            margin: 10px auto;
+            cursor: pointer;
+        }
 
-    .white-box {
-        width: 60%;
-        height: 400px;
-        background-image: url("{% static 'Carta_num-20.png' %}");
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        border-radius: 12px;
-        margin: 10px auto 0 auto;
-        padding: 20px;
-        position: relative;
-        box-shadow: 0 0 10px rgba(8,8,8,0.3);
-    }
+        /* WHITE BOX (card.png) */
+        .white-box {
+            width: 60%;
+            height: 400px;
+            background-image: url("{% static 'card.png' %}");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 12px;
+            margin: 10px auto 0 auto;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(8,8,8,0.3);
+        }
 
-    .side-box-left,
-    .side-box-right {
-        width: 200px;
-        height: 250px;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 0 8px rgba(0,0,0,0.4);
-        position: absolute;
-        top: 0;
-    }
+        /* ——— 5 BOTÕES EMPILHADOS ——— */
+        .inner-buttons {
+            position: absolute;
+            top: 20%;
+            left: 45%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
 
-    .side-box-left { left: -220px; }
-    .side-box-right { right: -220px; }
+        .mini-btn {
+            width: 30px;
+            height: 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #2ecc71;
+            border: none;
+            transition: background 0.25s ease;
+        }
 
-    .super-cards-container {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 20px;
-    }
+        .mini-btn.red { background: #e74c3c; }
 
-    /* ABA LATERAL DIREITA */
-    .side-sheet {
-        position: fixed;
-        top: 60px;
-        right: 0;
-        height: 300px;
-        width: 160px;
-        background: #000000;
-        color: #ffffff;
-        transform: translateX(90%);
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
-        box-shadow: -4px 0 14px rgba(0,0,0,0.4);
-        transition: transform 0.35s ease;
-        z-index: 20;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 10px;
-    }
+        /* SIDE SHEET */
+        .side-sheet {
+            position: fixed;
+            top: 60px;
+            right: 0;
+            height: 300px;
+            width: 160px;
+            background: #000000;
+            color: #ffffff;
+            transform: translateX(90%);
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            box-shadow: -4px 0 14px rgba(0,0,0,0.4);
+            transition: transform 0.35s ease;
+            z-index: 20;
+        }
 
-    .side-sheet.open { transform: translateX(0); }
+        .side-sheet.open { transform: translateX(0); }
 
-    .side-handle {
-        position: absolute;
-        left: -20px;
-        top: 20px;
-        width: 30px;
-        height: 80px;
-        background: #555;
-        border-radius: 10px;
-        cursor: pointer;
-    }
+        .side-handle {
+            position: absolute;
+            left: -20px;
+            top: 20px;
+            width: 30px;
+            height: 80px;
+            background: #555;
+            border-radius: 10px;
+            cursor: pointer;
+        }
 
-    .side-content {
-        padding: 10px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        overflow-y: auto;
-        max-height: 250px;
-    }
+        /* ⭐ FIXO NA ESQUERDA — TESTE DE ÁUDIO ⭐ */
+        .audio-card {
+            position: fixed;
+            top: 90px;
+            left: 20px;
+            width: 220px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            z-index: 30;
+        }
 
-    .side-box img {
-        width: 100%;
-        height: auto;
-        border-radius: 10px;
-    }
+        .audio-card h1 {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 1.4em;
+            color: #58432a;
+            margin-bottom: 10px;
+        }
 
-    .side-box p {
-        color: white;
-        text-align: center;
-    }
-</style>
-```
+        #status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            background-color: #ddd;
+            color: #333;
+        }
 
+    </style>
 </head>
 
 <body>
 
-```
-<!-- NAVBAR -->
-<div class="navbar">
-    <h2>Ecos do Fim</h2>
-</div>
+    <!-- NAVBAR -->
+    <div class="navbar"><h2>Ecos do Fim</h2></div>
 
-<!-- TOP SLOTS -->
-<div class="top-slots">
-    <div class="slot"><div class="inner"></div></div>
-    <div class="slot"><div class="inner"></div></div>
-    <div class="slot"><div class="inner"></div></div>
-</div>
+    <!-- ⭐ DETECÇÃO DE ÁUDIO FIXA NA ESQUERDA -->
+    <div class="audio-card">
+        <h1>Ruído</h1>
+        <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+        <p>Status: <span id="status">Aguardando…</span></p>
+    </div>
 
-<!-- LATERAL DIREITA -->
-<div class="side-sheet" id="sideSheet">
-    <div class="side-handle" id="sideHandle"></div>
-    <div class="side-content">
-        <h3>Cartas</h3>
-        {% if inventario %}
-            {% for inv in inventario %}
-                <div class="side-box">
-                    <img src="{% static inv.item.caminho %}" alt="Carta {{ forloop.counter }}">
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="side-box">
-                <p>Sem itens</p>
+    <!-- TOP -->
+    <div class="top-slots">
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+    </div>
+
+    <!-- SIDE -->
+    <div class="side-sheet" id="sideSheet">
+        <div class="side-handle" id="sideHandle"></div>
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="sheet-handle" id="sheetHandle"></div>
+
+        <div class="white-box">
+
+            <!-- BOTÕES EMPILHADOS -->
+            <div class="inner-buttons">
+                <button class="mini-btn"></button>
+                <button class="mini-btn"></button>
+                <button class="mini-btn"></button>
+                <button class="mini-btn"></button>
+                <button class="mini-btn"></button>
             </div>
-        {% endif %}
+
+        </div>
+
+        <div class="super-cards-container">
+            <div class="slot"><div class="inner"></div></div>
+            <div class="slot"><div class="inner"></div></div>
+            <div class="slot"><div class="inner"></div></div>
+            <div class="slot"><div class="inner"></div></div>
+            <div class="slot"><div class="inner"></div></div>
+        </div>
     </div>
-</div>
 
-<!-- ABA INFERIOR -->
-<div class="bottom-sheet" id="bottomSheet">
-    <div class="sheet-handle" id="sheetHandle"></div>
+    <script>
 
-    <div class="white-box">
-        <div class="side-box-left"></div>
-        <div class="side-box-right"></div>
-    </div>
+        /* ---------- Bottom Sheet ---------- */
+        const bottomSheet = document.getElementById("bottomSheet");
+        document.getElementById("sheetHandle").onclick = () =>
+            bottomSheet.classList.toggle("open");
 
-    <div class="super-cards-container">
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-    </div>
-</div>
+        /* ---------- Side Sheet ---------- */
+        const sideSheet = document.getElementById("sideSheet");
+        document.getElementById("sideHandle").onclick = () =>
+            sideSheet.classList.toggle("open");
 
-<script>
-    /* BOTTOM */
-    const bottomSheet = document.getElementById("bottomSheet");
-    const bottomHandle = document.getElementById("sheetHandle");
-    let bottomOpen = false;
+        /* ---------- Slots ---------- */
+        document.querySelectorAll(".slot").forEach(slot =>
+            slot.onclick = () => slot.classList.toggle("open")
+        );
 
-    bottomHandle.addEventListener("click", () => {
-        bottomOpen = !bottomOpen;
-        bottomSheet.classList.toggle("open", bottomOpen);
-    });
+        /* ---------- Mini Buttons ---------- */
+        document.querySelectorAll(".mini-btn").forEach(btn =>
+            btn.onclick = () => btn.classList.toggle("red")
+        );
 
-    /* LATERAL */
-    const sideSheet = document.getElementById("sideSheet");
-    const sideHandle = document.getElementById("sideHandle");
-    let sideOpen = false;
+        /* ---------- DETECÇÃO DE ÁUDIO ---------- */
 
-    sideHandle.addEventListener("click", () => {
-        sideOpen = !sideOpen;
-        sideSheet.classList.toggle("open", sideOpen);
-    });
+        const limiar = parseFloat(document.getElementById("limiar").innerText);
+        const statusEl = document.getElementById("status");
 
-    /* SLOTS */
-    document.querySelectorAll(".slot").forEach(slot => {
-        slot.addEventListener("click", () => {
-            slot.classList.toggle("open");
-        });
-    });
-</script>
-```
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let c of cookies) {
+                    const cookie = c.trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        let ultimaDeteccao = 0;
+
+        async function iniciarCaptura() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioCtx.createMediaStreamSource(stream);
+                const analyser = audioCtx.createAnalyser();
+
+                analyser.fftSize = 512;
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                source.connect(analyser);
+
+                function calcularDBFS() {
+                    analyser.getByteTimeDomainData(dataArray);
+
+                    let sum = 0;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        let sample = (dataArray[i] - 128) / 128;
+                        sum += sample * sample;
+                    }
+
+                    let rms = Math.sqrt(sum / dataArray.length);
+                    let dbfs = 20 * Math.log10(rms);
+
+                    if (dbfs > limiar) {
+                        statusEl.innerText = "⚠️ Perigo!";
+                        statusEl.style.color = "red";
+
+                        const agora = Date.now();
+                        if (agora - ultimaDeteccao > 2000) {
+                            ultimaDeteccao = agora;
+
+                            fetch("/audio-detectado/", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRFToken": getCookie("csrftoken")
+                                },
+                                body: JSON.stringify({ audio_detectado: true })
+                            });
+                        }
+
+                    } else {
+                        statusEl.innerText = "✅ Seguro";
+                        statusEl.style.color = "green";
+                    }
+
+                    requestAnimationFrame(calcularDBFS);
+                }
+
+                calcularDBFS();
+
+            } catch (err) {
+                statusEl.innerText = "Erro no microfone!";
+                console.error(err);
+            }
+        }
+
+        iniciarCaptura();
+
+    </script>
 
 </body>
 </html>
