@@ -1,374 +1,372 @@
 {% load static %}
+
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <title>Ecos do Fim - Abas Retráteis</title>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
+```
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: radial-gradient(circle at 20% 20%, #d4d6df 0%, #b8bbc4 100%);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
 
-        /* NAVBAR */
-        .navbar {
-            width: 100%;
-            height: 60px;
-            background-color: rgb(88, 67, 42);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 20;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
+    /* Vídeo de background */
+    #bgVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
 
-        .navbar h2 {
-            font-family: 'Cinzel Decorative', serif';
-            font-size: 1.8em;
-            color: #eaecf0;
-            margin: 0;
-        }
+    /* NAVBAR */
+    .navbar {
+        width: 100%;
+        height: 60px;
+        background-color: rgba(88, 67, 42, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
 
+    .navbar h2 {
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 1.8em;
+        color: #eaecf0;
+        margin: 0;
+    }
 
-        /* SLOTS DE CIMA */
-        .top-slots {
-            margin-top: 80px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
+    /* SLOTS DE CIMA */
+    .top-slots {
+        margin-top: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        position: relative;
+        z-index: 10;
+    }
 
-        .slot {
-            width: 130px;
-            height: 200px;
-            background: transparent;
-            border-radius: 12px;
-            position: relative;
-            cursor: pointer;
-        }
+    .slot {
+        width: 130px;
+        height: 200px;
+        background: transparent;
+        border-radius: 12px;
+        position: relative;
+        cursor: pointer;
+    }
 
-        .slot .inner {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            border-radius: 12px;
-            bottom: 0;
-            transition: bottom 0.3s ease;
-            box-shadow: 0 0 6px rgba(0,0,0,0.4);
-        }
+    .slot .inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #ffffff;
+        border-radius: 12px;
+        bottom: 0;
+        transition: bottom 0.3s ease;
+        box-shadow: 0 0 6px rgba(0,0,0,0.4);
+    }
 
-        .slot.open .inner {
-            bottom: 120px;
-        }
+    .slot.open .inner { bottom: 120px; }
 
+    /* BOTTOM SHEET */
+    .bottom-sheet {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        width: 100%;
+        max-width: 900px;
+        height: 500px;
+        transform: translate(-50%, 90%);
+        background: rgba(0,0,0,0.9);
+        color: white;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        box-shadow: 0 -4px 14px rgba(0,0,0,0.5);
+        transition: transform 0.35s ease;
+        z-index: 30;
+    }
 
-        /* BOTTOM SHEET */
-        .bottom-sheet {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            width: 100%;
-            max-width: 900px;
-            height: 500px;
-            transform: translate(-50%, 90%);
-            background: #000000;
-            color: white;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
-            box-shadow: 0 -4px 14px rgba(0,0,0,0.5);
-            transition: transform 0.35s ease;
-            z-index: 30;
-        }
+    .bottom-sheet.open { transform: translate(-50%, 0%); }
 
-        .bottom-sheet.open {
-            transform: translate(-50%, 0%);
-        }
+    .sheet-handle {
+        width: 70px;
+        height: 8px;
+        background: #888;
+        border-radius: 10px;
+        margin: 10px auto;
+        cursor: pointer;
+    }
 
-        .sheet-handle {
-            width: 70px;
-            height: 8px;
-            background: #888;
-            border-radius: 10px;
-            margin: 10px auto;
-            cursor: pointer;
-        }
+    /* PNG CENTRAL */
+    .white-box {
+        width: 60%;
+        height: 400px;
+        background-image: url("{% static 'card.png' %}");
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 12px;
+        margin: 10px auto 0 auto;
+        padding: 20px;
+        position: relative;
+        box-shadow: 0 0 10px rgba(8,8,8,0.3);
+        z-index: 30;
+    }
 
+    /* 2 RETÂNGULOS BRANCOS LATERAIS */
+    .side-box-left,
+    .side-box-right {
+        width: 200px;
+        height: 250px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        position: absolute;
+        top: 0;
+        z-index: 30;
+    }
 
-        /* PNG CENTRAL */
-        .white-box {
-            width: 60%;
-            height: 400px;
-            background-image: url("{% static 'card.png' %}");
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-            border-radius: 12px;
-            margin: 10px auto 0 auto;
-            padding: 20px;
-            position: relative;
-            box-shadow: 0 0 10px rgba(8,8,8,0.3);
-        }
+    .side-box-left { left: -220px; }
+    .side-box-right { right: -220px; }
 
+    /* 5 CARDS EM BAIXO */
+    .super-cards-container {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        z-index: 30;
+        position: relative;
+    }
 
-        /* 2 RETÂNGULOS BRANCOS LATERAIS */
-        .side-box-left,
-        .side-box-right {
-            width: 200px;
-            height: 250px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.4);
-            position: absolute;
-            top: 0;
-        }
+    /* BOTÕES EMPILHADOS */
+    .inner-buttons {
+        position: absolute;
+        top: 20%;
+        left: 45%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        z-index: 30;
+    }
 
-        .side-box-left { left: -220px; }
-        .side-box-right { right: -220px; }
+    .mini-btn {
+        width: 30px;
+        height: 22px;
+        border-radius: 12px;
+        cursor: pointer;
+        background: #2ecc71;
+        border: none;
+    }
 
+    .mini-btn.red { background: #e74c3c; }
 
-        /* 5 CARDS EM BAIXO */
-        .super-cards-container {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-top: 20px;
-        }
+    /* SIDE SHEET RIGHT */
+    .side-sheet {
+        position: fixed;
+        top: 60px;
+        right: 0;
+        height: 300px;
+        width: 160px;
+        background: rgba(0,0,0,0.85);
+        color: #ffffff;
+        transform: translateX(90%);
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        box-shadow: -4px 0 14px rgba(0,0,0,0.4);
+        transition: transform 0.35s ease;
+        z-index: 30;
+    }
 
+    .side-sheet.open { transform: translateX(0); }
 
-        /* BOTÕES EMPILHADOS */
-        .inner-buttons {
-            position: absolute;
-            top: 20%;
-            left: 45%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+    .side-handle {
+        position: absolute;
+        left: -20px;
+        top: 20px;
+        width: 30px;
+        height: 80px;
+        background: #555;
+        border-radius: 10px;
+        cursor: pointer;
+    }
 
-        .mini-btn {
-            width: 30px;
-            height: 22px;
-            border-radius: 12px;
-            cursor: pointer;
-            background: #2ecc71;
-            border: none;
-        }
+    /* CAIXA DE ÁUDIO */
+    .audio-box {
+        position: fixed;
+        top: 120px;
+        left: 20px;
+        width: 180px;
+        padding: 18px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.25);
+        z-index: 10;
+    }
 
-        .mini-btn.red { background: #e74c3c; }
+    .audio-box h3 {
+        margin: 0 0 10px 0;
+        font-family: 'Cinzel Decorative';
+        color: #5a3e22;
+    }
 
+    #status {
+        padding: 6px 10px;
+        background: #ddd;
+        border-radius: 8px;
+        font-weight: bold;
+        display: inline-block;
+        margin-top: 6px;
+    }
+</style>
+```
 
-        /* SIDE SHEET RIGHT */
-        .side-sheet {
-            position: fixed;
-            top: 60px;
-            right: 0;
-            height: 300px;
-            width: 160px;
-            background: #000000;
-            color: #ffffff;
-            transform: translateX(90%);
-            border-top-left-radius: 12px;
-            border-bottom-left-radius: 12px;
-            box-shadow: -4px 0 14px rgba(0,0,0,0.4);
-            transition: transform 0.35s ease;
-            z-index: 30;
-        }
-
-        .side-sheet.open { transform: translateX(0); }
-
-        .side-handle {
-            position: absolute;
-            left: -20px;
-            top: 20px;
-            width: 30px;
-            height: 80px;
-            background: #555;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-
-
-        /* ✔ AQUI: CAIXA DE ÁUDIO NA ESQUERDA ATRÁS DA ABA PRETA */
-        .audio-box {
-            position: fixed;
-            top: 120px;
-            left: 20px;
-            width: 180px;
-            padding: 18px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.25);
-            z-index: 5;   /* ← FICA ATRÁS DA BOTTOM-SHEET (que é z-index 30) */
-        }
-
-        .audio-box h3 {
-            margin: 0 0 10px 0;
-            font-family: 'Cinzel Decorative';
-            color: #5a3e22;
-        }
-
-        #status {
-            padding: 6px 10px;
-            background: #ddd;
-            border-radius: 8px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 6px;
-        }
-
-    </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <div class="navbar"><h2>Ecos do Fim</h2></div>
+```
+<!-- BACKGROUND VIDEO -->
+<video autoplay muted loop id="bgVideo">
+    <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
+    Seu navegador não suporta vídeo HTML5.
+</video>
 
-    <!-- 👂 DETECÇÃO DE ÁUDIO NA ESQUERDA (ATRÁS DA BOTTOM SHEET) -->
-    <div class="audio-box">
-        <h3>Detecção</h3>
-        <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
-        <p>Status: <span id="status">Aguardando som…</span></p>
-    </div>
+<!-- NAVBAR -->
+<div class="navbar"><h2>Ecos do Fim</h2></div>
 
+<!-- DETECÇÃO DE ÁUDIO -->
+<div class="audio-box">
+    <h3>Detecção</h3>
+    <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
+    <p>Status: <span id="status">Aguardando som…</span></p>
+</div>
 
-    <!-- SLOTS SUPERIORES (3) -->
-    <div class="top-slots">
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-    </div>
+<!-- SLOTS SUPERIORES -->
+<div class="top-slots">
+    <div class="slot"><div class="inner"></div></div>
+    <div class="slot"><div class="inner"></div></div>
+    <div class="slot"><div class="inner"></div></div>
+</div>
 
+<!-- SIDE SHEET -->
+<div class="side-sheet" id="sideSheet">
+    <div class="side-handle" id="sideHandle"></div>
+</div>
 
-    <!-- SIDE SHEET RIGHT -->
-    <div class="side-sheet" id="sideSheet">
-        <div class="side-handle" id="sideHandle"></div>
-    </div>
+<!-- BOTTOM SHEET -->
+<div class="bottom-sheet" id="bottomSheet">
+    <div class="sheet-handle" id="sheetHandle"></div>
 
-
-    <!-- BOTTOM-SHEET -->
-    <div class="bottom-sheet" id="bottomSheet">
-        <div class="sheet-handle" id="sheetHandle"></div>
-
-        <div class="white-box">
-            <div class="inner-buttons">
-                <button class="mini-btn"></button>
-                <button class="mini-btn"></button>
-                <button class="mini-btn"></button>
-                <button class="mini-btn"></button>
-                <button class="mini-btn"></button>
-            </div>
-
-            <!-- RESTAURADOS: 2 RETÂNGULOS LATERAIS -->
-            <div class="side-box-left"></div>
-            <div class="side-box-right"></div>
+    <div class="white-box">
+        <div class="inner-buttons">
+            <button class="mini-btn"></button>
+            <button class="mini-btn"></button>
+            <button class="mini-btn"></button>
+            <button class="mini-btn"></button>
+            <button class="mini-btn"></button>
         </div>
 
-        <!-- RESTAURADOS: 5 SLOTS DE BAIXO -->
-        <div class="super-cards-container">
-            <div class="slot"><div class="inner"></div></div>
-            <div class="slot"><div class="inner"></div></div>
-            <div class="slot"><div class="inner"></div></div>
-            <div class="slot"><div class="inner"></div></div>
-            <div class="slot"><div class="inner"></div></div>
-        </div>
-
+        <div class="side-box-left"></div>
+        <div class="side-box-right"></div>
     </div>
 
+    <div class="super-cards-container">
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+        <div class="slot"><div class="inner"></div></div>
+    </div>
+</div>
 
-    <!-- ADICIONE ESSE FORMULARIO INVISÍVEL EM QUALQUER LUGAR DO BODY -->
-    <form id="audioForm" method="POST" action="{% url 'audio_detectado' %}" style="display:none;">
-        {% csrf_token %}
-        <input type="hidden" name="audio_detectado" value="0">
-    </form>
+<!-- FORMULÁRIO INVISÍVEL -->
+<form id="audioForm" method="POST" action="{% url 'audio_detectado' %}" style="display:none;">
+    {% csrf_token %}
+    <input type="hidden" name="audio_detectado" value="0">
+</form>
 
-    <script>
-        const limiar = parseFloat(document.getElementById("limiar").innerText);
-        const statusEl = document.getElementById("status");
-        let ultimaDeteccao = 0;
+<script>
+    const limiar = parseFloat(document.getElementById("limiar").innerText);
+    const statusEl = document.getElementById("status");
+    let ultimaDeteccao = 0;
+    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
-        // pega o CSRF do input escondido
-        const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+    async function enviarAudioDetectado() {
+        const formData = new FormData();
+        formData.append("audio_detectado", "1");
+        try {
+            await fetch("{% url 'audio_detectado' %}", {
+                method: "POST",
+                body: formData,
+                headers: { "X-CSRFToken": csrfToken }
+            });
+        } catch (err) { console.error("Erro ao enviar:", err); }
+    }
 
-        async function enviarAudioDetectado() {
-            const formData = new FormData();
-            formData.append("audio_detectado", "1");
+    async function iniciarCaptura() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioCtx.createMediaStreamSource(stream);
+            const analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 512;
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            source.connect(analyser);
 
-            try {
-                await fetch("{% url 'audio_detectado' %}", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        "X-CSRFToken": csrfToken
+            function calcularDBFS() {
+                analyser.getByteTimeDomainData(dataArray);
+                let sum = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    let sample = (dataArray[i] - 128) / 128;
+                    sum += sample * sample;
+                }
+                let rms = Math.sqrt(sum / dataArray.length);
+                let dbfs = 20 * Math.log10(rms);
+
+                if (dbfs > limiar) {
+                    statusEl.innerText = "⚠️ Pego";
+                    statusEl.style.color = "red";
+                    const agora = Date.now();
+                    if (agora - ultimaDeteccao > 2000) {
+                        ultimaDeteccao = agora;
+                        enviarAudioDetectado();
                     }
-                });
-            } catch (err) {
-                console.error("Erro ao enviar:", err);
-            }
-        }
-
-        async function iniciarCaptura() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const source = audioCtx.createMediaStreamSource(stream);
-                const analyser = audioCtx.createAnalyser();
-                analyser.fftSize = 512;
-
-                const dataArray = new Uint8Array(analyser.frequencyBinCount);
-                source.connect(analyser);
-
-                function calcularDBFS() {
-                    analyser.getByteTimeDomainData(dataArray);
-                    let sum = 0;
-                    for (let i = 0; i < dataArray.length; i++) {
-                        let sample = (dataArray[i] - 128) / 128;
-                        sum += sample * sample;
-                    }
-                    let rms = Math.sqrt(sum / dataArray.length);
-                    let dbfs = 20 * Math.log10(rms);
-
-                    if (dbfs > limiar) {
-                        statusEl.innerText = "⚠️ Pego";
-                        statusEl.style.color = "red";
-
-                        const agora = Date.now();
-                        if (agora - ultimaDeteccao > 2000) {
-                            ultimaDeteccao = agora;
-                            enviarAudioDetectado(); // envia POST sem redirecionar
-                        }
-                    } else {
-                        statusEl.innerText = "✔ Seguro";
-                        statusEl.style.color = "green";
-                    }
-
-                    requestAnimationFrame(calcularDBFS);
+                } else {
+                    statusEl.innerText = "✔ Seguro";
+                    statusEl.style.color = "green";
                 }
 
-                calcularDBFS();
-            } catch (e) {
-                statusEl.innerText = "Erro no microfone";
-                console.error(e);
+                requestAnimationFrame(calcularDBFS);
             }
+
+            calcularDBFS();
+        } catch (e) {
+            statusEl.innerText = "Erro no microfone";
+            console.error(e);
         }
+    }
 
-        iniciarCaptura();
-        </script>
-
-
+    iniciarCaptura();
+</script>
+```
 
 </body>
 </html>
