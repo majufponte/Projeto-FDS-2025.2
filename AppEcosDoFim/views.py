@@ -206,10 +206,19 @@ def jogo_audio(request):
     jogador = get_object_or_404(Jogador, id=id_personagem, partida=id_partida, usuario=request.user)
     inventario = Inventario.objects.filter(jogador=jogador)
 
-    return render(request, "jogo_audio_personagem.html", {
-        "inventario": inventario
-    })
+    if request.method == "POST":
+        detectado = request.POST.get("audio_detectado", "0")
+        detectado_bool = bool(int(detectado))
 
+        DetecaoAudio.objects.create(
+            usuario=request.user,
+            detectado=detectado_bool
+        )
+
+    return render(request, "jogo_audio_personagem.html", {
+        "inventario": inventario,
+        "limiar": request.session.get("limiar_dificuldade")
+    })
 
 
 def gerar_itens(request):

@@ -289,30 +289,36 @@
     </div>
 
 
-    <!-- SCRIPTS -->
+    <!-- ADICIONE ESSE FORMULARIO INVISÍVEL EM QUALQUER LUGAR DO BODY -->
+    <form id="audioForm" method="POST" action="{% url 'audio_detectado' %}" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="audio_detectado" value="0">
+    </form>
+
     <script>
-        /* --- Abertura das abas --- */
-        const bottomSheet = document.getElementById("bottomSheet");
-        const bottomHandle = document.getElementById("sheetHandle");
-        bottomHandle.onclick = () => bottomSheet.classList.toggle("open");
-
-        const sideSheet = document.getElementById("sideSheet");
-        const sideHandle = document.getElementById("sideHandle");
-        sideHandle.onclick = () => sideSheet.classList.toggle("open");
-
-        document.querySelectorAll(".slot").forEach(slot => {
-            slot.onclick = () => slot.classList.toggle("open");
-        });
-
-        document.querySelectorAll(".mini-btn").forEach(btn => {
-            btn.onclick = () => btn.classList.toggle("red");
-        });
-
-
-        /* --- DETECÇÃO DE AUDIO --- */
         const limiar = parseFloat(document.getElementById("limiar").innerText);
         const statusEl = document.getElementById("status");
         let ultimaDeteccao = 0;
+
+        // pega o CSRF do input escondido
+        const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+        async function enviarAudioDetectado() {
+            const formData = new FormData();
+            formData.append("audio_detectado", "1");
+
+            try {
+                await fetch("{% url 'audio_detectado' %}", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": csrfToken
+                    }
+                });
+            } catch (err) {
+                console.error("Erro ao enviar:", err);
+            }
+        }
 
         async function iniciarCaptura() {
             try {
@@ -342,11 +348,7 @@
                         const agora = Date.now();
                         if (agora - ultimaDeteccao > 2000) {
                             ultimaDeteccao = agora;
-                            fetch("/audio-detectado/", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ audio_detectado: true })
-                            });
+                            enviarAudioDetectado(); // envia POST sem redirecionar
                         }
                     } else {
                         statusEl.innerText = "✔ Seguro";
@@ -357,14 +359,16 @@
                 }
 
                 calcularDBFS();
-
             } catch (e) {
                 statusEl.innerText = "Erro no microfone";
+                console.error(e);
             }
         }
 
         iniciarCaptura();
-    </script>
+        </script>
+
+
 
 </body>
 </html>
