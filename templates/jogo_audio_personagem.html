@@ -1,13 +1,9 @@
 {% load static %}
-
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Ecos do Fim - Abas Retráteis</title>
-
-```
+<meta charset="UTF-8">
+<title>Ecos do Fim - Abas Retráteis</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
@@ -16,10 +12,11 @@
         font-family: 'Roboto', sans-serif;
         min-height: 100vh;
         overflow-x: hidden;
+        background: black;
     }
 
-    /* Vídeo de background */
-    #bgVideo {
+    /* VÍDEO DE FUNDO */
+    .video-bg {
         position: fixed;
         top: 0;
         left: 0;
@@ -27,13 +24,15 @@
         height: 100%;
         object-fit: cover;
         z-index: 0;
+        filter: brightness(0.35);
+        pointer-events: none;
     }
 
     /* NAVBAR */
     .navbar {
         width: 100%;
         height: 60px;
-        background-color: rgba(88, 67, 42, 0.85);
+        background-color: rgba(88,67,42,0.85);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -51,37 +50,32 @@
         margin: 0;
     }
 
-    /* SLOTS DE CIMA */
-    .top-slots {
-        margin-top: 80px;
-        width: 100%;
+    /* SLOTS */
+    .top-slots, .super-cards-container {
         display: flex;
         justify-content: center;
-        gap: 20px;
+        gap: 12px;
         position: relative;
-        z-index: 10;
+        z-index: 25;
     }
 
+    .top-slots { margin-top: 80px; }
     .slot {
         width: 130px;
         height: 200px;
-        background: transparent;
-        border-radius: 12px;
-        position: relative;
         cursor: pointer;
+        position: relative;
     }
-
     .slot .inner {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: #ffffff;
+        background: #fff;
         border-radius: 12px;
         bottom: 0;
         transition: bottom 0.3s ease;
         box-shadow: 0 0 6px rgba(0,0,0,0.4);
     }
-
     .slot.open .inner { bottom: 120px; }
 
     /* BOTTOM SHEET */
@@ -101,9 +95,7 @@
         transition: transform 0.35s ease;
         z-index: 30;
     }
-
-    .bottom-sheet.open { transform: translate(-50%, 0%); }
-
+    .bottom-sheet.open { transform: translate(-50%,0); }
     .sheet-handle {
         width: 70px;
         height: 8px;
@@ -113,7 +105,7 @@
         cursor: pointer;
     }
 
-    /* PNG CENTRAL */
+    /* CAIXA CENTRAL */
     .white-box {
         width: 60%;
         height: 400px;
@@ -129,9 +121,7 @@
         z-index: 30;
     }
 
-    /* 2 RETÂNGULOS BRANCOS LATERAIS */
-    .side-box-left,
-    .side-box-right {
+    .side-box-left, .side-box-right {
         width: 200px;
         height: 250px;
         background: white;
@@ -141,21 +131,9 @@
         top: 0;
         z-index: 30;
     }
-
     .side-box-left { left: -220px; }
     .side-box-right { right: -220px; }
 
-    /* 5 CARDS EM BAIXO */
-    .super-cards-container {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-top: 20px;
-        z-index: 30;
-        position: relative;
-    }
-
-    /* BOTÕES EMPILHADOS */
     .inner-buttons {
         position: absolute;
         top: 20%;
@@ -166,16 +144,7 @@
         gap: 4px;
         z-index: 30;
     }
-
-    .mini-btn {
-        width: 30px;
-        height: 22px;
-        border-radius: 12px;
-        cursor: pointer;
-        background: #2ecc71;
-        border: none;
-    }
-
+    .mini-btn { width: 30px; height: 22px; border-radius: 12px; cursor: pointer; background: #2ecc71; border:none; }
     .mini-btn.red { background: #e74c3c; }
 
     /* SIDE SHEET RIGHT */
@@ -183,32 +152,20 @@
         position: fixed;
         top: 60px;
         right: 0;
-        height: 300px;
         width: 160px;
+        height: 300px;
         background: rgba(0,0,0,0.85);
-        color: #ffffff;
+        color: #fff;
         transform: translateX(90%);
         border-top-left-radius: 12px;
         border-bottom-left-radius: 12px;
-        box-shadow: -4px 0 14px rgba(0,0,0,0.4);
         transition: transform 0.35s ease;
         z-index: 30;
     }
-
     .side-sheet.open { transform: translateX(0); }
+    .side-handle { position: absolute; left: -20px; top: 20px; width: 30px; height: 80px; background: #555; border-radius: 10px; cursor:pointer; }
 
-    .side-handle {
-        position: absolute;
-        left: -20px;
-        top: 20px;
-        width: 30px;
-        height: 80px;
-        background: #555;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-
-    /* CAIXA DE ÁUDIO */
+    /* AUDIO BOX */
     .audio-box {
         position: fixed;
         top: 120px;
@@ -218,33 +175,16 @@
         background: white;
         border-radius: 12px;
         box-shadow: 0 0 12px rgba(0,0,0,0.25);
-        z-index: 10;
+        z-index: 25;
     }
-
-    .audio-box h3 {
-        margin: 0 0 10px 0;
-        font-family: 'Cinzel Decorative';
-        color: #5a3e22;
-    }
-
-    #status {
-        padding: 6px 10px;
-        background: #ddd;
-        border-radius: 8px;
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 6px;
-    }
+    .audio-box h3 { margin:0 0 10px 0; font-family: 'Cinzel Decorative'; color:#5a3e22; }
+    #status { padding:6px 10px; background:#ddd; border-radius:8px; font-weight:bold; display:inline-block; margin-top:6px; }
 </style>
-```
-
 </head>
-
 <body>
 
-```
-<!-- BACKGROUND VIDEO -->
-<video autoplay muted loop id="bgVideo">
+<!-- VÍDEO DE FUNDO -->
+<video id="bgVideo" autoplay muted loop class="video-bg">
     <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
     Seu navegador não suporta vídeo HTML5.
 </video>
@@ -252,14 +192,14 @@
 <!-- NAVBAR -->
 <div class="navbar"><h2>Ecos do Fim</h2></div>
 
-<!-- DETECÇÃO DE ÁUDIO -->
+<!-- CAIXA DE ÁUDIO -->
 <div class="audio-box">
     <h3>Detecção</h3>
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
 </div>
 
-<!-- SLOTS SUPERIORES -->
+<!-- TOP SLOTS -->
 <div class="top-slots">
     <div class="slot"><div class="inner"></div></div>
     <div class="slot"><div class="inner"></div></div>
@@ -274,7 +214,6 @@
 <!-- BOTTOM SHEET -->
 <div class="bottom-sheet" id="bottomSheet">
     <div class="sheet-handle" id="sheetHandle"></div>
-
     <div class="white-box">
         <div class="inner-buttons">
             <button class="mini-btn"></button>
@@ -283,11 +222,9 @@
             <button class="mini-btn"></button>
             <button class="mini-btn"></button>
         </div>
-
         <div class="side-box-left"></div>
         <div class="side-box-right"></div>
     </div>
-
     <div class="super-cards-container">
         <div class="slot"><div class="inner"></div></div>
         <div class="slot"><div class="inner"></div></div>
@@ -297,76 +234,76 @@
     </div>
 </div>
 
-<!-- FORMULÁRIO INVISÍVEL -->
-<form id="audioForm" method="POST" action="{% url 'audio_detectado' %}" style="display:none;">
-    {% csrf_token %}
-    <input type="hidden" name="audio_detectado" value="0">
-</form>
-
 <script>
-    const limiar = parseFloat(document.getElementById("limiar").innerText);
-    const statusEl = document.getElementById("status");
-    let ultimaDeteccao = 0;
-    const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+const video = document.getElementById('bgVideo');
+const bottomSheet = document.getElementById('bottomSheet');
+const sideSheet = document.getElementById('sideSheet');
+const sheetHandle = document.getElementById('sheetHandle');
+const sideHandle = document.getElementById('sideHandle');
+const slots = document.querySelectorAll('.slot');
+const miniBtns = document.querySelectorAll('.mini-btn');
+const limiar = parseFloat(document.getElementById("limiar").innerText);
+const statusEl = document.getElementById("status");
+let ultimaDeteccao = 0;
 
-    async function enviarAudioDetectado() {
-        const formData = new FormData();
-        formData.append("audio_detectado", "1");
-        try {
-            await fetch("{% url 'audio_detectado' %}", {
-                method: "POST",
-                body: formData,
-                headers: { "X-CSRFToken": csrfToken }
-            });
-        } catch (err) { console.error("Erro ao enviar:", err); }
-    }
+// Ativa play no clique, caso autoplay seja bloqueado
+document.body.addEventListener('click', () => {
+    video.play();
+});
 
-    async function iniciarCaptura() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioCtx.createMediaStreamSource(stream);
-            const analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 512;
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            source.connect(analyser);
+// ABAS
+sheetHandle.onclick = () => bottomSheet.classList.toggle('open');
+sideHandle.onclick = () => sideSheet.classList.toggle('open');
+slots.forEach(s => s.onclick = () => s.classList.toggle('open'));
+miniBtns.forEach(b => b.onclick = () => b.classList.toggle('red'));
 
-            function calcularDBFS() {
-                analyser.getByteTimeDomainData(dataArray);
-                let sum = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    let sample = (dataArray[i] - 128) / 128;
-                    sum += sample * sample;
-                }
-                let rms = Math.sqrt(sum / dataArray.length);
-                let dbfs = 20 * Math.log10(rms);
+// CAPTURA DE ÁUDIO
+async function iniciarCaptura() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioCtx.createMediaStreamSource(stream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        source.connect(analyser);
 
-                if (dbfs > limiar) {
-                    statusEl.innerText = "⚠️ Pego";
-                    statusEl.style.color = "red";
-                    const agora = Date.now();
-                    if (agora - ultimaDeteccao > 2000) {
-                        ultimaDeteccao = agora;
-                        enviarAudioDetectado();
-                    }
-                } else {
-                    statusEl.innerText = "✔ Seguro";
-                    statusEl.style.color = "green";
-                }
-
-                requestAnimationFrame(calcularDBFS);
+        function calcularDBFS() {
+            analyser.getByteTimeDomainData(dataArray);
+            let sum=0;
+            for(let i=0;i<dataArray.length;i++){
+                let sample=(dataArray[i]-128)/128;
+                sum+=sample*sample;
             }
+            let rms=Math.sqrt(sum/dataArray.length);
+            let dbfs=20*Math.log10(rms);
 
-            calcularDBFS();
-        } catch (e) {
-            statusEl.innerText = "Erro no microfone";
-            console.error(e);
+            if(dbfs>limiar){
+                statusEl.innerText="⚠️ Pego";
+                statusEl.style.color="red";
+                const agora=Date.now();
+                if(agora-ultimaDeteccao>2000){
+                    ultimaDeteccao=agora;
+                    fetch("{% url 'audio_detectado' %}",{
+                        method:"POST",
+                        headers:{"Content-Type":"application/json","X-CSRFToken":document.querySelector("[name=csrfmiddlewaretoken]").value},
+                        body:JSON.stringify({audio_detectado:true})
+                    });
+                }
+            } else {
+                statusEl.innerText="✔ Seguro";
+                statusEl.style.color="green";
+            }
+            requestAnimationFrame(calcularDBFS);
         }
+        calcularDBFS();
+    } catch(e){
+        statusEl.innerText="Erro no microfone";
+        console.error(e);
     }
-
-    iniciarCaptura();
+}
+iniciarCaptura();
 </script>
-
 
 </body>
 </html>
