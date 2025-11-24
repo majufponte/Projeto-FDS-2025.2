@@ -271,7 +271,7 @@ Imagem do BugTracker do GitHub:
 
 <p>
   Segue link para o Deploy:<br>
-  <a href="https://projeto-fds-2025-2.onrender.com//" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://projeto-fds-2025-2.onrender.com/" target="_blank" style="text-decoration: none; color: inherit;">
     Ecos Do Fim
   </a>
 </p>
