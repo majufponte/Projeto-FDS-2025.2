@@ -23,12 +23,12 @@ def submit_login(request):
         usuario = authenticate(username=username,password=password)
         if usuario is not None:
             login(request,usuario)
-            return redirect('/')
+            return redirect('gerar_itens')
         else:
             messages.error(request, "Usuario ou senha invalido")
             return redirect('/login')
     else:
-        redirect('/')
+        redirect('gerar_itens')
         
 def register_user(request):
     if request.method == 'POST':
@@ -86,9 +86,12 @@ def testar_dificuldade(request): #Podemos rodardo lado do cliente com JS
 
 @login_required(login_url='login_user')
 def mapa(request):
+    id_personagem = request.session.get('id_personagem')
     id_partida = request.session.get('id_partida')
     if not id_partida:
         return redirect("criar_partida")
+    if not id_personagem:
+        return redirect("escolher_personagem")
 
     partida = get_object_or_404(Partida, id=id_partida)
     usuario = request.user
@@ -223,8 +226,8 @@ def jogo_audio(request):
 
 def gerar_itens(request):
     for i in range(1, 52):
-        Itens.objects.create(caminho=f"Carta_num-{i}.png")
-    return HttpResponse("Itens criados com sucesso!")
+        Itens.objects.get_or_create(caminho=f"Carta_num-{i}.png")
+    return redirect("pagina_inicial")
 """def detector_audio(limiar):
     print(sd.query_devices())
 

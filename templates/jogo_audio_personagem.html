@@ -310,15 +310,20 @@
         </div>
     </div>
 
-    <!-- SLOTS INFERIORES - BRANCOS -->
-    <div class="super-cards-container">
+    <!-- SLOTS INFERIORES - INVENTÁRIO -->
+<div class="super-cards-container">
+    {% for item in inventario %}
+        <div class="slot">
+            <div class="inner" style="background-image:url('{% static item.item.caminho %}'); background-size: cover; background-position: center;">
+            </div>
+        </div>
+    {% endfor %}
+
+    {% for i in 7|add:"-inventario|length"|make_list %}
         <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-        <div class="slot"><div class="inner"></div></div>
-    </div>
+    {% endfor %}
 </div>
+
 
 <!-- RETÂNGULO CENTRAL -->
 <div class="center-box" id="centerBox"></div>
