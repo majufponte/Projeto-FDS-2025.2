@@ -42,7 +42,6 @@
         z-index: 20;
         box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
     .navbar h2 {
         font-family: 'Cinzel Decorative', serif;
         font-size: 1.8em;
@@ -56,26 +55,60 @@
         justify-content: center;
         gap: 12px;
         position: relative;
-        z-index: 25;
     }
 
-    .top-slots { margin-top: 80px; }
+    .top-slots { 
+        margin-top: 0px; 
+        z-index: 25; 
+    }
+
     .slot {
         width: 130px;
         height: 200px;
         cursor: pointer;
         position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8em;
+        font-weight: bold;
     }
-    .slot .inner {
+
+    /* SLOTS DE CIMA AMARELOS */
+    .top-slots .slot .inner {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: #fff;
+        background: yellow;
         border-radius: 12px;
         bottom: 0;
         transition: bottom 0.3s ease;
         box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: bold;
     }
+
+    /* SLOTS DE BAIXO BRANCOS */
+    .super-cards-container .slot .inner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: white;
+        border-radius: 12px;
+        bottom: 0;
+        transition: bottom 0.3s ease;
+        box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        z-index: 35; /* na frente do PNG */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
     .slot.open .inner { bottom: 120px; }
 
     /* BOTTOM SHEET */
@@ -147,6 +180,18 @@
     .mini-btn { width: 30px; height: 22px; border-radius: 12px; cursor: pointer; background: #2ecc71; border:none; }
     .mini-btn.red { background: #e74c3c; }
 
+    /* NOVOS BOTÕES COM CONTADOR DENTRO DA white-box */
+    .counter-btn {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: none;
+        background: #e4a701ff;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
     /* SIDE SHEET RIGHT */
     .side-sheet {
         position: fixed;
@@ -179,6 +224,26 @@
     }
     .audio-box h3 { margin:0 0 10px 0; font-family: 'Cinzel Decorative'; color:#5a3e22; }
     #status { padding:6px 10px; background:#ddd; border-radius:8px; font-weight:bold; display:inline-block; margin-top:6px; }
+
+    /* RETÂNGULO CENTRAL DE NÚMERO */
+    .center-box {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 300px;
+        background: white;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2em;
+        font-weight: bold;
+        cursor: pointer;
+        z-index: 10; /* atrás da aba inferior */
+        user-select: none;
+    }
 </style>
 </head>
 <body>
@@ -197,6 +262,14 @@
     <h3>Detecção</h3>
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
+
+    <!-- NOVOS BOTÕES VERDES/VERMELHOS -->
+    <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+    </div>
 </div>
 
 <!-- TOP SLOTS -->
@@ -215,6 +288,7 @@
 <div class="bottom-sheet" id="bottomSheet">
     <div class="sheet-handle" id="sheetHandle"></div>
     <div class="white-box">
+        <!-- BOTÕES EXISTENTES -->
         <div class="inner-buttons">
             <button class="mini-btn"></button>
             <button class="mini-btn"></button>
@@ -224,7 +298,19 @@
         </div>
         <div class="side-box-left"></div>
         <div class="side-box-right"></div>
+
+        <!-- NOVOS BOTÕES COM CONTADOR -->
+        <div id="counterButtons" style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:8px;">
+            <button class="counter-btn">0</button>
+            <button class="counter-btn">0</button>
+            <button class="counter-btn">0</button>
+            <button class="counter-btn">0</button>
+            <button class="counter-btn">0</button>
+            <button class="counter-btn">0</button>
+        </div>
     </div>
+
+    <!-- SLOTS INFERIORES - BRANCOS -->
     <div class="super-cards-container">
         <div class="slot"><div class="inner"></div></div>
         <div class="slot"><div class="inner"></div></div>
@@ -234,6 +320,9 @@
     </div>
 </div>
 
+<!-- RETÂNGULO CENTRAL -->
+<div class="center-box" id="centerBox"></div>
+
 <script>
 const video = document.getElementById('bgVideo');
 const bottomSheet = document.getElementById('bottomSheet');
@@ -241,21 +330,49 @@ const sideSheet = document.getElementById('sideSheet');
 const sheetHandle = document.getElementById('sheetHandle');
 const sideHandle = document.getElementById('sideHandle');
 const slots = document.querySelectorAll('.slot');
+const topSlots = document.querySelectorAll('.top-slots .slot');
 const miniBtns = document.querySelectorAll('.mini-btn');
+const centerBox = document.getElementById("centerBox");
+
 const limiar = parseFloat(document.getElementById("limiar").innerText);
 const statusEl = document.getElementById("status");
 let ultimaDeteccao = 0;
 
-// Ativa play no clique, caso autoplay seja bloqueado
-document.body.addEventListener('click', () => {
-    video.play();
-});
+// Ativa play no clique caso autoplay seja bloqueado
+document.body.addEventListener('click', () => { video.play(); });
 
 // ABAS
 sheetHandle.onclick = () => bottomSheet.classList.toggle('open');
 sideHandle.onclick = () => sideSheet.classList.toggle('open');
 slots.forEach(s => s.onclick = () => s.classList.toggle('open'));
 miniBtns.forEach(b => b.onclick = () => b.classList.toggle('red'));
+
+// RETÂNGULO CENTRAL
+function gerarNumero() {
+    centerBox.innerText = Math.floor(Math.random() * 200) + 1;
+}
+gerarNumero();
+centerBox.addEventListener('click', gerarNumero);
+
+// TOP SLOTS - gerar números aleatórios dentro deles
+topSlots.forEach(slot => {
+    const numero = Math.floor(Math.random() * 200) + 1;
+    slot.querySelector('.inner').innerText = numero;
+});
+
+// BOTÕES COM CONTADOR DENTRO DO PNG
+const counterButtons = document.querySelectorAll('#counterButtons .counter-btn');
+counterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        let current = parseInt(btn.innerText) || 0;
+        current++;
+        btn.innerText = current;
+    });
+});
+
+// BOTÕES DE ÁUDIO (verde -> vermelho)
+const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
+let audioIndex = 0;
 
 // CAPTURA DE ÁUDIO
 async function iniciarCaptura() {
@@ -286,9 +403,17 @@ async function iniciarCaptura() {
                     ultimaDeteccao=agora;
                     fetch("{% url 'audio_detectado' %}",{
                         method:"POST",
-                        headers:{"Content-Type":"application/json","X-CSRFToken":document.querySelector("[name=csrfmiddlewaretoken]").value},
+                        headers:{
+                            "Content-Type":"application/json",
+                            "X-CSRFToken":document.querySelector("[name=csrfmiddlewaretoken]").value
+                        },
                         body:JSON.stringify({audio_detectado:true})
                     });
+                }
+                // Ativa o próximo botão verde para vermelho
+                if(audioIndex < audioBtns.length){
+                    audioBtns[audioIndex].style.background = "#e74c3c";
+                    audioIndex++;
                 }
             } else {
                 statusEl.innerText="✔ Seguro";
