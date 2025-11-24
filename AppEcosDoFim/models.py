@@ -29,11 +29,10 @@ class Jogador(models.Model):
         return self.nome
 
 class Itens(models.Model):
-    nome=models.CharField(max_length=50)
-    tipo=models.IntegerField()
-    descricao=models.TextField()
+    caminho = models.CharField(max_length=200)
     def __str__(self):
-        return self.nome
+        return f"Item {self.id}"
+
 
 class Inventario(models.Model):
     partida=models.ForeignKey(Partida, on_delete=models.CASCADE)
@@ -41,4 +40,4 @@ class Inventario(models.Model):
     item=models.ForeignKey(Itens, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
-        return f"{self.jogador.nome} pegou {self.item.nome}"
+        return f"{self.jogador.nome} pegou {self.item.id}"
