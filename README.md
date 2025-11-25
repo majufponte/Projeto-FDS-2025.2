@@ -287,7 +287,7 @@ Imagem do BugTracker do GitHub:
 <p>
  <br>Segue o link para o screencast do Ecos Do Fim:
 
-  <a href="" target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://www.canva.com/design/DAG5q4jZzEc/zbe1tbhAT8w7Pa7y7wFvFA/edit?utm_content=DAG5q4jZzEc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" style="text-decoration: none; color: inherit;">
    Deploy
   </a>
 
