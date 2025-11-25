@@ -189,7 +189,8 @@ Imagem do Quadro da Terceira Sprint:
 
 Imagem do BugTracker do GitHub:
 
-![BugTracker](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/BugTracker.png?raw=true)
+![BugTracker](<img width="1920" height="896" alt="image" src="https://github.com/user-attachments/assets/ff94801e-8ab5-4788-a5a3-f889b5456eaa" />
+)
 
 
 ![Problema no Aúdio](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/ProblemaNoA%C3%BAdio.png?raw=true)
@@ -242,32 +243,39 @@ Programação em Par Experimentada - Segue link com o relatório atualizado:
 
 <br> Histórias Escolhidas para Implementação: 
 
-<br>História 4 - Como jogador gostaria de ter uma noção de quantos suprimentos eu estou usando por dia e quanto eu trouxe pro estoque afim de ter uma melhor gestão e de pesquisa rápida.
+<br>História 1 - Como jogador, eu gostaria de salvar minha partida para poder continuar jogando depois do ponto onde parei.
 
-História 7 - Como jogador eu gostaria de ter um feedback em tempo real do áudio ao meu arredor pra assim ter uma noção de como agir e de como me portar durante a sessão e quantas vezes eu superei o limite de áudio.
-
-
+História 5 - Como jogador eu gostaria ter um espaço onde eu consiga ver quantos evento tenho que enfrentar e quais eu já enfrentei pra eu sempre ter uma noção dos acontecimentos pra um melhor preparo pra àqueles que eu não enfrentei ainda.
 
 
 
-Imagem do Quadro da Quarta Sprint:
 
-![Quadro da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/Board_entrega3.jpg?raw=true)
 
 Imagem do Quadro da Quarta Sprint:
 
-![Backlog da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/Backlog_entrega3.jpg?raw=true)
+![Quadro da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Quadro_4.jpg?raw=true)
+
+Imagem do Backlog da Quarta Sprint:
+
+![Backlog da Sprint](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Sprint_4.jpg?raw=true)
+
+Imagem de Todas as Sprints Concluídas:
+
+![Sprints Concluídas](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Concluido.jpg?raw=true)
 
 
 Imagem do BugTracker do GitHub:
 
-![BugTracker](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/BugTracker.png?raw=true)
+![BugTracker](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Bugtracker_4.png?raw=true)
 
 
 ![Problema no Aúdio](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/ProblemaNoA%C3%BAdio.png?raw=true)
 
 
 ![Erro no Deploy](https://github.com/majufponte/Projeto-FDS-2025.2/blob/prod/assets/ErroNoDeploy.png?raw=true)
+
+
+![Erro no HTML](https://github.com/majufponte/Projeto-FDS-2025.2/blob/main/assets/Erro_html_4.png?raw=true)
 
 <p>
   Segue link para o Deploy:<br>
