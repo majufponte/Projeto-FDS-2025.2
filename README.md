@@ -301,7 +301,7 @@ Imagem do BugTracker do GitHub:
 
    <br> Segue o link para o screencast dos Testes Automatizados:
 
-  <a href=" " target="_blank" style="text-decoration: none; color: inherit;">
+  <a href="https://youtu.be/8dHk0W21yVk" target="_blank" style="text-decoration: none; color: inherit;">
    Testes Automatizados
   </a>
 </p>
