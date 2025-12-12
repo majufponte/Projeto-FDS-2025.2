@@ -18,12 +18,10 @@
       background: url("{% static 'mapa_gibralta.jpg' %}") center/cover no-repeat;
     }
 
-    /* Botão Inventário */
-    #btnInventario {
+    /* Botões de Ação (Inventário e Fechar) */
+    .btn-acao {
       position: fixed;
       top: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.7);
       color: white;
       padding: 10px 18px;
       font-size: 18px;
@@ -31,10 +29,26 @@
       border-radius: 8px;
       cursor: pointer;
       z-index: 20;
+      transition: opacity 0.3s ease, background 0.2s, right 0.4s ease; /* Adicionado transição para 'right' */
     }
 
-    #btnInventario:hover {
+    .btn-acao:hover {
       background: rgba(255,255,255,0.2);
+    }
+    
+    #btnInventario {
+        right: 10px;
+        background: rgba(0,0,0,0.7);
+    }
+    
+    #btnCloseInventario {
+        font-size: 24px;
+        line-height: 1;
+        padding: 8px 16px;
+        background: rgba(255,255,255,0.2);
+        right: 10px;
+        z-index: 40; 
+        display: none;
     }
 
     /* Painel do inventário */
@@ -50,17 +64,31 @@
       transition: right 0.4s ease;
       z-index: 30;
       overflow-y: auto;
+      
+      display: flex; 
+      flex-direction: column;
+      align-items: center;
     }
 
     #painelInventario.aberto {
       right: 0;
     }
 
+    .btn-fechar-aberto {
+
+        right: 0px !important;
+        background: crimson;
+        border-radius: 8px 0 0 8px !important;
+    }
+
     .item {
       background: rgba(255,255,255,0.1);
-      margin-bottom: 10px;
-      padding: 10px;
+      margin-bottom: 15px; 
+      padding: 5px; 
       border-radius: 6px;
+      width: 90%; 
+      max-width: 250px; 
+      height: 180px; 
     }
 
     /* Pontos no mapa */
@@ -81,25 +109,32 @@
 
 <body>
 
-  <!-- Botão do inventário -->
-  <button id="btnInventario">Inventário</button>
+  <button id="btnInventario" class="btn-acao">Inventário</button>
+  
+  <button id="btnCloseInventario" class="btn-acao">X</button>
 
-  <!-- Painel lateral -->
   <div id="painelInventario">
     <h2>Inventário</h2>
 
-    {% for item in inventario %}
-      <div class="item">
-        <strong>{{ item.item.nome }}</strong><br>
-        Tipo: {{ item.item.tipo }}<br>
-        <em>{{ item.item.descricao }}</em>
+    {% for item_inv in inventario %}
+      <div class="item" style="height: 150px; text-align: center; padding: 0;">
+        <div style="
+          width: 100%; 
+          height: 100%; 
+          border-radius: 6px; 
+          background-image: url('{% static item_inv.item.caminho %}'); 
+          background-size: contain; 
+          background-repeat: no-repeat; 
+          background-position: center;
+          margin-bottom: 5px;
+        ">
+        </div>
       </div>
     {% empty %}
       <p>Seu inventário está vazio.</p>
     {% endfor %}
   </div>
 
-  <!-- MAPA COM OS PONTOS -->
   <form method="POST" style="position:absolute; top:12%; left:50%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="1">
@@ -107,7 +142,7 @@
       class="ponto {% if 1 in explorados %}explorado{% else %}nao-explorado{% endif %}">
     </button>
   </form>
-
+    
   <form method="POST" style="position:absolute; top:20%; left:90%;">
     {% csrf_token %}
     <input type="hidden" name="id_do_local" value="2">
@@ -181,12 +216,28 @@
   </form>
 
   <script>
-    const botao = document.getElementById("btnInventario");
+    const btnInventario = document.getElementById("btnInventario");
+    const btnCloseInventario = document.getElementById("btnCloseInventario");
     const painel = document.getElementById("painelInventario");
 
-    botao.addEventListener("click", () => {
+    function toggleInventario() {
       painel.classList.toggle("aberto");
-    });
+      
+      const isAberto = painel.classList.contains("aberto");
+
+      if (isAberto) {
+        btnInventario.style.display = 'none';
+        btnCloseInventario.style.display = 'block';
+        btnCloseInventario.classList.add('btn-fechar-aberto');
+      } else {
+        btnInventario.style.display = 'block';
+        btnCloseInventario.style.display = 'none';
+        btnCloseInventario.classList.remove('btn-fechar-aberto');
+      }
+    }
+
+    btnInventario.addEventListener("click", toggleInventario);
+    btnCloseInventario.addEventListener("click", toggleInventario);
   </script>
 
 </body>
