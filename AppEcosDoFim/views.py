@@ -206,10 +206,38 @@ def jogo_audio(request):
     id_partida = request.session.get('id_partida')
     id_personagem = request.session.get('id_personagem')
 
+    if not id_partida:
+        return redirect("criar_partida")
+    if not id_personagem:
+        return redirect("escolher_personagem")
+    
     jogador = get_object_or_404(Jogador, id=id_personagem, partida=id_partida, usuario=request.user)
-    inventario = Inventario.objects.filter(jogador=jogador)
+    partida = get_object_or_404(Partida, id=id_partida)
+    
+    itens = list(Itens.objects.all())
+    if itens:
+        item_ganho = random.choice(itens)
+        Inventario.objects.create(jogador=jogador, partida=partida, item=item_ganho)
+    
+    inventario = Inventario.objects.filter(jogador=jogador).select_related('item') 
 
     if request.method == "POST":
+        acao = request.POST.get("acao")
+        if acao == "usar_item":
+            item_inventario_id = request.POST.get("item_id_usado")
+            
+            try:
+                item_a_usar = Inventario.objects.get(
+                    id=item_inventario_id,
+                    jogador=jogador,
+                    partida=partida 
+                )
+                
+                item_a_usar.delete() 
+                return redirect("jogo_audio") 
+
+            except Inventario.DoesNotExist:
+                pass 
         detectado = request.POST.get("audio_detectado", "0") 
         detectado_bool = bool(int(detectado)) 
 
