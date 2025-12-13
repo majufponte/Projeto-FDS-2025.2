@@ -104,6 +104,40 @@
 
     .nao-explorado { background: crimson; }
     .explorado { background: green; }
+    
+    .counter-btn {
+    width: 40px; /* Aumentei um pouco para caber números maiores */
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white; /* Um contorno branco ajuda no destaque */
+    background: #e4a701ff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    /* Alinhamento perfeito do texto */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+    outline: none;
+  
+}
+.btn-menos {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid white;
+    background: crimson;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px; /* Espaço entre o laranja e o vermelho */
+    transition: transform 0.1s;
+}
+.btn-menos:hover { background: darkred; }
   </style>
 </head>
 
@@ -112,6 +146,56 @@
   <button id="btnInventario" class="btn-acao">Inventário</button>
   
   <button id="btnCloseInventario" class="btn-acao">X</button>
+
+  <div id="counterButtons">
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 150px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">metal</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 250px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">madeira</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 350px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">vidro</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 450px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">polvóra</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 550px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">tecido</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+
+    <div class="counter-btn-container" style="position: absolute; top: 580px; left: 650px; display: flex; flex-direction: column; align-items: center;">
+        <span style="color: white; font-family: sans-serif; font-size: 12px; margin-bottom: 5px;">livro</span>
+        <div style="display: flex; align-items: center;">
+            <button class="counter-btn">0</button>
+            <button class="btn-menos">-</button>
+        </div>
+    </div>
+</div>
 
   <div id="painelInventario">
     <h2>Inventário</h2>
@@ -215,29 +299,66 @@
     </button>
   </form>
 
+  
   <script>
-    const btnInventario = document.getElementById("btnInventario");
-    const btnCloseInventario = document.getElementById("btnCloseInventario");
-    const painel = document.getElementById("painelInventario");
+      const btnInventario = document.getElementById("btnInventario");
+      const btnCloseInventario = document.getElementById("btnCloseInventario");
+      const painel = document.getElementById("painelInventario");
 
-    function toggleInventario() {
-      painel.classList.toggle("aberto");
-      
-      const isAberto = painel.classList.contains("aberto");
+      // --- LÓGICA DOS CONTADORES ---
 
-      if (isAberto) {
-        btnInventario.style.display = 'none';
-        btnCloseInventario.style.display = 'block';
-        btnCloseInventario.classList.add('btn-fechar-aberto');
-      } else {
-        btnInventario.style.display = 'block';
-        btnCloseInventario.style.display = 'none';
-        btnCloseInventario.classList.remove('btn-fechar-aberto');
+      // 1. Botão Laranja (Aumentar)
+      const botoesAumentar = document.querySelectorAll('.counter-btn');
+      botoesAumentar.forEach(btn => {
+          btn.addEventListener('click', function() {
+              let valorAtual = parseInt(this.innerText) || 0;
+              this.innerText = valorAtual + 1;
+              
+              // Efeito visual de clique
+              this.style.transform = "scale(0.9)";
+              setTimeout(() => { this.style.transform = "scale(1)"; }, 100);
+          });
+      });
+
+      // 2. Botão Vermelho (Diminuir)
+      const botoesDiminuir = document.querySelectorAll('.btn-menos');
+      botoesDiminuir.forEach(btn => {
+          btn.addEventListener('click', function() {
+              // Encontra o botão laranja que está no mesmo container que este botão vermelho
+              const btnLaranja = this.parentElement.querySelector('.counter-btn');
+              let valorAtual = parseInt(btnLaranja.innerText) || 0;
+              
+              // Diminui apenas se for maior que zero (para não ficar negativo)
+              if (valorAtual > 0) {
+                  btnLaranja.innerText = valorAtual - 1;
+              }
+
+              // Efeito visual de clique
+              this.style.transform = "scale(0.8)";
+              setTimeout(() => { this.style.transform = "scale(1)"; }, 100);
+          });
+      });
+
+
+      // --- LÓGICA DO INVENTÁRIO ---
+
+      function toggleInventario() {
+          painel.classList.toggle("aberto");
+          const isAberto = painel.classList.contains("aberto");
+
+          if (isAberto) {
+              btnInventario.style.display = 'none';
+              btnCloseInventario.style.display = 'block';
+              btnCloseInventario.classList.add('btn-fechar-aberto');
+          } else {
+              btnInventario.style.display = 'block';
+              btnCloseInventario.style.display = 'none';
+              btnCloseInventario.classList.remove('btn-fechar-aberto');
+          }
       }
-    }
 
-    btnInventario.addEventListener("click", toggleInventario);
-    btnCloseInventario.addEventListener("click", toggleInventario);
+      btnInventario.addEventListener("click", toggleInventario);
+      btnCloseInventario.addEventListener("click", toggleInventario);
   </script>
 
 </body>

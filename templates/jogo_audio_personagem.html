@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ecos do Fim - Jogo de Áudio</title>
+<title>Ecos do Fim - Abas Retráteis</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
@@ -49,7 +49,7 @@
         margin: 0;
     }
 
-    /* SLOTS GERAIS */
+    /* SLOTS */
     .top-slots, .super-cards-container {
         display: flex;
         justify-content: center;
@@ -90,34 +90,9 @@
         font-weight: bold;
     }
 
-    /* INVENTÁRIO INFERIOR */
-    /* INVENTÁRIO INFERIOR */
-    .super-cards-container .slot .inner {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        /* MUDANÇA: Fundo escuro/transparente para slots vazios */
-        background: rgba(255, 255, 255, 0.05); 
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 12px;
-        bottom: 0;
-        transition: bottom 0.3s ease;
-        z-index: 35;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    
 
-    /* MUDANÇA: Apenas slots COM ITENS ficam brancos/destacados */
-    .super-cards-container .slot.draggable-item .inner {
-        background: white; 
-        box-shadow: 0 0 6px rgba(0,0,0,0.4);
-        border: none;
-    }
-
-    .slot.open .inner { bottom: 120px; }
-
-    /* BOTTOM SHEET (ALVO DO DROP) */
+    /* BOTTOM SHEET */
     .bottom-sheet {
         position: fixed;
         bottom: 0;
@@ -135,12 +110,6 @@
         z-index: 30;
     }
     .bottom-sheet.open { transform: translate(-50%,0); }
-    /* Efeito visual quando arrasta item em cima */
-    .bottom-sheet.highlight {
-        background: rgba(46, 204, 113, 0.3);
-        box-shadow: 0 -4px 20px rgba(46, 204, 113, 0.6);
-    }
-
     .sheet-handle {
         width: 70px;
         height: 8px;
@@ -165,44 +134,6 @@
         box-shadow: 0 0 10px rgba(8,8,8,0.3);
         z-index: 30;
     }
-
-    .counter-btn-container {
-        /* Adicionado para alinhar o botão de menos ao lado do número */
-        display: flex;
-        align-items: center;
-        gap: 4px; 
-    }
-
-    /* Botão Principal (Amarelo - Aumenta) */
-    .counter-btn {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        border: none;
-        background: #e4a701ff;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 1em; /* Ajuste de fonte */
-    }
-
-    /* NOVO: Botão de Menos (Vermelho - Diminui) */
-    .sub-btn {
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        border: none;
-        background: #c0392b; /* Vermelho */
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2em;
-        line-height: 0; /* Ajuda a centralizar o traço */
-    }
-    .sub-btn:hover { background: #e74c3c; }
 
     .inner-buttons {
         position: absolute;
@@ -235,7 +166,7 @@
         top: 60px;
         right: 0;
         width: 160px;
-        height: 600px; 
+        height: 300px;
         background: rgba(0,0,0,0.85);
         color: #fff;
         transform: translateX(90%);
@@ -243,44 +174,15 @@
         border-bottom-left-radius: 12px;
         transition: transform 0.35s ease;
         z-index: 30;
-        padding-top: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
     }
     .side-sheet.open { transform: translateX(0); }
     .side-handle { position: absolute; left: -20px; top: 20px; width: 30px; height: 80px; background: #555; border-radius: 10px; cursor:pointer; }
+
     
-    #side-inventory-container {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 8px; 
-        padding: 10px;
-        overflow-y: auto;
-        height: calc(100% - 40px);
-        justify-items: center; 
-    }
-    .side-item-slot {
-        width: 60px; 
-        height: 60px; 
-        cursor: pointer; 
-    }
-    .side-item-slot .inner {
-        width: 100%;
-        height: 100%;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        background-color: #555;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 0.8em;
-        background-size: cover;
-        background-position: center;
-        transition: transform 0.1s;
-    }
-    .side-item-slot:hover .inner {
-        transform: scale(1.05); 
-        box-shadow: 0 0 10px #70e6a3;
-    }
 
     /* AUDIO BOX */
     .audio-box {
@@ -317,69 +219,36 @@
         user-select: none;
     }
 
-    /* CAIXA DE DROP (Para usar item do inventário) */
+    /* ⭐ CLASSE PARA TODOS OS RETÂNGULOS SPAWNADOS */
     .draggable-box {
         position: fixed;
-        top: 150px;
-        left: 50%;
-        transform: translateX(-50%);
         width: 220px;
         height: 160px;
-        background: rgba(255, 255, 255, 0.9);
-        border: 2px dashed #e74c3c;
+        background: white;
         border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.4);
-        z-index: 40; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        z-index: 100; /* Sempre no topo */
         cursor: grab;
         display: flex;
         align-items: center;
         justify-content: center;
-        text-align: center;
+        font-weight: bold;
         color: #333;
-    }
-    .draggable-box:active { cursor: grabbing; }
-    .draggable-box p { padding: 10px; }
-    
-    /* ⭐ CLASSE DO ITEM FLUTUANTE (Vem da aba lateral) */
-    .floating-item {
-        position: fixed;
-        width: 80px; 
-        height: 80px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-        border: 2px solid white;
-        z-index: 1000; /* Acima de tudo */
-        cursor: grab;
         user-select: none;
     }
-    .floating-item:active { cursor: grabbing; border-color: #e4a701; }
-
-    /* ITENS INVENTÁRIO */
-    .draggable-item { cursor: pointer; } 
+    .draggable-box:active { cursor: grabbing; }
 
 </style>
 </head>
-<body ondragover="permitirDrop(event)" ondrop="jogarFora(event)">
-
+<body>
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
 <video id="bgVideo" autoplay muted loop class="video-bg">
     <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
     Seu navegador não suporta vídeo HTML5.
 </video>
-<form id="form-usar-item" method="POST" style="display: none;">
-    {% csrf_token %}
-    <input type="hidden" name="item_id_usado" id="item_id_usado" value="">
-    <input type="hidden" name="acao" value="usar_item">
-</form>
 
-<form id="form-escolher-item" method="POST" style="display: none;">
-    {% csrf_token %}
-    <input type="hidden" name="item_id_escolhido" id="item_id_escolhido" value="">
-    <input type="hidden" name="acao" value="escolher_item">
-</form>
+
 
 <div class="navbar"><h2>Ecos do Fim</h2></div>
 
@@ -387,17 +256,12 @@
     <h3>Detecção</h3>
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
-
-    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p>        
-    
-    <div style="display:flex; align-items: center; gap: 10px; margin-top:10px;">
-        <div id="audioButtons" style="display:flex; gap:6px;">
-            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-        </div>
-        <strong id="contador-erros" style="font-size: 1.5em; color: #555;">0</strong>
+    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p>
+    <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
     </div>
 </div>
 
@@ -407,23 +271,15 @@
     <div class="slot"><div class="inner"></div></div>
 </div>
 
-
 <div class="side-sheet" id="sideSheet">
     <div class="side-handle" id="sideHandle"></div>
-    <div id="side-inventory-container">
-        <h3 style="grid-column: 1 / 3; text-align: center; margin-bottom: 5px; font-size: 1.2em; width: 100%;">Escolha</h3>
-        {% for item_base in itens_para_escolha %}
-            <div class="side-item-slot" data-item-id="{{ item_base.id }}">
-                <div class="inner" style="background-image:url('{% static item_base.caminho %}');"></div>
-            </div>
-        {% empty %}
-             <p style="grid-column: 1 / 3; padding: 10px;">Nenhum item disponível.</p>
-        {% endfor %}
-    </div>
+    <h3 style="font-family: 'Cinzel Decorative'; font-size: 1.1em; margin-bottom: 5px;">Menu</h3>
+    <button class="side-btn" id="btnAcaoLateral">USAR ITEM</button>
 </div>
 
-<div class="bottom-sheet" id="bottomSheet" ondrop="event.stopPropagation();" ondragover="permitirDrop(event)">
+<div class="bottom-sheet" id="bottomSheet">
     <div class="sheet-handle" id="sheetHandle"></div>
+
     <div class="white-box">
         <div class="inner-buttons">
             <button class="mini-btn"></button>
@@ -432,49 +288,33 @@
             <button class="mini-btn"></button>
             <button class="mini-btn"></button>
         </div>
+
         <div id="counterButtons">
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 55px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 75px;">
                 <button class="counter-btn">0</button>
             </div>
-            
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 180px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 200px;">
                 <button class="counter-btn">0</button>
             </div>
-            
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 330px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 350px;">
                 <button class="counter-btn">0</button>
             </div>
-            
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 455px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 475px;">
                 <button class="counter-btn">0</button>
             </div>
-            
-            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 330px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 350px;">
                 <button class="counter-btn">0</button>
             </div>
-            
-            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 455px;">
-                <button class="sub-btn">-</button>
+            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 475px;">
                 <button class="counter-btn">0</button>
             </div>
         </div>
     </div>
 
     <div class="super-cards-container">
-        {% for item_inv in inventario %}
-            <div class="slot draggable-item" 
-                 draggable="true" 
-                 data-item-id="{{ item_inv.id }}">
-                <div class="inner" 
-                      style="background-image:url('{% static item_inv.item.caminho %}'); 
-                             background-size: cover; 
-                             background-position: center;">
-                </div>
+        {% for item in inventario %}
+            <div class="slot">
+                <div class="inner" style="background-image:url('{% static item.item.caminho %}'); background-size: cover; background-position: center;"></div>
             </div>
         {% endfor %}
 
@@ -487,395 +327,162 @@
 <div class="center-box" id="centerBox"></div>
 
 <script>
-    const video = document.getElementById('bgVideo');
-    const bottomSheet = document.getElementById('bottomSheet');
-    const sideSheet = document.getElementById('sideSheet');
-    const sheetHandle = document.getElementById('sheetHandle');
-    const sideHandle = document.getElementById('sideHandle');
-    const topSlots = document.querySelectorAll('.top-slots .slot');
-    const miniBtns = document.querySelectorAll('.mini-btn');
-    const centerBox = document.getElementById("centerBox");
-    const sideSlots = document.querySelectorAll('.side-item-slot');
-    const inventarioContainer = document.querySelector('.super-cards-container');
+const video = document.getElementById('bgVideo');
+const bottomSheet = document.getElementById('bottomSheet');
+const sideSheet = document.getElementById('sideSheet');
+const sheetHandle = document.getElementById('sheetHandle');
+const sideHandle = document.getElementById('sideHandle');
+const btnAcaoLateral = document.getElementById('btnAcaoLateral');
+const slots = document.querySelectorAll('.slot');
+const topSlots = document.querySelectorAll('.top-slots .slot');
+const miniBtns = document.querySelectorAll('.mini-btn');
+const centerBox = document.getElementById("centerBox");
 
-    const limiar = parseFloat(document.getElementById("limiar").innerText);
-    const statusEl = document.getElementById("status");
-    const dbfsDisplay = document.getElementById("dbfs-display");
-    let ultimaDeteccao = 0;
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+const limiar = parseFloat(document.getElementById("limiar").innerText) || -50;
+const statusEl = document.getElementById("status");
+const dbfsDisplay = document.getElementById("dbfs-display");
+let ultimaDeteccao = 0;
 
-    // PLAY DE VÍDEO
-    document.body.addEventListener('click', () => { video.play(); });
+// PLAY DE VÍDEO
+document.body.addEventListener('click', () => { video.play(); });
 
-    // ABAS (Abre e fecha)
-    sheetHandle.onclick = () => bottomSheet.classList.toggle('open');
-    sideHandle.onclick = () => sideSheet.classList.toggle('open');
-    topSlots.forEach(s => s.onclick = () => s.classList.toggle('open'));
-    miniBtns.forEach(b => b.onclick = () => b.classList.toggle('red'));
+// ABAS
+sheetHandle.onclick = () => bottomSheet.classList.toggle('open');
+sideHandle.onclick = () => sideSheet.classList.toggle('open');
+slots.forEach(s => s.onclick = () => s.classList.toggle('open'));
+miniBtns.forEach(b => b.onclick = () => b.classList.toggle('red'));
 
-    // =========================================================================
-    // ⭐ ATUALIZADO: LÓGICA DE BOTÕES (MAIS E MENOS)
-    // =========================================================================
+// ⭐ SPAWN DE NOVOS RETÂNGULOS
+btnAcaoLateral.onclick = () => {
+    const novoBox = document.createElement('div');
+    novoBox.className = 'draggable-box';
+    novoBox.innerText = "Novo Item";
     
-    // Gerar número aleatório central
-    function gerarNumero() { centerBox.innerText = Math.floor(Math.random() * 200) + 1; }
-    gerarNumero();
-    centerBox.addEventListener('click', gerarNumero);
+    // Posição inicial levemente aleatória para não ficarem todos um em cima do outro
+    const randomX = Math.random() * 50 + 40; 
+    const randomY = Math.random() * 50 + 150;
+    novoBox.style.left = randomX + "px";
+    novoBox.style.top = randomY + "px";
+    
+    document.body.appendChild(novoBox);
+    
+    // Feedback visual no botão
+    btnAcaoLateral.style.background = "#fff";
+    setTimeout(() => { btnAcaoLateral.style.background = "#e4a701"; }, 150);
+};
 
-    // Gerar números nos slots superiores
-    topSlots.forEach(slot => { slot.querySelector('.inner').innerText = Math.floor(Math.random() * 200) + 1; });
+// ⭐ LÓGICA DE ARRASTAR GLOBAL (Funciona para elementos novos)
+let activeBox = null;
+let offsetX = 0, offsetY = 0;
 
-    // 1. Botões de AUMENTAR (O botão amarelo original)
-    document.querySelectorAll('.counter-btn').forEach(btn => {
-        btn.addEventListener('click', () => { 
-            btn.innerText = (parseInt(btn.innerText) || 0) + 1; 
-        });
-    });
-
-    // 2. Botões de DIMINUIR (O novo botão vermelho)
-    document.querySelectorAll('.sub-btn').forEach(subBtn => {
-        subBtn.addEventListener('click', (e) => {
-            // Procura o botão amarelo vizinho dentro do mesmo container
-            const container = e.target.closest('.counter-btn-container');
-            if (container) {
-                const displayBtn = container.querySelector('.counter-btn');
-                let valorAtual = parseInt(displayBtn.innerText) || 0;
-                
-                // Impede que o número fique negativo
-                if (valorAtual > 0) {
-                    displayBtn.innerText = valorAtual - 1;
-                }
-            }
-        });
-    });
-
-
-    // =========================================================================
-    // ⭐ LÓGICA DE DRAG & DROP PARA ADICIONAR/USAR ITENS
-    // =========================================================================
-
-    let activeElement = null;
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-
-    // FUNÇÃO AJAX PARA ADICIONAR ITEM (Lógica Django)
-    async function addItemToInventory(itemId, itemCaminho) {
-        // 1. Tenta achar um slot vazio visual
-        const slotVazio = inventarioContainer.querySelector('.slot:not(.draggable-item)');
+document.addEventListener("mousedown", (e) => {
+    if (e.target.classList.contains("draggable-box")) {
+        activeBox = e.target;
+        // Coloca o que você clicou na frente de tudo
+        activeBox.style.zIndex = 1000;
         
-        const formData = new FormData();
-        formData.append('item_id_escolhido', itemId);
-        formData.append('acao', 'escolher_item'); 
-        
-        try {
-            const response = await fetch(window.location.href, {
-                method: 'POST',
-                headers: { 'X-CSRFToken': csrfToken },
-                body: formData,
-            });
-
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                console.error("Erro fatal: O servidor retornou HTML em vez de JSON.");
-                return;
-            }
-
-            const data = await response.json();
-
-            if (data.success) {
-                // CRIAR O NOVO SLOT DO ITEM
-                const novoSlot = document.createElement('div');
-                novoSlot.className = 'slot draggable-item';
-                novoSlot.setAttribute('draggable', 'true');
-                novoSlot.setAttribute('data-item-id', data.item_id);
-                
-                // Renderiza a imagem
-                novoSlot.innerHTML = `<div class="inner" style="background-image:url('${data.item_caminho}'); background-size: cover; background-position: center;"></div>`;
-                
-                // Re-ativa o drag para este novo item
-                novoSlot.addEventListener('dragstart', iniciarArrasto);
-
-                if (slotVazio) {
-                    slotVazio.replaceWith(novoSlot);
-                } else {
-                    inventarioContainer.appendChild(novoSlot);
-                }
-                console.log("Item adicionado ao inventário:", data.item_id);
-
-            } else {
-                alert("Erro ao salvar item: " + data.error);
-            }
-        } catch (error) {
-            console.error("Erro na requisição:", error);
-        }
+        const rect = activeBox.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
     }
+});
 
+document.addEventListener("mousemove", (e) => {
+    if (!activeBox) return;
+    activeBox.style.left = `${e.clientX - offsetX}px`;
+    activeBox.style.top = `${e.clientY - offsetY}px`;
+});
 
-    // ⭐ LÓGICA 1: SPAWNAR ITEM FLUTUANTE DA ABA LATERAL
-    sideSlots.forEach(slot => {
-        slot.addEventListener('mousedown', (e) => { 
-            e.preventDefault(); 
-            
-            const itemId = slot.getAttribute('data-item-id');
-            const inner = slot.querySelector('.inner');
-            const itemCaminho = inner.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/)[1];
-            
-            const novaAba = document.createElement('div');
-            novaAba.className = 'floating-item';
-            novaAba.style.backgroundImage = inner.style.backgroundImage;
-            novaAba.setAttribute('data-target-id', itemId); 
-            novaAba.setAttribute('data-item-caminho', itemCaminho);
-
-            novaAba.style.left = `${e.clientX - 40}px`;
-            novaAba.style.top = `${e.clientY - 40}px`;
-            
-            document.body.appendChild(novaAba);
-
-            activeElement = novaAba;
-            activeElement.style.zIndex = 2000;
-            
-            const rect = activeElement.getBoundingClientRect();
-            dragOffsetX = e.clientX - rect.left;
-            dragOffsetY = e.clientY - rect.top;
-            activeElement.style.cursor = 'grabbing';
-            
-            document.dispatchEvent(new MouseEvent('mousemove', {
-                clientX: e.clientX,
-                clientY: e.clientY
-            }));
-        });
-    });
-
-
-    // ⭐ LÓGICA 2: ARRASTAR ELEMENTOS (Draggable Box e Itens Flutuantes)
-    document.addEventListener("mousedown", (e) => {
-        if (e.target.classList.contains("draggable-box")) { 
-            activeElement = e.target;
-            activeElement.style.zIndex = 2000;
-            
-            const rect = activeElement.getBoundingClientRect();
-            dragOffsetX = e.clientX - rect.left;
-            dragOffsetY = e.clientY - rect.top;
-            activeElement.style.cursor = 'grabbing';
-        }
-    });
-
-    document.addEventListener("mousemove", (e) => {
-        if (!activeElement) return;
-        e.preventDefault();
-        
-        activeElement.style.left = `${e.clientX - dragOffsetX}px`;
-        activeElement.style.top = `${e.clientY - dragOffsetY}px`;
-        if(activeElement.classList.contains("draggable-box")) { activeElement.style.transform = "none"; }
-
-        // Feedback visual
-        if (activeElement.classList.contains("floating-item")) {
-            const sheetRect = bottomSheet.getBoundingClientRect();
-            const itemRect = activeElement.getBoundingClientRect();
-            const cx = itemRect.left + itemRect.width/2;
-            const cy = itemRect.top + itemRect.height/2;
-
-            if (cx >= sheetRect.left && cx <= sheetRect.right && cy >= sheetRect.top && cy <= sheetRect.bottom) {
-                bottomSheet.classList.add('highlight');
-            } else {
-                bottomSheet.classList.remove('highlight');
-            }
-        }
-    });
-
-    // ⭐ LÓGICA 3: SOLTAR O ITEM -> ADICIONAR AO INVENTÁRIO
-    document.addEventListener("mouseup", () => {
-        if (activeElement) {
-            
-            if (activeElement.classList.contains("floating-item")) {
-                const sheetRect = bottomSheet.getBoundingClientRect();
-                const itemRect = activeElement.getBoundingClientRect();
-                const cx = itemRect.left + itemRect.width/2;
-                const cy = itemRect.top + itemRect.height/2;
-
-                if (cx >= sheetRect.left && cx <= sheetRect.right && cy >= sheetRect.top && cy <= sheetRect.bottom) {
-                    const itemId = activeElement.getAttribute('data-target-id');
-                    const itemCaminho = activeElement.getAttribute('data-item-caminho');
-                    
-                    activeElement.remove();
-                    bottomSheet.classList.remove('highlight');
-                    bottomSheet.classList.add('open');
-                    
-                    addItemToInventory(itemId, itemCaminho); 
-                } else {
-                     activeElement.remove();
-                }
-            }
-            
-            if (activeElement) {
-                activeElement.style.zIndex = activeElement.classList.contains("draggable-box") ? 40 : 1000;
-                activeElement.style.cursor = 'grab';
-                activeElement = null;
-            }
-            bottomSheet.classList.remove('highlight');
-        }
-    });
-
-
-    // =========================================================================
-    // ⭐ LÓGICA DE USO E DELEÇÃO (Drag Nativo)
-    // =========================================================================
-
-    document.querySelectorAll('.draggable-item').forEach(itemSlot => {
-        itemSlot.addEventListener('dragstart', iniciarArrasto);
-    });
-
-    function permitirDrop(ev) { ev.preventDefault(); }
-
-    function iniciarArrasto(ev) {
-        const itemID = ev.currentTarget.getAttribute('data-item-id');
-        ev.dataTransfer.setData("text/plain", itemID);
-        ev.dataTransfer.effectAllowed = "move";
+document.addEventListener("mouseup", () => {
+    if (activeBox) {
+        activeBox.style.zIndex = 100; // Retorna ao z-index normal
+        activeBox = null;
     }
+});
 
-    function soltarItem(ev) {
-        ev.preventDefault();
-        const itemID = ev.dataTransfer.getData("text/plain");
-        if (itemID) {
-            document.getElementById('item_id_usado').value = itemID;
-            document.getElementById('form-usar-item').submit();
-        }
-    }
+// CENTRO - NÚMERO ALEATÓRIO
+function gerarNumero() {
+    centerBox.innerText = Math.floor(Math.random() * 200) + 1;
+}
+gerarNumero();
+centerBox.addEventListener('click', gerarNumero);
 
-    // ⭐ NOVA FUNÇÃO: DELETAR ITEM
-    async function jogarFora(ev) {
-        ev.preventDefault();
-        const itemID = ev.dataTransfer.getData("text/plain");
+// TOP SLOTS
+topSlots.forEach(slot => {
+    slot.querySelector('.inner').innerText = Math.floor(Math.random() * 200) + 1;
+});
 
-        if (itemID && !isNaN(itemID)) {
-            const formData = new FormData();
-            formData.append('item_id_deletar', itemID);
-            formData.append('acao', 'deletar_item');
+// COUNTER BUTTONS
+document.querySelectorAll('#counterButtons .counter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.innerText = (parseInt(btn.innerText) || 0) + 1;
+    });
+});
 
-            try {
-                const response = await fetch(window.location.href, {
-                    method: 'POST',
-                    headers: { 'X-CSRFToken': csrfToken },
-                    body: formData,
-                });
+// AUDIO (Lógica de Detecção)
+const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
+let audioIndex = 0;
+let ultimaAtualizacaoDbfs = 0;
 
-                const data = await response.json();
+function enviarDetecao(detectado) {
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    const formData = new FormData();
+    formData.append("audio_detectado", detectado ? "1" : "0"); 
+    fetch(window.location.href, { 
+        method: "POST",
+        headers: { "X-CSRFToken": csrfToken },
+        body: formData 
+    }).catch(e => console.log(e));
+}
 
-                if (data.success) {
-                    const itemElement = document.querySelector(`.draggable-item[data-item-id="${itemID}"]`);
-                    
-                    if (itemElement) {
-                        itemElement.classList.remove('draggable-item'); 
-                        itemElement.removeAttribute('draggable');
-                        itemElement.removeAttribute('data-item-id');
-                        itemElement.removeEventListener('dragstart', iniciarArrasto);
-                        itemElement.innerHTML = '<div class="inner"></div>';
-                    }
-                    console.log("Item descartado.");
-                } else {
-                    console.error("Erro ao deletar:", data.error);
-                }
-            } catch (error) {
-                console.error("Erro na requisição de delete:", error);
+async function iniciarCaptura() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioCtx.createMediaStreamSource(stream);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 512;
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        source.connect(analyser);
+
+        async function calcularDBFS() {
+            analyser.getByteTimeDomainData(dataArray);
+            let sum=0;
+            for(let i=0;i<dataArray.length;i++){
+                let sample=(dataArray[i]-128)/128;
+                sum+=sample*sample;
             }
-        }
-    }
+            let rms=Math.sqrt(sum/dataArray.length);
+            let dbfs=20*Math.log10(rms);
 
+            const agora = Date.now();
+            if (agora - ultimaAtualizacaoDbfs > 100) {
+                if (dbfsDisplay) dbfsDisplay.innerText = dbfs.toFixed(2);
+                ultimaAtualizacaoDbfs = agora; 
+            }
 
-    // =========================================================================
-    // AUDIO E RESTANTE DO CÓDIGO
-    // =========================================================================
-
-    const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
-    let audioIndex = 0;
-    let ultimaAtualizacaoDbfs = 0;
-
-    function enviarDetecao(detectado) {
-        const formData = new FormData();
-        formData.append("audio_detectado", detectado ? "1" : "0"); 
-        fetch(window.location.href, { 
-            method: "POST", headers: { "X-CSRFToken": csrfToken }, body: formData 
-        }).catch(console.error);
-    }
-
-    async function iniciarCaptura() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const source = audioCtx.createMediaStreamSource(stream);
-            const analyser = audioCtx.createAnalyser();
-            analyser.fftSize = 512;
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-            source.connect(analyser);
-
-            const contadorErrosEl = document.getElementById("contador-erros");
-
-            async function calcularDBFS() {
-                analyser.getByteTimeDomainData(dataArray);
-
-                let sum = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    let sample = (dataArray[i] - 128) / 128;
-                    sum += sample * sample;
-                }
-                let rms = Math.sqrt(sum / dataArray.length);
-                let dbfs = 20 * Math.log10(rms);
-                if (!isFinite(dbfs)) { dbfs = -100; }
-
-                const cooldownTempo = 2000;
-                const cooldowndisplay = 100; 
-                const agora = Date.now();
-
-                // Atualiza display de números dBFS (Monitoramento)
-                if (agora - ultimaAtualizacaoDbfs > cooldowndisplay) {
-                    if (dbfsDisplay) {
-                        dbfsDisplay.innerText = dbfs.toFixed(1);
-                        dbfsDisplay.style.color = dbfs > limiar ? "red" : "#333";
-                    }
-                    ultimaAtualizacaoDbfs = agora;
-                }
-
-                // --- LÓGICA DE DETECÇÃO ---
-                if (dbfs > limiar) {
-                    statusEl.innerText = "⚠️ Pego";
-                    statusEl.style.color = "red";
-                    
-                    if (agora - ultimaDeteccao > cooldownTempo) {
-                        enviarDetecao(true); 
-                        ultimaDeteccao = agora;
-                        
-                        if (audioIndex < audioBtns.length) {
-                            audioBtns[audioIndex].style.background = "#e74c3c";
-                            audioIndex++;
-                            
-                            const numeroAleatorio = Math.floor(Math.random() * 200) + 1;
-                            if(contadorErrosEl) contadorErrosEl.innerText = numeroAleatorio;
-                        }
-
-                        if (audioIndex >= audioBtns.length) {
-                            audioIndex = 0;
-                            audioBtns.forEach(btn => btn.style.background = "#2ecc71");
-                            if(contadorErrosEl) contadorErrosEl.innerText = "0";
-                        }
-                    }
-                } else {
-                    if (agora - ultimaDeteccao > cooldownTempo) {
-                        statusEl.innerText = "✔ Seguro";
-                        statusEl.style.color = "green";
-                    } else {
-                        statusEl.innerText = "⚠️ Pego";
-                        statusEl.style.color = "red";
+            if(dbfs > limiar){
+                statusEl.innerText="⚠️ Pego";
+                statusEl.style.color="red";
+                if (agora - ultimaDeteccao > 2000) {
+                    enviarDetecao(true); 
+                    ultimaDeteccao = agora; 
+                    if(audioIndex < audioBtns.length){
+                        audioBtns[audioIndex].style.background = "#e74c3c";
+                        audioIndex++;
                     }
                 }
-                requestAnimationFrame(calcularDBFS);
+            } else if (agora - ultimaDeteccao > 2000) {
+                statusEl.innerText="✔ Seguro";
+                statusEl.style.color="green";
             }
-            calcularDBFS();
-        } catch (e) {
-            statusEl.innerText = "Erro no microfone";
-            console.error(e);
+            requestAnimationFrame(calcularDBFS);
         }
-    }
-    iniciarCaptura();
+        calcularDBFS();
+    } catch(e){ statusEl.innerText="Erro no microfone"; }
+}
+iniciarCaptura();
 </script>
+
 </body>
 </html>
