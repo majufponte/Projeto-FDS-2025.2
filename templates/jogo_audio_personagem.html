@@ -463,20 +463,21 @@ async function iniciarCaptura() {
                 ultimaAtualizacaoDbfs = agora; 
             }
             if(dbfs > limiar){
-                statusEl.innerText="⚠️ Pego";
-                statusEl.style.color="red";
+                statusEl.innerText="⚠️ Pego";
+                statusEl.style.color="red";
+                if (agora - ultimaDeteccao > cooldownTempo) {
+                    enviarDetecao(true); 
+                    ultimaDeteccao = agora; 
+                    if(audioIndex < audioBtns.length){
+                        audioBtns[audioIndex].style.background = "#e74c3c";
+                        audioIndex++;
+                    }
 
-                if (agora - ultimaDeteccao > cooldownTempo) {
-                    enviarDetecao(true); 
-                    
-                    ultimaDeteccao = agora; 
-
-                    if(audioIndex < audioBtns.length){
-                        audioBtns[audioIndex].style.background = "#e74c3c";
-                        audioIndex++;
-                    }
-
-                } else {
+                    if(audioIndex >= audioBtns.length){
+                        audioIndex=0; 
+                        audioBtns.forEach(btn => btn.style.background = "#2ecc71");
+                    }
+                } else {
                 }
 
             } else {
