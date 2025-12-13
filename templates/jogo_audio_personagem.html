@@ -426,23 +426,33 @@ async function iniciarCaptura() {
             let rms=Math.sqrt(sum/dataArray.length);
             let dbfs=20*Math.log10(rms);
 
-            if(dbfs>limiar){
+            const cooldownTempo = 2000; 
+            const agora = Date.now();
+            
+            if(dbfs > limiar){
                 statusEl.innerText="⚠️ Pego";
                 statusEl.style.color="red";
 
-                const agora=Date.now();
-                if(agora-ultimaDeteccao>2000){
-                    ultimaDeteccao=agora;
-                }
+                if (agora - ultimaDeteccao > cooldownTempo) {
+                    
+                    ultimaDeteccao = agora; 
 
-                if(audioIndex < audioBtns.length){
-                    audioBtns[audioIndex].style.background = "#e74c3c";
-                    audioIndex++;
+                    if(audioIndex < audioBtns.length){
+                        audioBtns[audioIndex].style.background = "#e74c3c";
+                        audioIndex++;
+                    }
+
+                } else {
                 }
 
             } else {
-                statusEl.innerText="✔ Seguro";
-                statusEl.style.color="green";
+                if (agora - ultimaDeteccao > cooldownTempo) {
+                    statusEl.innerText="✔ Seguro";
+                    statusEl.style.color="green";
+                } else {
+                    statusEl.innerText="⚠️ Pego";
+                    statusEl.style.color="red";
+                }
             }
             requestAnimationFrame(calcularDBFS);
         }
