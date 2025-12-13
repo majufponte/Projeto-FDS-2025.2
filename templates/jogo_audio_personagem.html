@@ -283,6 +283,8 @@
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
 
+    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p>     <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
+            </div>
     <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
         <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
         <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
@@ -371,6 +373,7 @@ const centerBox = document.getElementById("centerBox");
 
 const limiar = parseFloat(document.getElementById("limiar").innerText);
 const statusEl = document.getElementById("status");
+const dbfsDisplay = document.getElementById("dbfs-display");
 let ultimaDeteccao = 0;
 
 // PLAY DE VÍDEO NO CLIQUE
@@ -404,6 +407,7 @@ document.querySelectorAll('#counterButtons .counter-btn').forEach(btn => {
 // AUDIO BUTTONS
 const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
 let audioIndex = 0;
+let ultimaAtualizacaoDbfs = 0;
 
 // ÁUDIO
 function enviarDetecao(detectado) {
@@ -449,8 +453,15 @@ async function iniciarCaptura() {
             let dbfs=20*Math.log10(rms);
 
             const cooldownTempo = 2000; 
+            const cooldowndisplay = 100; 
             const agora = Date.now();
             
+            if (agora - ultimaAtualizacaoDbfs > cooldowndisplay) {
+                if (dbfsDisplay) {
+                    dbfsDisplay.innerText = dbfs.toFixed(2);
+                }
+                ultimaAtualizacaoDbfs = agora; 
+            }
             if(dbfs > limiar){
                 statusEl.innerText="⚠️ Pego";
                 statusEl.style.color="red";
