@@ -96,7 +96,8 @@ def mapa(request):
     partida = get_object_or_404(Partida, id=id_partida)
     usuario = request.user
     explorados = list(locais_explorado.objects.filter(
-        usuario=usuario
+        usuario=usuario,
+        partida=partida
     ).values_list("id_do_local", flat=True))
     jogador = get_object_or_404(Jogador, id=id_personagem, usuario=usuario, partida=partida) 
     
