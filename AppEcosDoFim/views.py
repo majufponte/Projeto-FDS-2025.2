@@ -210,8 +210,8 @@ def jogo_audio(request):
     inventario = Inventario.objects.filter(jogador=jogador)
 
     if request.method == "POST":
-        detectado = request.POST.get("audio_detectado", "0")
-        detectado_bool = bool(int(detectado))
+        detectado = request.POST.get("audio_detectado", "0") 
+        detectado_bool = bool(int(detectado)) 
 
         DetecaoAudio.objects.create(
             usuario=request.user,

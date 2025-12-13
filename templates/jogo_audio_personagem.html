@@ -264,7 +264,7 @@
 </style>
 </head>
 <body>
-
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 <!-- VÍDEO DE FUNDO -->
 <video id="bgVideo" autoplay muted loop class="video-bg">
     <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
@@ -406,6 +406,28 @@ const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
 let audioIndex = 0;
 
 // ÁUDIO
+function enviarDetecao(detectado) {
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    const formData = new FormData();
+    formData.append("audio_detectado", detectado ? "1" : "0"); 
+    
+    fetch(window.location.href, { 
+        method: "POST",
+        headers: {
+            "X-CSRFToken": csrfToken 
+        },
+        body: formData 
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error("Erro ao enviar detecção:", response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error("Falha na requisição fetch:", error);
+    });
+}
 async function iniciarCaptura() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
@@ -416,8 +438,8 @@ async function iniciarCaptura() {
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
         source.connect(analyser);
 
-        function calcularDBFS() {
-            analyser.getByteTimeDomainData(dataArray);
+        async function calcularDBFS() {
+             analyser.getByteTimeDomainData(dataArray);
             let sum=0;
             for(let i=0;i<dataArray.length;i++){
                 let sample=(dataArray[i]-128)/128;
@@ -434,6 +456,7 @@ async function iniciarCaptura() {
                 statusEl.style.color="red";
 
                 if (agora - ultimaDeteccao > cooldownTempo) {
+                    enviarDetecao(true); 
                     
                     ultimaDeteccao = agora; 
 
