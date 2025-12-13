@@ -98,7 +98,8 @@ def mapa(request):
     explorados = list(locais_explorado.objects.filter(
         usuario=usuario
     ).values_list("id_do_local", flat=True))
-    jogador = get_object_or_404(Jogador, usuario=usuario, partida=partida)
+    jogador = get_object_or_404(Jogador, id=id_personagem, usuario=usuario, partida=partida) 
+    
     inventario = Inventario.objects.filter(jogador=jogador)
 
     if request.method == "POST":
@@ -129,14 +130,6 @@ def criar_personagem(request):
         Jogador.objects.get_or_create(usuario=usuario,partida=partida,nome=nome)
     return render(request,"criar_personagem.html")
     
-def criar_itens(request):
-    if request.method== "POST":
-        nome=request.POST.get("nome")
-        tipo=request.POST.get("tipo")
-        descricao=request.POST.get("descricao")
-        Itens.objects.get_or_create(nome=nome,tipo=tipo,descricao=descricao)
-    return render(request,"criar_itens.html")
-
 @login_required(login_url='login_user')
 def escolher_personagem(request):
     usuario=request.user

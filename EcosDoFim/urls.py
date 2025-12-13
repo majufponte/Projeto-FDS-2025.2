@@ -30,7 +30,6 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('register/',views.register_user,name='register_user'),
     path('criar_personagem/',views.criar_personagem,name='criar_personagem'),
-    path('criar_itens/',views.criar_itens,name='criar_itens'),
     path('register/', views.register_user, name='register'),
     path('escolher_partida/',views.escolher_partida,name='escolher_partida'),
     path('escolher_personagem/',views.escolher_personagem,name='escolher_personagem'),
