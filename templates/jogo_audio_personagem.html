@@ -323,14 +323,6 @@
     <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
     Seu navegador não suporta vídeo HTML5.
 </video>
-
-<div id="dragBox" 
-     class="draggable-box"
-     ondragover="permitirDrop(event)"
-     ondrop="soltarItem(event)">
-    <p style="font-weight: bold;">Arraste um item do inventário aqui para USAR</p>
-</div>
-
 <form id="form-usar-item" method="POST" style="display: none;">
     {% csrf_token %}
     <input type="hidden" name="item_id_usado" id="item_id_usado" value="">
