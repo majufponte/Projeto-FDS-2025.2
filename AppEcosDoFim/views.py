@@ -214,15 +214,18 @@ def jogo_audio(request):
     jogador = get_object_or_404(Jogador, id=id_personagem, partida=id_partida, usuario=request.user)
     partida = get_object_or_404(Partida, id=id_partida)
     
-    itens = list(Itens.objects.all())
-    if itens:
-        item_ganho = random.choice(itens)
-        Inventario.objects.create(jogador=jogador, partida=partida, item=item_ganho)
+    itens_disponiveis = list(Itens.objects.all())
     
     inventario = Inventario.objects.filter(jogador=jogador).select_related('item') 
 
+    itens_para_escolha = []
+    if itens_disponiveis:
+        num_escolhas = min(10, len(itens_disponiveis))
+        itens_para_escolha = random.choices(itens_disponiveis, k=num_escolhas)
+
     if request.method == "POST":
         acao = request.POST.get("acao")
+
         if acao == "usar_item":
             item_inventario_id = request.POST.get("item_id_usado")
             
@@ -230,24 +233,39 @@ def jogo_audio(request):
                 item_a_usar = Inventario.objects.get(
                     id=item_inventario_id,
                     jogador=jogador,
-                    partida=partida 
+                    partida=partida
                 )
-                
+
                 item_a_usar.delete() 
                 return redirect("jogo_audio") 
 
             except Inventario.DoesNotExist:
-                pass 
-        detectado = request.POST.get("audio_detectado", "0") 
-        detectado_bool = bool(int(detectado)) 
+                pass
+        
+        elif acao == "escolher_item":
+            item_id_escolhido = request.POST.get("item_id_escolhido")
+            
+            try:
+                item_base = Itens.objects.get(id=item_id_escolhido)
+                
+                Inventario.objects.create(
+                    jogador=jogador, 
+                    partida=partida, 
+                    item=item_base
+                )
+                return redirect("jogo_audio") 
 
-        DetecaoAudio.objects.create(
-            usuario=request.user,
-            detectado=detectado_bool
-        )
+            except Itens.DoesNotExist:
+                pass
+
+        detectado = request.POST.get("audio_detectado", "0")
+        if detectado != "0": 
+             pass 
+        
 
     return render(request, "jogo_audio_personagem.html", {
         "inventario": inventario,
+        "itens_para_escolha": itens_para_escolha, 
         "limiar": request.session.get("limiar_dificuldade")
     })
 
