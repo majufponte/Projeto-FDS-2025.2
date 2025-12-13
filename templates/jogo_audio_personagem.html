@@ -350,12 +350,16 @@
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
 
-    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p> 		
-    <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
-        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
-        <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p>        
+    
+    <div style="display:flex; align-items: center; gap: 10px; margin-top:10px;">
+        <div id="audioButtons" style="display:flex; gap:6px;">
+            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+            <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
+        </div>
+        <strong id="contador-erros" style="font-size: 1.5em; color: #555;">0</strong>
     </div>
 </div>
 
@@ -720,10 +724,9 @@ function enviarDetecao(detectado) {
         method: "POST", headers: { "X-CSRFToken": csrfToken }, body: formData 
     }).catch(console.error);
 }
-
 async function iniciarCaptura() {
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const source = audioCtx.createMediaStreamSource(stream);
         const analyser = audioCtx.createAnalyser();
@@ -731,54 +734,76 @@ async function iniciarCaptura() {
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
         source.connect(analyser);
 
+        // Referência para o novo contador visual
+        const contadorErrosEl = document.getElementById("contador-erros");
+
         async function calcularDBFS() {
-             analyser.getByteTimeDomainData(dataArray);
-           
-            let sum=0;
-            for(let i=0;i<dataArray.length;i++){
-                let sample=(dataArray[i]-128)/128;
-                sum+=sample*sample;
+            analyser.getByteTimeDomainData(dataArray);
+
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                let sample = (dataArray[i] - 128) / 128;
+                sum += sample * sample;
             }
-            let rms=Math.sqrt(sum/dataArray.length);
-            let dbfs=20*Math.log10(rms);
-            
-            const cooldownTempo = 2000; 
+            let rms = Math.sqrt(sum / dataArray.length);
+            let dbfs = 20 * Math.log10(rms);
+            if (!isFinite(dbfs)) { dbfs = -100; }
+
+            const cooldownTempo = 2000;
             const cooldowndisplay = 100; 
             const agora = Date.now();
-            
+
+            // Atualiza display de números dBFS
             if (agora - ultimaAtualizacaoDbfs > cooldowndisplay) {
-                if (dbfsDisplay) dbfsDisplay.innerText = dbfs.toFixed(2);
-                ultimaAtualizacaoDbfs = agora; 
+                if (dbfsDisplay) {
+                    dbfsDisplay.innerText = dbfs.toFixed(1);
+                    dbfsDisplay.style.color = dbfs > limiar ? "red" : "#333";
+                }
+                ultimaAtualizacaoDbfs = agora;
             }
-            if(dbfs > limiar){
-                statusEl.innerText="⚠️ Pego";
-                statusEl.style.color="red";
+
+            // LÓGICA DE DETECÇÃO E BOLINHAS
+            if (dbfs > limiar) {
+                statusEl.innerText = "⚠️ Pego";
+                statusEl.style.color = "red";
+                
                 if (agora - ultimaDeteccao > cooldownTempo) {
-                    enviarDetecao(true); 
-                    ultimaDeteccao = agora; 
-                    if(audioIndex < audioBtns.length){
+                    enviarDetecao(true);
+                    ultimaDeteccao = agora;
+                    
+                    // 1. Pinta a bolinha atual de vermelho
+                    if (audioIndex < audioBtns.length) {
                         audioBtns[audioIndex].style.background = "#e74c3c";
                         audioIndex++;
+                        
+                        // ATUALIZA O CONTADOR (1, 2, 3, 4)
+                        if(contadorErrosEl) contadorErrosEl.innerText = audioIndex;
                     }
-                    if(audioIndex >= audioBtns.length){
-                        audioIndex=0; 
+
+                    // 2. Se completou todas, reseta tudo
+                    if (audioIndex >= audioBtns.length) {
+                        // Pequeno delay ou imediato? Aqui está imediato como antes
+                        audioIndex = 0;
                         audioBtns.forEach(btn => btn.style.background = "#2ecc71");
+                        
+                        // RESETA O CONTADOR PARA 0
+                        if(contadorErrosEl) contadorErrosEl.innerText = "0";
                     }
                 }
             } else {
                 if (agora - ultimaDeteccao > cooldownTempo) {
-                    statusEl.innerText="✔ Seguro";
-                    statusEl.style.color="green";
+                    statusEl.innerText = "✔ Seguro";
+                    statusEl.style.color = "green";
                 } else {
-                    statusEl.innerText="⚠️ Pego";
-                    statusEl.style.color="red";
+                    statusEl.innerText = "⚠️ Pego";
+                    statusEl.style.color = "red";
                 }
             }
             requestAnimationFrame(calcularDBFS);
         }
         calcularDBFS();
-    } catch(e){
-        statusEl.innerText="Erro no microfone";
+    } catch (e) {
+        statusEl.innerText = "Erro no microfone";
         console.error(e);
     }
 }
