@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ecos do Fim - Abas Retráteis</title>
+<title>Ecos do Fim - Jogo de Áudio</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap');
 
@@ -49,7 +49,7 @@
         margin: 0;
     }
 
-    /* SLOTS */
+    /* SLOTS GERAIS */
     .top-slots, .super-cards-container {
         display: flex;
         justify-content: center;
@@ -90,6 +90,7 @@
         font-weight: bold;
     }
 
+    /* INVENTÁRIO INFERIOR */
     .super-cards-container .slot .inner {
         position: absolute;
         width: 100%;
@@ -109,7 +110,7 @@
 
     .slot.open .inner { bottom: 120px; }
 
-    /* BOTTOM SHEET */
+    /* BOTTOM SHEET (ALVO DO DROP) */
     .bottom-sheet {
         position: fixed;
         bottom: 0;
@@ -127,6 +128,12 @@
         z-index: 30;
     }
     .bottom-sheet.open { transform: translate(-50%,0); }
+    /* Efeito visual quando arrasta item em cima */
+    .bottom-sheet.highlight {
+        background: rgba(46, 204, 113, 0.3);
+        box-shadow: 0 -4px 20px rgba(46, 204, 113, 0.6);
+    }
+
     .sheet-handle {
         width: 70px;
         height: 8px;
@@ -152,7 +159,6 @@
         z-index: 30;
     }
 
-    
     .inner-buttons {
         position: absolute;
         top: 20%;
@@ -184,7 +190,7 @@
         top: 60px;
         right: 0;
         width: 160px;
-        height: 300px;
+        height: 600px; 
         background: rgba(0,0,0,0.85);
         color: #fff;
         transform: translateX(90%);
@@ -192,9 +198,44 @@
         border-bottom-left-radius: 12px;
         transition: transform 0.35s ease;
         z-index: 30;
+        padding-top: 10px;
     }
     .side-sheet.open { transform: translateX(0); }
     .side-handle { position: absolute; left: -20px; top: 20px; width: 30px; height: 80px; background: #555; border-radius: 10px; cursor:pointer; }
+    
+    #side-inventory-container {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 8px; 
+        padding: 10px;
+        overflow-y: auto;
+        height: calc(100% - 40px);
+        justify-items: center; 
+    }
+    .side-item-slot {
+        width: 60px; 
+        height: 60px; 
+        cursor: pointer; 
+    }
+    .side-item-slot .inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        background-color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8em;
+        background-size: cover;
+        background-position: center;
+        transition: transform 0.1s;
+    }
+    .side-item-slot:hover .inner {
+        transform: scale(1.05); 
+        box-shadow: 0 0 10px #70e6a3;
+    }
 
     /* AUDIO BOX */
     .audio-box {
@@ -231,7 +272,7 @@
         user-select: none;
     }
 
-    /* ⭐ NOVO RETÂNGULO ARRASTÁVEL */
+    /* CAIXA DE DROP (Para usar item do inventário) */
     .draggable-box {
         position: fixed;
         top: 150px;
@@ -239,40 +280,77 @@
         transform: translateX(-50%);
         width: 220px;
         height: 160px;
-        background: white;
+        background: rgba(255, 255, 255, 0.9);
+        border: 2px dashed #e74c3c;
         border-radius: 12px;
         box-shadow: 0 0 10px rgba(0,0,0,0.4);
-        z-index: 40; /* acima de tudo */
+        z-index: 40; 
         cursor: grab;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #333;
     }
-    .draggable-box:active {
-        cursor: grabbing;
+    .draggable-box:active { cursor: grabbing; }
+    .draggable-box p { padding: 10px; }
+    
+    /* ⭐ CLASSE DO ITEM FLUTUANTE (Vem da aba lateral) */
+    .floating-item {
+        position: fixed;
+        width: 80px; 
+        height: 80px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        border: 2px solid white;
+        z-index: 1000; /* Acima de tudo */
+        cursor: grab;
+        user-select: none;
     }
+    .floating-item:active { cursor: grabbing; border-color: #e4a701; }
+
+    /* ITENS INVENTÁRIO */
+    .draggable-item { cursor: pointer; } 
 
 </style>
 </head>
 <body>
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-<!-- VÍDEO DE FUNDO -->
+
 <video id="bgVideo" autoplay muted loop class="video-bg">
     <source src="{% static 'videos/fundo.mp4' %}" type="video/mp4">
     Seu navegador não suporta vídeo HTML5.
 </video>
 
-<!-- ⭐ NOVO RETÂNGULO ARRASTÁVEL -->
-<div id="dragBox" class="draggable-box"></div>
+<div id="dragBox" 
+     class="draggable-box"
+     ondragover="permitirDrop(event)"
+     ondrop="soltarItem(event)">
+    <p style="font-weight: bold;">Arraste um item do inventário aqui para USAR</p>
+</div>
 
-<!-- NAVBAR -->
+<form id="form-usar-item" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="item_id_usado" id="item_id_usado" value="">
+    <input type="hidden" name="acao" value="usar_item">
+</form>
+
+<form id="form-escolher-item" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="item_id_escolhido" id="item_id_escolhido" value="">
+    <input type="hidden" name="acao" value="escolher_item">
+</form>
+
 <div class="navbar"><h2>Ecos do Fim</h2></div>
 
-<!-- CAIXA DE ÁUDIO -->
 <div class="audio-box">
     <h3>Detecção</h3>
     <p>Limiar: <strong id="limiar">{{ limiar }}</strong> dBFS</p>
     <p>Status: <span id="status">Aguardando som…</span></p>
 
-    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p>     <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
-            </div>
+    <p>Audio: <strong id="dbfs-display">--</strong> dBFS</p> 		
     <div id="audioButtons" style="display:flex; gap:6px; margin-top:10px;">
         <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
         <button class="audio-btn" style="width:25px; height:25px; background:#2ecc71; border:none; border-radius:50%;"></button>
@@ -281,24 +359,29 @@
     </div>
 </div>
 
-<!-- TOP SLOTS -->
 <div class="top-slots">
     <div class="slot"><div class="inner"></div></div>
     <div class="slot"><div class="inner"></div></div>
     <div class="slot"><div class="inner"></div></div>
 </div>
 
-<!-- SIDE SHEET -->
 <div class="side-sheet" id="sideSheet">
     <div class="side-handle" id="sideHandle"></div>
+    <div id="side-inventory-container">
+        <h3 style="grid-column: 1 / 3; text-align: center; margin-bottom: 5px; font-size: 1.2em; width: 100%;">Escolha</h3>
+        {% for item_base in itens_para_escolha %}
+            <div class="side-item-slot" data-item-id="{{ item_base.id }}">
+                <div class="inner" style="background-image:url('{% static item_base.caminho %}');"></div>
+            </div>
+        {% empty %}
+             <p style="grid-column: 1 / 3; padding: 10px;">Nenhum item disponível.</p>
+        {% endfor %}
+    </div>
 </div>
 
-<!-- BOTTOM SHEET -->
 <div class="bottom-sheet" id="bottomSheet">
     <div class="sheet-handle" id="sheetHandle"></div>
-
     <div class="white-box">
-
         <div class="inner-buttons">
             <button class="mini-btn"></button>
             <button class="mini-btn"></button>
@@ -306,36 +389,26 @@
             <button class="mini-btn"></button>
             <button class="mini-btn"></button>
         </div>
-
-        <div class="side-box-left"></div>
-        <div class="side-box-right"></div>
-
         <div id="counterButtons">
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 75px;">
-                <button class="counter-btn">0</button>
-            </div>
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 200px;">
-                <button class="counter-btn">0</button>
-            </div>
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 350px;">
-                <button class="counter-btn">0</button>
-            </div>
-            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 475px;">
-                <button class="counter-btn">0</button>
-            </div>
-            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 350px;">
-                <button class="counter-btn">0</button>
-            </div>
-            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 475px;">
-                <button class="counter-btn">0</button>
-            </div>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 75px;"><button class="counter-btn">0</button></div>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 200px;"><button class="counter-btn">0</button></div>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 350px;"><button class="counter-btn">0</button></div>
+            <div class="counter-btn-container" style="position: absolute; top: 350px; left: 475px;"><button class="counter-btn">0</button></div>
+            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 350px;"><button class="counter-btn">0</button></div>
+            <div class="counter-btn-container" style="position: absolute; top: 215px; left: 475px;"><button class="counter-btn">0</button></div>
         </div>
     </div>
 
     <div class="super-cards-container">
-        {% for item in inventario %}
-            <div class="slot">
-                <div class="inner" style="background-image:url('{% static item.item.caminho %}'); background-size: cover; background-position: center;"></div>
+        {% for item_inv in inventario %}
+            <div class="slot draggable-item" 
+                 draggable="true" 
+                 data-item-id="{{ item_inv.id }}">
+                <div class="inner" 
+                      style="background-image:url('{% static item_inv.item.caminho %}'); 
+                             background-size: cover; 
+                             background-position: center;">
+                </div>
             </div>
         {% endfor %}
 
@@ -345,81 +418,278 @@
     </div>
 </div>
 
-<!-- CAIXA CENTRAL (NÚMERO ALEATÓRIO) -->
 <div class="center-box" id="centerBox"></div>
 
 <script>
+    
 const video = document.getElementById('bgVideo');
 const bottomSheet = document.getElementById('bottomSheet');
 const sideSheet = document.getElementById('sideSheet');
 const sheetHandle = document.getElementById('sheetHandle');
 const sideHandle = document.getElementById('sideHandle');
-const slots = document.querySelectorAll('.slot');
 const topSlots = document.querySelectorAll('.top-slots .slot');
 const miniBtns = document.querySelectorAll('.mini-btn');
 const centerBox = document.getElementById("centerBox");
+const dragBox = document.getElementById("dragBox");
+const sideSlots = document.querySelectorAll('.side-item-slot');
+const inventarioContainer = document.querySelector('.super-cards-container');
 
 const limiar = parseFloat(document.getElementById("limiar").innerText);
 const statusEl = document.getElementById("status");
 const dbfsDisplay = document.getElementById("dbfs-display");
 let ultimaDeteccao = 0;
+const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-// PLAY DE VÍDEO NO CLIQUE
+// PLAY DE VÍDEO
 document.body.addEventListener('click', () => { video.play(); });
 
-// ABAS
+// ABAS (Abre e fecha)
 sheetHandle.onclick = () => bottomSheet.classList.toggle('open');
 sideHandle.onclick = () => sideSheet.classList.toggle('open');
-slots.forEach(s => s.onclick = () => s.classList.toggle('open'));
+topSlots.forEach(s => s.onclick = () => s.classList.toggle('open'));
 miniBtns.forEach(b => b.onclick = () => b.classList.toggle('red'));
 
-// CENTRO - NÚMERO ALEATÓRIO
-function gerarNumero() {
-    centerBox.innerText = Math.floor(Math.random() * 200) + 1;
-}
+// CENTRO E BOTÕES
+function gerarNumero() { centerBox.innerText = Math.floor(Math.random() * 200) + 1; }
 gerarNumero();
 centerBox.addEventListener('click', gerarNumero);
 
-// TOP SLOTS - números aleatórios
-topSlots.forEach(slot => {
-    slot.querySelector('.inner').innerText = Math.floor(Math.random() * 200) + 1;
+topSlots.forEach(slot => { slot.querySelector('.inner').innerText = Math.floor(Math.random() * 200) + 1; });
+document.querySelectorAll('#counterButtons .counter-btn').forEach(btn => {
+    btn.addEventListener('click', () => { btn.innerText = (parseInt(btn.innerText) || 0) + 1; });
 });
 
-// COUNTER BUTTONS
-document.querySelectorAll('#counterButtons .counter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        btn.innerText = (parseInt(btn.innerText) || 0) + 1;
+
+// =========================================================================
+// ⭐ LÓGICA DE DRAG & DROP PARA ADICIONAR/USAR ITENS (CORRIGIDA)
+// =========================================================================
+
+let activeElement = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+// FUNÇÃO AJAX PARA ADICIONAR ITEM (Lógica Django)
+async function addItemToInventory(itemId, itemCaminho) {
+    // 1. Tenta achar um slot vazio visual (apenas para manter a organização da grade)
+    const slotVazio = inventarioContainer.querySelector('.slot:not(.draggable-item)');
+    
+    // REMOVIDO: A verificação que bloqueava se estivesse cheio.
+    // if (!slotVazio) { return; } 
+
+    const formData = new FormData();
+    formData.append('item_id_escolhido', itemId);
+    formData.append('acao', 'escolher_item'); 
+    
+    try {
+        const response = await fetch(window.location.href, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': csrfToken },
+            body: formData,
+        });
+
+        // Verificação de segurança para erros não-JSON (telas de erro do Django)
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            console.error("Erro fatal: O servidor retornou HTML em vez de JSON.");
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            // CRIAR O NOVO SLOT DO ITEM
+            const novoSlot = document.createElement('div');
+            novoSlot.className = 'slot draggable-item';
+            novoSlot.setAttribute('draggable', 'true');
+            novoSlot.setAttribute('data-item-id', data.item_id);
+            
+            // Renderiza a imagem
+            novoSlot.innerHTML = `<div class="inner" style="background-image:url('${data.item_caminho}'); background-size: cover; background-position: center;"></div>`;
+            
+            // Re-ativa o drag para este novo item
+            novoSlot.addEventListener('dragstart', iniciarArrasto);
+
+            // --- LÓGICA SEM LIMITE ---
+            if (slotVazio) {
+                // Se existe um "buraco" vazio na grade, preenche ele (fica visualmente mais bonito)
+                slotVazio.replaceWith(novoSlot);
+            } else {
+                inventarioContainer.appendChild(novoSlot);
+            }
+
+            console.log("Item adicionado ao inventário (Sem limites):", data.item_id);
+
+        } else {
+            alert("Erro ao salvar item: " + data.error);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+    }
+}
+
+
+// ⭐ LÓGICA 1: SPAWNAR ITEM FLUTUANTE DA ABA LATERAL E INICIAR DRAG
+sideSlots.forEach(slot => {
+    slot.addEventListener('mousedown', (e) => { 
+        e.preventDefault(); 
+        
+        const itemId = slot.getAttribute('data-item-id');
+        const inner = slot.querySelector('.inner');
+        const itemCaminho = inner.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/)[1];
+        
+        // Cria a "foto" flutuante
+        const novaAba = document.createElement('div');
+        novaAba.className = 'floating-item';
+        novaAba.style.backgroundImage = inner.style.backgroundImage;
+        novaAba.setAttribute('data-target-id', itemId); 
+        novaAba.setAttribute('data-item-caminho', itemCaminho); // Guarda o caminho original
+
+        // Posição: Nasce perto do mouse
+        novaAba.style.left = `${e.clientX - 40}px`;
+        novaAba.style.top = `${e.clientY - 40}px`;
+        
+        document.body.appendChild(novaAba);
+
+        // ⭐ INICIA O ARRASTO IMEDIATAMENTE APÓS A CRIAÇÃO
+        activeElement = novaAba;
+        activeElement.style.zIndex = 2000;
+        
+        const rect = activeElement.getBoundingClientRect();
+        dragOffsetX = e.clientX - rect.left;
+        dragOffsetY = e.clientY - rect.top;
+        activeElement.style.cursor = 'grabbing';
+        
+        // Dispara o mousemove para começar a arrastar instantaneamente
+        document.dispatchEvent(new MouseEvent('mousemove', {
+            clientX: e.clientX,
+            clientY: e.clientY
+        }));
     });
 });
 
-// AUDIO BUTTONS
+
+// ⭐ LÓGICA 2: ARRASTAR ELEMENTOS (Draggable Box e Itens Flutuantes)
+document.addEventListener("mousedown", (e) => {
+    // Mantenha apenas draggable-box aqui, o floating-item é tratado na Lógica 1.
+    if (e.target.classList.contains("draggable-box")) { 
+        activeElement = e.target;
+        activeElement.style.zIndex = 2000;
+        
+        const rect = activeElement.getBoundingClientRect();
+        dragOffsetX = e.clientX - rect.left;
+        dragOffsetY = e.clientY - rect.top;
+        activeElement.style.cursor = 'grabbing';
+    }
+});
+
+document.addEventListener("mousemove", (e) => {
+    if (!activeElement) return;
+    e.preventDefault();
+    
+    // Move o elemento
+    activeElement.style.left = `${e.clientX - dragOffsetX}px`;
+    activeElement.style.top = `${e.clientY - dragOffsetY}px`;
+    if(activeElement.classList.contains("draggable-box")) { activeElement.style.transform = "none"; }
+
+    // Feedback visual se estiver arrastando um item sobre a aba de baixo
+    if (activeElement.classList.contains("floating-item")) {
+        const sheetRect = bottomSheet.getBoundingClientRect();
+        const itemRect = activeElement.getBoundingClientRect();
+        const cx = itemRect.left + itemRect.width/2;
+        const cy = itemRect.top + itemRect.height/2;
+
+        if (cx >= sheetRect.left && cx <= sheetRect.right && cy >= sheetRect.top && cy <= sheetRect.bottom) {
+            bottomSheet.classList.add('highlight');
+        } else {
+            bottomSheet.classList.remove('highlight');
+        }
+    }
+});
+
+// ⭐ LÓGICA 3: SOLTAR O ITEM -> ADICIONAR AO INVENTÁRIO (via AJAX)
+document.addEventListener("mouseup", () => {
+    if (activeElement) {
+        
+        if (activeElement.classList.contains("floating-item")) {
+            const sheetRect = bottomSheet.getBoundingClientRect();
+            const itemRect = activeElement.getBoundingClientRect();
+            const cx = itemRect.left + itemRect.width/2;
+            const cy = itemRect.top + itemRect.height/2;
+
+            // Detecta colisão com a aba de baixo
+            if (cx >= sheetRect.left && cx <= sheetRect.right && cy >= sheetRect.top && cy <= sheetRect.bottom) {
+                const itemId = activeElement.getAttribute('data-target-id');
+                const itemCaminho = activeElement.getAttribute('data-item-caminho');
+                
+                // Remove visualmente o item flutuante
+                activeElement.remove();
+                bottomSheet.classList.remove('highlight');
+                
+                // Abre a aba de baixo e chama a função AJAX
+                bottomSheet.classList.add('open');
+                
+                // Chamada AJAX!
+                addItemToInventory(itemId, itemCaminho); 
+            } else {
+                 // Se soltar fora, apenas remove o elemento flutuante
+                 activeElement.remove();
+            }
+        }
+        
+        // Finaliza o elemento ativo
+        if (activeElement) {
+            activeElement.style.zIndex = activeElement.classList.contains("draggable-box") ? 40 : 1000;
+            activeElement.style.cursor = 'grab';
+            activeElement = null;
+        }
+        bottomSheet.classList.remove('highlight');
+    }
+});
+
+
+// =========================================================================
+// Lógica de USO (Inventário -> Caixa Central) mantida com Drag Nativo
+// =========================================================================
+
+// Esta lógica usa o "drag nativo" e o form submetido, o que causa recarregamento, mas 
+// se for o que você precisa para a ação de 'usar_item', vamos manter por enquanto.
+document.querySelectorAll('.draggable-item').forEach(itemSlot => {
+    itemSlot.addEventListener('dragstart', iniciarArrasto);
+});
+
+function permitirDrop(ev) { ev.preventDefault(); }
+function iniciarArrasto(ev) {
+    const itemID = ev.currentTarget.getAttribute('data-item-id');
+    ev.dataTransfer.setData("text/plain", itemID);
+    ev.dataTransfer.effectAllowed = "move";
+}
+function soltarItem(ev) {
+    ev.preventDefault();
+    const itemID = ev.dataTransfer.getData("text/plain");
+    if (itemID) {
+        // Envia para o Django usar o item (isso vai recarregar a página)
+        document.getElementById('item_id_usado').value = itemID;
+        document.getElementById('form-usar-item').submit();
+    }
+}
+
+
+// =========================================================================
+// AUDIO E RESTANTE DO CÓDIGO
+// =========================================================================
+
 const audioBtns = document.querySelectorAll('#audioButtons .audio-btn');
 let audioIndex = 0;
 let ultimaAtualizacaoDbfs = 0;
 
-// ÁUDIO
 function enviarDetecao(detectado) {
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
     const formData = new FormData();
     formData.append("audio_detectado", detectado ? "1" : "0"); 
-    
     fetch(window.location.href, { 
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrfToken 
-        },
-        body: formData 
-    })
-    .then(response => {
-        if (!response.ok) {
-            console.error("Erro ao enviar detecção:", response.statusText);
-        }
-    })
-    .catch(error => {
-        console.error("Falha na requisição fetch:", error);
-    });
+        method: "POST", headers: { "X-CSRFToken": csrfToken }, body: formData 
+    }).catch(console.error);
 }
+
 async function iniciarCaptura() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio:true });
@@ -432,6 +702,7 @@ async function iniciarCaptura() {
 
         async function calcularDBFS() {
              analyser.getByteTimeDomainData(dataArray);
+           
             let sum=0;
             for(let i=0;i<dataArray.length;i++){
                 let sample=(dataArray[i]-128)/128;
@@ -439,35 +710,30 @@ async function iniciarCaptura() {
             }
             let rms=Math.sqrt(sum/dataArray.length);
             let dbfs=20*Math.log10(rms);
-
+            
             const cooldownTempo = 2000; 
             const cooldowndisplay = 100; 
             const agora = Date.now();
             
             if (agora - ultimaAtualizacaoDbfs > cooldowndisplay) {
-                if (dbfsDisplay) {
-                    dbfsDisplay.innerText = dbfs.toFixed(2);
-                }
-                ultimaAtualizacaoDbfs = agora; 
-            }
+                if (dbfsDisplay) dbfsDisplay.innerText = dbfs.toFixed(2);
+                ultimaAtualizacaoDbfs = agora; 
+            }
             if(dbfs > limiar){
-                statusEl.innerText="⚠️ Pego";
-                statusEl.style.color="red";
-                if (agora - ultimaDeteccao > cooldownTempo) {
-                    enviarDetecao(true); 
-                    ultimaDeteccao = agora; 
-                    if(audioIndex < audioBtns.length){
-                        audioBtns[audioIndex].style.background = "#e74c3c";
-                        audioIndex++;
-                    }
-
-                    if(audioIndex >= audioBtns.length){
-                        audioIndex=0; 
+                statusEl.innerText="⚠️ Pego";
+                statusEl.style.color="red";
+                if (agora - ultimaDeteccao > cooldownTempo) {
+                    enviarDetecao(true); 
+                    ultimaDeteccao = agora; 
+                    if(audioIndex < audioBtns.length){
+                        audioBtns[audioIndex].style.background = "#e74c3c";
+                        audioIndex++;
+                    }
+                    if(audioIndex >= audioBtns.length){
+                        audioIndex=0; 
                         audioBtns.forEach(btn => btn.style.background = "#2ecc71");
-                    }
-                } else {
+                    }
                 }
-
             } else {
                 if (agora - ultimaDeteccao > cooldownTempo) {
                     statusEl.innerText="✔ Seguro";
@@ -486,29 +752,6 @@ async function iniciarCaptura() {
     }
 }
 iniciarCaptura();
-
-/* ⭐ LÓGICA DO RETÂNGULO ARRASTÁVEL */
-const dragBox = document.getElementById("dragBox");
-let isDragging = false;
-let offsetX = 0;
-let offsetY = 0;
-
-dragBox.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    offsetX = e.clientX - dragBox.getBoundingClientRect().left;
-    offsetY = e.clientY - dragBox.getBoundingClientRect().top;
-});
-
-document.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-
-    dragBox.style.left = `${e.clientX - offsetX}px`;
-    dragBox.style.top = `${e.clientY - offsetY}px`;
-});
-
-document.addEventListener("mouseup", () => {
-    isDragging = false;
-});
 </script>
 
 </body>

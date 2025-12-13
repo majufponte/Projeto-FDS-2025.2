@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
+from django.templatetags.static import static
 from .models import DetecaoAudio,locais_explorado,Jogador,Itens,Inventario,Partida
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-import random
+import random,json
 from django.http import HttpResponse
 
 # Create your views here.
@@ -209,56 +210,88 @@ def jogo_audio(request):
     partida = get_object_or_404(Partida, id=id_partida)
     
     itens_disponiveis = list(Itens.objects.all()) 
-    
     inventario = Inventario.objects.filter(jogador=jogador).select_related('item') 
-
     itens_para_escolha = itens_disponiveis 
 
     if request.method == "POST":
+        print(f"--- POST RECEBIDO: {request.POST} ---") 
+
         acao = request.POST.get("acao")
 
         if acao == "usar_item":
             item_inventario_id = request.POST.get("item_id_usado")
-            
             try:
                 item_a_usar = Inventario.objects.get(
                     id=item_inventario_id,
                     jogador=jogador,
                     partida=partida
                 )
-                item_a_usar.delete() 
-                return redirect("jogo_audio") 
-
+                item_a_usar.delete()
+                print(f"Item {item_inventario_id} deletado com sucesso.")
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Item usado e removido com sucesso.'
+                })
             except Inventario.DoesNotExist:
-                pass
-        
+                print("Erro: Item de inventário não encontrado.")
+                return JsonResponse({'success': False, 'error': 'Item não encontrado.'}, status=404)
+            except Exception as e:
+                print(f"Erro ao usar item: {e}")
+                return JsonResponse({'success': False, 'error': str(e)}, status=500)
         elif acao == "escolher_item":
             item_id_escolhido = request.POST.get("item_id_escolhido")
             
+            print(f"--- TENTATIVA DE SALVAR ITEM ID: {item_id_escolhido} ---")
+
+            if not item_id_escolhido:
+                 return JsonResponse({'success': False, 'error': 'ID nulo recebido pelo servidor.'}, status=400)
+
             try:
                 item_base = Itens.objects.get(id=item_id_escolhido)
                 
-                Inventario.objects.create(
+                novo_item_inv = Inventario.objects.create(
                     jogador=jogador, 
                     partida=partida, 
                     item=item_base
                 )
-                return redirect("jogo_audio") 
+                novo_item_inv.save()
+                
+                try:
+                    if hasattr(item_base.caminho, 'url'):
+                        caminho_final = item_base.caminho.url
+                    else:
+                        caminho_final = static(str(item_base.caminho))
+                except Exception as img_err:
+                    print(f"Erro ao processar imagem: {img_err}")
+                    caminho_final = "" 
+
+                print(f"SUCESSO! Item {novo_item_inv.id} criado. Imagem: {caminho_final}")
+
+                return JsonResponse({
+                    'success': True,
+                    'item_id': novo_item_inv.id, 
+                    'item_caminho': caminho_final,
+                })
 
             except Itens.DoesNotExist:
-                pass
+                print("ERRO: Item Base não encontrado no banco.")
+                return JsonResponse({'success': False, 'error': 'Item base não existe.'}, status=404)
+            except Exception as e:
+                print(f"ERRO CRÍTICO NO SERVIDOR: {e}")
+                import traceback
+                traceback.print_exc() 
+                return JsonResponse({'success': False, 'error': f"Erro interno: {str(e)}"}, status=500)
 
-        detectado = request.POST.get("audio_detectado", "0")
-        if detectado != "0": 
-             pass 
-        
+        detectado = request.POST.get("audio_detectado")
+        if detectado: 
+            return JsonResponse({'success': True, 'status': 'audio_processado'})
 
     return render(request, "jogo_audio_personagem.html", {
         "inventario": inventario,
         "itens_para_escolha": itens_para_escolha, 
-        "limiar": request.session.get("limiar_dificuldade")
+        "limiar": request.session.get("limiar_dificuldade", -20) 
     })
-
 
 def gerar_itens(request):
     for i in range(1, 52):
