@@ -734,7 +734,7 @@ async function iniciarCaptura() {
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
         source.connect(analyser);
 
-        // Referência para o novo contador visual
+        // Referência para o número ao lado das bolinhas
         const contadorErrosEl = document.getElementById("contador-erros");
 
         async function calcularDBFS() {
@@ -753,7 +753,7 @@ async function iniciarCaptura() {
             const cooldowndisplay = 100; 
             const agora = Date.now();
 
-            // Atualiza display de números dBFS
+            // Atualiza display de números dBFS (Monitoramento)
             if (agora - ultimaAtualizacaoDbfs > cooldowndisplay) {
                 if (dbfsDisplay) {
                     dbfsDisplay.innerText = dbfs.toFixed(1);
@@ -762,35 +762,36 @@ async function iniciarCaptura() {
                 ultimaAtualizacaoDbfs = agora;
             }
 
-            // LÓGICA DE DETECÇÃO E BOLINHAS
+            // --- LÓGICA DE DETECÇÃO ---
             if (dbfs > limiar) {
                 statusEl.innerText = "⚠️ Pego";
                 statusEl.style.color = "red";
                 
                 if (agora - ultimaDeteccao > cooldownTempo) {
-                    enviarDetecao(true);
+                    enviarDetecao(true); // Avisa o servidor (Django)
                     ultimaDeteccao = agora;
                     
-                    // 1. Pinta a bolinha atual de vermelho
+                    // 1. Pinta a bolinha atual
                     if (audioIndex < audioBtns.length) {
                         audioBtns[audioIndex].style.background = "#e74c3c";
                         audioIndex++;
                         
-                        // ATUALIZA O CONTADOR (1, 2, 3, 4)
-                        if(contadorErrosEl) contadorErrosEl.innerText = audioIndex;
+                        // MUDANÇA: Gera número aleatório entre 1 e 200
+                        const numeroAleatorio = Math.floor(Math.random() * 200) + 1;
+                        if(contadorErrosEl) contadorErrosEl.innerText = numeroAleatorio;
                     }
 
-                    // 2. Se completou todas, reseta tudo
+                    // 2. Se completou todas as bolinhas, RESETA
                     if (audioIndex >= audioBtns.length) {
-                        // Pequeno delay ou imediato? Aqui está imediato como antes
                         audioIndex = 0;
                         audioBtns.forEach(btn => btn.style.background = "#2ecc71");
                         
-                        // RESETA O CONTADOR PARA 0
+                        // MUDANÇA: Volta para Zero no reset
                         if(contadorErrosEl) contadorErrosEl.innerText = "0";
                     }
                 }
             } else {
+                // Lógica visual de status (Seguro/Pego)
                 if (agora - ultimaDeteccao > cooldownTempo) {
                     statusEl.innerText = "✔ Seguro";
                     statusEl.style.color = "green";
