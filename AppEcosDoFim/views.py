@@ -282,6 +282,25 @@ def jogo_audio(request):
                 import traceback
                 traceback.print_exc() 
                 return JsonResponse({'success': False, 'error': f"Erro interno: {str(e)}"}, status=500)
+        elif acao == "deletar_item":
+            item_id_deletar = request.POST.get("item_id_deletar")
+            
+            try:
+                # Busca o item no inventário para garantir que pertence ao jogador
+                item_para_deletar = Inventario.objects.get(
+                    id=item_id_deletar,
+                    jogador=jogador,
+                    partida=partida
+                )
+                item_para_deletar.delete()
+                print(f"Item {item_id_deletar} jogado fora (deletado).")
+                
+                return JsonResponse({'success': True, 'message': 'Item descartado.'})
+
+            except Inventario.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Item não encontrado para deletar.'})
+            except Exception as e:
+                return JsonResponse({'success': False, 'error': str(e)})
 
         detectado = request.POST.get("audio_detectado")
         if detectado: 

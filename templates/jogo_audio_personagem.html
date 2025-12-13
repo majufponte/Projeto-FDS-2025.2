@@ -91,21 +91,28 @@
     }
 
     /* INVENTÁRIO INFERIOR */
+    /* INVENTÁRIO INFERIOR */
     .super-cards-container .slot .inner {
         position: absolute;
         width: 100%;
         height: 100%;
-        background: white;
+        /* MUDANÇA: Fundo escuro/transparente para slots vazios */
+        background: rgba(255, 255, 255, 0.05); 
+        border: 1px solid rgba(255,255,255,0.1);
         border-radius: 12px;
         bottom: 0;
         transition: bottom 0.3s ease;
-        box-shadow: 0 0 6px rgba(0,0,0,0.4);
         z-index: 35;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5em;
-        font-weight: bold;
+    }
+
+    /* MUDANÇA: Apenas slots COM ITENS ficam brancos/destacados */
+    .super-cards-container .slot.draggable-item .inner {
+        background: white; 
+        box-shadow: 0 0 6px rgba(0,0,0,0.4);
+        border: none;
     }
 
     .slot.open .inner { bottom: 120px; }
@@ -316,7 +323,8 @@
 
 </style>
 </head>
-<body>
+<body ondragover="permitirDrop(event)" ondrop="jogarFora(event)">
+
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
 <video id="bgVideo" autoplay muted loop class="video-bg">
@@ -357,6 +365,13 @@
     <div class="slot"><div class="inner"></div></div>
 </div>
 
+<div id="dragBox" 
+     class="draggable-box"
+     ondragover="permitirDrop(event)"
+     ondrop="soltarItem(event); event.stopPropagation();">
+    <p style="font-weight: bold;">Arraste um item do inventário aqui para USAR</p>
+</div>
+
 <div class="side-sheet" id="sideSheet">
     <div class="side-handle" id="sideHandle"></div>
     <div id="side-inventory-container">
@@ -371,7 +386,7 @@
     </div>
 </div>
 
-<div class="bottom-sheet" id="bottomSheet">
+<div class="bottom-sheet" id="bottomSheet" ondrop="event.stopPropagation();" ondragover="permitirDrop(event)">
     <div class="sheet-handle" id="sheetHandle"></div>
     <div class="white-box">
         <div class="inner-buttons">
@@ -453,7 +468,7 @@ document.querySelectorAll('#counterButtons .counter-btn').forEach(btn => {
 
 
 // =========================================================================
-// ⭐ LÓGICA DE DRAG & DROP PARA ADICIONAR/USAR ITENS (CORRIGIDA)
+// ⭐ LÓGICA DE DRAG & DROP PARA ADICIONAR/USAR ITENS
 // =========================================================================
 
 let activeElement = null;
@@ -465,9 +480,6 @@ async function addItemToInventory(itemId, itemCaminho) {
     // 1. Tenta achar um slot vazio visual (apenas para manter a organização da grade)
     const slotVazio = inventarioContainer.querySelector('.slot:not(.draggable-item)');
     
-    // REMOVIDO: A verificação que bloqueava se estivesse cheio.
-    // if (!slotVazio) { return; } 
-
     const formData = new FormData();
     formData.append('item_id_escolhido', itemId);
     formData.append('acao', 'escolher_item'); 
@@ -479,7 +491,7 @@ async function addItemToInventory(itemId, itemCaminho) {
             body: formData,
         });
 
-        // Verificação de segurança para erros não-JSON (telas de erro do Django)
+        // Verificação de segurança para erros não-JSON
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {
             console.error("Erro fatal: O servidor retornou HTML em vez de JSON.");
@@ -501,15 +513,14 @@ async function addItemToInventory(itemId, itemCaminho) {
             // Re-ativa o drag para este novo item
             novoSlot.addEventListener('dragstart', iniciarArrasto);
 
-            // --- LÓGICA SEM LIMITE ---
             if (slotVazio) {
-                // Se existe um "buraco" vazio na grade, preenche ele (fica visualmente mais bonito)
+                // Se existe um "buraco", preenche ele
                 slotVazio.replaceWith(novoSlot);
             } else {
+                // Se não, adiciona no fim
                 inventarioContainer.appendChild(novoSlot);
             }
-
-            console.log("Item adicionado ao inventário (Sem limites):", data.item_id);
+            console.log("Item adicionado ao inventário:", data.item_id);
 
         } else {
             alert("Erro ao salvar item: " + data.error);
@@ -520,7 +531,7 @@ async function addItemToInventory(itemId, itemCaminho) {
 }
 
 
-// ⭐ LÓGICA 1: SPAWNAR ITEM FLUTUANTE DA ABA LATERAL E INICIAR DRAG
+// ⭐ LÓGICA 1: SPAWNAR ITEM FLUTUANTE DA ABA LATERAL
 sideSlots.forEach(slot => {
     slot.addEventListener('mousedown', (e) => { 
         e.preventDefault(); 
@@ -529,20 +540,17 @@ sideSlots.forEach(slot => {
         const inner = slot.querySelector('.inner');
         const itemCaminho = inner.style.backgroundImage.match(/url\(['"]?(.*?)['"]?\)/)[1];
         
-        // Cria a "foto" flutuante
         const novaAba = document.createElement('div');
         novaAba.className = 'floating-item';
         novaAba.style.backgroundImage = inner.style.backgroundImage;
         novaAba.setAttribute('data-target-id', itemId); 
-        novaAba.setAttribute('data-item-caminho', itemCaminho); // Guarda o caminho original
+        novaAba.setAttribute('data-item-caminho', itemCaminho);
 
-        // Posição: Nasce perto do mouse
         novaAba.style.left = `${e.clientX - 40}px`;
         novaAba.style.top = `${e.clientY - 40}px`;
         
         document.body.appendChild(novaAba);
 
-        // ⭐ INICIA O ARRASTO IMEDIATAMENTE APÓS A CRIAÇÃO
         activeElement = novaAba;
         activeElement.style.zIndex = 2000;
         
@@ -551,7 +559,6 @@ sideSlots.forEach(slot => {
         dragOffsetY = e.clientY - rect.top;
         activeElement.style.cursor = 'grabbing';
         
-        // Dispara o mousemove para começar a arrastar instantaneamente
         document.dispatchEvent(new MouseEvent('mousemove', {
             clientX: e.clientX,
             clientY: e.clientY
@@ -562,7 +569,7 @@ sideSlots.forEach(slot => {
 
 // ⭐ LÓGICA 2: ARRASTAR ELEMENTOS (Draggable Box e Itens Flutuantes)
 document.addEventListener("mousedown", (e) => {
-    // Mantenha apenas draggable-box aqui, o floating-item é tratado na Lógica 1.
+    // Apenas a draggable-box aqui
     if (e.target.classList.contains("draggable-box")) { 
         activeElement = e.target;
         activeElement.style.zIndex = 2000;
@@ -583,7 +590,7 @@ document.addEventListener("mousemove", (e) => {
     activeElement.style.top = `${e.clientY - dragOffsetY}px`;
     if(activeElement.classList.contains("draggable-box")) { activeElement.style.transform = "none"; }
 
-    // Feedback visual se estiver arrastando um item sobre a aba de baixo
+    // Feedback visual
     if (activeElement.classList.contains("floating-item")) {
         const sheetRect = bottomSheet.getBoundingClientRect();
         const itemRect = activeElement.getBoundingClientRect();
@@ -598,7 +605,7 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-// ⭐ LÓGICA 3: SOLTAR O ITEM -> ADICIONAR AO INVENTÁRIO (via AJAX)
+// ⭐ LÓGICA 3: SOLTAR O ITEM -> ADICIONAR AO INVENTÁRIO
 document.addEventListener("mouseup", () => {
     if (activeElement) {
         
@@ -608,27 +615,20 @@ document.addEventListener("mouseup", () => {
             const cx = itemRect.left + itemRect.width/2;
             const cy = itemRect.top + itemRect.height/2;
 
-            // Detecta colisão com a aba de baixo
             if (cx >= sheetRect.left && cx <= sheetRect.right && cy >= sheetRect.top && cy <= sheetRect.bottom) {
                 const itemId = activeElement.getAttribute('data-target-id');
                 const itemCaminho = activeElement.getAttribute('data-item-caminho');
                 
-                // Remove visualmente o item flutuante
                 activeElement.remove();
                 bottomSheet.classList.remove('highlight');
-                
-                // Abre a aba de baixo e chama a função AJAX
                 bottomSheet.classList.add('open');
                 
-                // Chamada AJAX!
                 addItemToInventory(itemId, itemCaminho); 
             } else {
-                 // Se soltar fora, apenas remove o elemento flutuante
                  activeElement.remove();
             }
         }
         
-        // Finaliza o elemento ativo
         if (activeElement) {
             activeElement.style.zIndex = activeElement.classList.contains("draggable-box") ? 40 : 1000;
             activeElement.style.cursor = 'grab';
@@ -640,28 +640,73 @@ document.addEventListener("mouseup", () => {
 
 
 // =========================================================================
-// Lógica de USO (Inventário -> Caixa Central) mantida com Drag Nativo
+// ⭐ LÓGICA DE USO E DELEÇÃO (Drag Nativo)
 // =========================================================================
 
-// Esta lógica usa o "drag nativo" e o form submetido, o que causa recarregamento, mas 
-// se for o que você precisa para a ação de 'usar_item', vamos manter por enquanto.
 document.querySelectorAll('.draggable-item').forEach(itemSlot => {
     itemSlot.addEventListener('dragstart', iniciarArrasto);
 });
 
 function permitirDrop(ev) { ev.preventDefault(); }
+
 function iniciarArrasto(ev) {
     const itemID = ev.currentTarget.getAttribute('data-item-id');
     ev.dataTransfer.setData("text/plain", itemID);
     ev.dataTransfer.effectAllowed = "move";
 }
+
 function soltarItem(ev) {
     ev.preventDefault();
     const itemID = ev.dataTransfer.getData("text/plain");
     if (itemID) {
-        // Envia para o Django usar o item (isso vai recarregar a página)
+        // Envia para o Django usar o item
         document.getElementById('item_id_usado').value = itemID;
         document.getElementById('form-usar-item').submit();
+    }
+}
+
+// ⭐ NOVA FUNÇÃO: DELETAR ITEM
+async function jogarFora(ev) {
+    ev.preventDefault();
+    const itemID = ev.dataTransfer.getData("text/plain");
+
+    // Verifica se existe um ID válido
+    if (itemID && !isNaN(itemID)) {
+        
+        const formData = new FormData();
+        formData.append('item_id_deletar', itemID);
+        formData.append('acao', 'deletar_item');
+
+        try {
+            const response = await fetch(window.location.href, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': csrfToken },
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Encontra o item na tela
+                const itemElement = document.querySelector(`.draggable-item[data-item-id="${itemID}"]`);
+                
+                if (itemElement) {
+                    // LIMPEZA TOTAL: Remove a classe que dá a cor branca e apaga a imagem
+                    itemElement.classList.remove('draggable-item'); // Tira o fundo branco (CSS novo)
+                    itemElement.removeAttribute('draggable');
+                    itemElement.removeAttribute('data-item-id');
+                    itemElement.removeEventListener('dragstart', iniciarArrasto);
+                    
+                    // Limpa o conteúdo visual (deixa transparente)
+                    itemElement.innerHTML = '<div class="inner"></div>';
+                }
+                console.log("Item descartado e resquício removido.");
+            } else {
+                console.error("Erro ao deletar:", data.error);
+            }
+        } catch (error) {
+            console.error("Erro na requisição de delete:", error);
+        }
     }
 }
 
