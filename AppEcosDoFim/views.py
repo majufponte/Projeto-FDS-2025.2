@@ -214,14 +214,11 @@ def jogo_audio(request):
     jogador = get_object_or_404(Jogador, id=id_personagem, partida=id_partida, usuario=request.user)
     partida = get_object_or_404(Partida, id=id_partida)
     
-    itens_disponiveis = list(Itens.objects.all())
+    itens_disponiveis = list(Itens.objects.all()) 
     
     inventario = Inventario.objects.filter(jogador=jogador).select_related('item') 
 
-    itens_para_escolha = []
-    if itens_disponiveis:
-        num_escolhas = min(10, len(itens_disponiveis))
-        itens_para_escolha = random.choices(itens_disponiveis, k=num_escolhas)
+    itens_para_escolha = itens_disponiveis 
 
     if request.method == "POST":
         acao = request.POST.get("acao")
@@ -235,7 +232,6 @@ def jogo_audio(request):
                     jogador=jogador,
                     partida=partida
                 )
-
                 item_a_usar.delete() 
                 return redirect("jogo_audio") 
 
